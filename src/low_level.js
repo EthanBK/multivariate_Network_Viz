@@ -1,20 +1,21 @@
 // Process data
-d3.csv('data/test_data.csv', function (error, data) {
-    if (error) {
-        console.log(error)
-    }
-    low_level('#low_level', data)
-});
+d3.queue()
+    .defer(d3.csv, 'data/test_data.csv')
+    .defer(d3.csv, 'data/airport_supplement.csv')
+    .await(function (error, flight, ap_supt){
+        if (error) {
+            console.log(error)
+        }
+        low_level('#low_level', flight, ap_supt)
+    });
 
-function low_level(selector, data) {
+// Build flights data
+function BuildData(flight, ap_supplement) {
     var flights,
-        airports = [];
-
-
-    // Build flights data
+        airports = [],
+        airport_dic = [];
     // flights consists of all the flights information
-    var airport_dic = [];
-    flights = data.map(function (flight) {
+    flights = flight.map(function (flight) {
         return {
             al_name: flight.airline,
             al_id: +flight.airline_ID,
@@ -35,7 +36,7 @@ function low_level(selector, data) {
         // al_src airport not in the dic.
         if (airport_dic.indexOf(f.al_src) < 0) {
             var ap_temp = {
-                name: f.al_src,
+                code: f.al_src,
                 id: f.al_srcID,
                 // edges is a list of dictionary consists
                 // of all airports connected with this airport.
@@ -62,7 +63,7 @@ function low_level(selector, data) {
             var num_ap = airports.length;
             for (var i = 0; i < num_ap; i++) {
                 // update edge or create a new edge
-                if (airports[i].name === f.al_src) {
+                if (airports[i].code === f.al_src) {
                     airports[i].num_out_airline += 1;
                     // a new edge. Create a new edge and push
                     if (airports[i].out_edge_dic.indexOf(f.al_des) < 0) {
@@ -93,7 +94,7 @@ function low_level(selector, data) {
         // build or update al_des airport, basic the same for src airport
         if (airport_dic.indexOf(f.al_des) < 0) {
             ap_temp = {
-                name: f.al_des,
+                code: f.al_des,
                 id: f.al_desID,
                 out_edges: [],
                 out_edge_dic: [],
@@ -114,7 +115,7 @@ function low_level(selector, data) {
             num_ap = airports.length;
             for (i = 0; i < num_ap; i++) {
                 // update edge or create a new edge
-                if (airports[i].name === f.al_des) {
+                if (airports[i].code === f.al_des) {
                     airports[i].num_in_airline += 1;
                     // a new edge. Create a new edge and push
                     if (airports[i].in_edge_dic.indexOf(f.al_src) < 0) {
@@ -143,7 +144,6 @@ function low_level(selector, data) {
             }
         }
     });
-    // console.log('flight', flights);
     airports.sort(function (a, b) {
         if (isNaN(a.id)) return -1;
         if (isNaN(b.id)) return 1;
@@ -151,5 +151,32 @@ function low_level(selector, data) {
             return a.id - b.id;
         }
     });
+    // add extra airport information
+    airports.forEach(function (airport) {
+        var search_ap = ap_supplement.filter(function (s) {
+            return s.IATA === airport.code || s.ICAO === airport.code
+        });
+        if(search_ap[0] !== undefined) {
+            airport.name = search_ap[0].name;
+            airport.country = search_ap[0].country;
+            airport.latitude = search_ap[0].latitude;
+            airport.longitude = search_ap[0].longitude;
+            airport.altitude = search_ap[0].altitude;
+        } else {
+            airport.name = null;
+            airport.country = null;
+            airport.latitude = null;
+            airport.longitude = null;
+            airport.altitude = null;
+        }
+    });
+    return airports;
+}
+
+function low_level(selector, flight, ap_supplement) {
+
+    var airports = BuildData(flight, ap_supplement);
     console.log('airport', airports);
+
+
 }
