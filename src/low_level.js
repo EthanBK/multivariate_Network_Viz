@@ -1,6 +1,6 @@
 // Process data
 d3.queue()
-    .defer(d3.csv, 'data/test_data.csv')
+    .defer(d3.csv, 'data/routes.csv')
     .defer(d3.csv, 'data/airport_supplement.csv')
     .await(function (error, flight, ap_supt){
         if (error) {
@@ -177,6 +177,45 @@ function low_level(selector, flight, ap_supplement) {
 
     var airports = BuildData(flight, ap_supplement);
     console.log('airport', airports);
+
+    var height = 750,
+        width = 1500,
+        padding = {top: 20, left: 20,
+            right: 20, bottom: 20 };
+
+    var svg = d3.selectAll(selector).append('svg')
+        .attr('id', 'low_svg')
+        .attr('width', width)
+        .attr('height', height);
+
+    var xAxisWidth = width - 20,
+        yAxisWidth = height - 20;
+
+    var longitudeScale = d3.scaleLinear()
+        .domain([-180.0, 180.0])
+        .range([0, xAxisWidth]);
+
+    var latitudeScale = d3.scaleLinear()
+        .domain([-90, 90])
+        .range([yAxisWidth, 0]);
+
+    airports.forEach(function (ap) {
+        if (ap.latitude !== undefined && ap.longitude !== undefined) {
+            ap.x = longitudeScale(ap.longitude);
+            ap.y = latitudeScale(ap.latitude);
+        } else {
+            ap.x = 0;
+            ap.y = 0;
+        }
+    });
+
+    svg.selectAll('.dot').data(airports)
+        .enter().append('circle')
+        .attr('class', 'dot')
+        .attr('cx', function (d) { return d.x; })
+        .attr('cy', function (d) { return d.y; })
+        .attr('r', 2)
+
 
 
 }
