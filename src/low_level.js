@@ -288,8 +288,4 @@ function low_level(selector, flight, ap_supplement, all_ap) {
 
         })
     })
-
-
-
-
 }
