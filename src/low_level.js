@@ -45,7 +45,7 @@ function BuildData(flight, ap_supplement, all_ap) {
                 out_edges: [{
                     edge_des: f.al_des,
                     edge_desId: f.al_desID,
-                    flight: [f.al_name]
+                    flight: [f]
                 }],
                 out_edge_dic: [f.al_des],
                 num_out_airline: 1,
@@ -71,7 +71,7 @@ function BuildData(flight, ap_supplement, all_ap) {
                         var edge_tmp = {
                             edge_des: f.al_des,
                             edge_desId: f.al_desID,
-                            flight: [f.al_name]
+                            flight: [f]
                         };
                         airports[i].out_edges.push(edge_tmp);
                         airports[i].out_edge_dic.push(f.al_des);
@@ -80,7 +80,7 @@ function BuildData(flight, ap_supplement, all_ap) {
                     else {
                         airports[i].out_edges.forEach(function (edge) {
                             if (edge.edge_des === f.al_des) {
-                                edge.flight.push(f.al_name);
+                                edge.flight.push(f);
                             }
                         });
                     }
@@ -100,7 +100,7 @@ function BuildData(flight, ap_supplement, all_ap) {
                 in_edges: [{
                     edge_src: f.al_src,
                     edge_srcId: f.al_srcID,
-                    flight: [f.al_name]
+                    flight: [f]
                 }],
                 in_edge_dic: [f.al_src],
                 num_in_airline: 1
@@ -120,7 +120,7 @@ function BuildData(flight, ap_supplement, all_ap) {
                         edge_tmp = {
                             edge_src: f.al_src,
                             edge_srcId: f.al_srcID,
-                            flight: [f.al_name]
+                            flight: [f]
                         };
                         airports[i].in_edges.push(edge_tmp);
                         airports[i].in_edge_dic.push(f.al_src);
@@ -130,7 +130,7 @@ function BuildData(flight, ap_supplement, all_ap) {
                     else {
                         airports[i].in_edges.forEach(function (edge) {
                             if (edge.edge_src === f.src) {
-                                edge.flight.push(f.al_name);
+                                edge.flight.push(f);
                             }
                         });
                     }
@@ -272,14 +272,15 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             }
 
             var x1 = out_edge.des_x, y1 = out_edge.des_y,
-                x2 = ap.x, y2 = ap.y;
+                x2 = ap.x, y2 = ap.y,
+                ctg = 1;
 
 
             links = svg.append('path')
                 .classed('link', true)
                 .attr('d', 'M '+ x2 +' '+ y2 +' '
-                        + 'Q' + ' ' + ((x1+x2+y2-y1)/2) + ' '
-                        + ((y1+y2+x1-x2)/2) +' '+ x1 + ' ' + y1)
+                        + 'Q' + ' ' + ((ctg*x1+ctg*x2+ctg*y2-y1)/(ctg+ctg)) + ' '
+                        + ((ctg*y1+ctg*y2+ctg*x1-x2)/(ctg+ctg) +' '+ x1 + ' ' + y1))
                 .attr('stroke', 'red')
                 .attr('stroke-width', 1)
                 .attr('fill', 'none')
