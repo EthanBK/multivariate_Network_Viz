@@ -235,7 +235,11 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             .attr("visibility", "visible")
             .attr('fill-opacity', '0')
             .attr('stroke', selection_color)
-            .attr('stroke-width', 3);
+            .attr('stroke-width', 3)
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
     };
 
     var moveSelection = function(start, moved) {
@@ -270,7 +274,27 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             });
     });
 
-    // Draw all the dots
+    // Manipulate selection rect
+    function dragstarted() {
+        d3.select(this).raise().classed("active", true);
+    }
+
+    function dragged() {
+        d3.select(this)
+            .attr('x', this.x.baseVal.value + d3.event.dx)
+            .attr('y', this.y.baseVal.value + d3.event.dy)
+    }
+
+    function dragended() {
+        d3.select(this).classed("active", false);
+        var x1 = +this.getAttribute('x'),
+            y1 = +this.getAttribute('y'),
+            x2 = +this.getAttribute('x') + this.width.baseVal.value,
+            y2 = +this.getAttribute('y') + this.height.baseVal.value
+        selectNode(x1, y1, x2, y2);
+    }
+
+    // DrselectNodeaw all the dots
     var dots = svg.selectAll('.dot').data(airports);
 
     dots.enter().append('circle')
@@ -297,8 +321,7 @@ function low_level(selector, flight, ap_supplement, all_ap) {
                 d.y > y1 && d.y && d.y < y2
         });
 
-        dots
-            .data(selected_ap)
+        dots.data(selected_ap)
             .enter().append('circle')
             .classed('selected', true)
             .attr('cx', function (d) { return d.x; })

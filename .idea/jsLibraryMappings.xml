@@ -2,6 +2,7 @@
 <project version="4">
   <component name="JavaScriptLibraryMappings">
     <file url="file://$PROJECT_DIR$/src/circle_filter.js" libraries="{d3.v4}" />
+    <file url="file://$PROJECT_DIR$/src/drag_rect.js" libraries="{d3.v4}" />
     <file url="file://$PROJECT_DIR$/src/high_level.js" libraries="{d3.v4}" />
     <file url="file://$PROJECT_DIR$/src/low_level.js" libraries="{d3.v4}" />
     <file url="file://$PROJECT_DIR$/src/low_level_backup.js" libraries="{d3.v4}" />
