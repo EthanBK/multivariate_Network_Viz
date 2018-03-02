@@ -1,6 +1,6 @@
 // Process data
 d3.queue()
-    .defer(d3.csv, 'data/routes.csv')
+    .defer(d3.csv, 'data/test_data.csv')
     .defer(d3.csv, 'data/airport_supplement.csv')
     .defer(d3.csv, 'data/all_airports.csv')
     .await(function (error, flight, ap_supt, all_ap){
@@ -190,8 +190,7 @@ function low_level(selector, flight, ap_supplement, all_ap) {
     var svg = d3.selectAll(selector).append('svg')
         .attr('id', 'low_svg')
         .attr('width', width)
-        .attr('height', height)
-        .style('background', '#131410');
+        .attr('height', height);
 
     var longitudeScale = d3.scaleLinear()
         .domain([-180.0, 180.0])
@@ -211,41 +210,36 @@ function low_level(selector, flight, ap_supplement, all_ap) {
         }
     });
 
+    // Draw select window
+    function rect(x, y, w, h) {
+        return "M"+[x,y]+" l"+[w,0]+" l"+[0,h]+" l"+[-w,0]+"z";
+    }
+
     var selection = null,
         selection_color = null;
 
-    // a random color generator to get get color for selection win.
     var getColor = d3.scaleLinear()
-        .domain([0, 0.5, 1.0])
-        .range(['#fc2b30', '#3f99d1', '#64be5c']);
+        .domain([0, 0.25, 0.5, 0.75, 1.0])
+        .range(['red', 'yellow', 'blue', 'green']);
 
     var startSelection = function(start) {
         // Set window and node color of this selection.
         selection_color = getColor(Math.random());
 
-        selection = svg.append("rect")
+        selection = svg.append("path")
             .attr("class", "selection")
             .attr("visibility", "visible");
 
-        selection
-            .attr('x', start[0])
-            .attr('y', start[1])
-            .attr('width', 0)
-            .attr('height', 0)
+        selection.attr("d", rect(start[0], start[0], 0, 0))
             .attr("visibility", "visible")
             .attr('fill-opacity', '0')
             .attr('stroke', selection_color)
             .attr('stroke-width', 3)
-            .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended));
+            .attr('stroke-width', 3);
     };
 
     var moveSelection = function(start, moved) {
-        selection
-            .attr('width', moved[0]-start[0])
-            .attr('height', moved[1]-start[1] )
+        selection.attr("d", rect(start[0], start[1], moved[0]-start[0], moved[1]-start[1]));
     };
 
     var endSelection = function(start, end) {
@@ -267,6 +261,7 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             .on("mouseup.selection", function() {
                 selectNode(start[0], start[1],
                     d3.mouse(parent)[0], d3.mouse(parent)[1]);
+
                 subject
                     .on("mousemove.selection", null)
                     .on("mouseup.selection", null);
@@ -274,37 +269,16 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             });
     });
 
-    // Manipulate selection rect
-    function dragstarted() {
-        d3.select(this).raise().classed("active", true);
-    }
-
-    function dragged() {
-        d3.select(this)
-            .attr('x', this.x.baseVal.value + d3.event.dx)
-            .attr('y', this.y.baseVal.value + d3.event.dy)
-    }
-
-    function dragended() {
-        d3.select(this).classed("active", false);
-        var x1 = +this.getAttribute('x'),
-            y1 = +this.getAttribute('y'),
-            x2 = +this.getAttribute('x') + this.width.baseVal.value,
-            y2 = +this.getAttribute('y') + this.height.baseVal.value
-        selectNode(x1, y1, x2, y2);
-    }
-
-    // Draw all the dots
-    var dots = svg.selectAll('.dot').data(airports);
-
-    dots.enter().append('circle')
+    var dots = svg.selectAll('.dot').data(airports)
+        .enter().append('circle')
         .attr('class', 'dot')
         .attr('cx', function (d) { return d.x; })
         .attr('cy', function (d) { return d.y; })
-        .attr('r', 1)
-        .attr('fill', 'white');
+        .attr('r', 2);
 
-    // Draw selected dots
+    //console.log(dots);
+
+
     function selectNode(x1, y1, x2, y2) {
         var selected_ap = airports.filter(function(d) {
             if (x1 > x2) {
@@ -321,19 +295,14 @@ function low_level(selector, flight, ap_supplement, all_ap) {
                 d.y > y1 && d.y && d.y < y2
         });
 
-        dots.data(selected_ap)
+        var sd = svg.selectAll('.selected')
+            .data(selected_ap)
             .enter().append('circle')
             .classed('selected', true)
             .attr('cx', function (d) { return d.x; })
             .attr('cy', function (d) { return d.y; })
-            .attr('r', 1)
+            .attr('r', 2)
             .attr('fill', selection_color);
-
-        /* todo why selected dots can not replace normal dots,
-           todo now the colorful dots are covering white ones,
-           todo take more resources.
-         */
-
 
         // Build links between selected nodes
         var links = [];
@@ -381,6 +350,7 @@ function low_level(selector, flight, ap_supplement, all_ap) {
                     in_edge.src_y < y1 || y2 < in_edge.src_y) {
                     drawEdge(ap.x, ap.y, in_edge.src_x, in_edge.src_y, 1);
                 }
+
             })
         });
 
