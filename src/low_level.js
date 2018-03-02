@@ -180,7 +180,7 @@ function BuildData(flight, ap_supplement, all_ap) {
 function low_level(selector, flight, ap_supplement, all_ap) {
 
     var airports = BuildData(flight, ap_supplement, all_ap);
-    console.log('airport', airports);
+    // console.log('airport', airports);
 
     var height = 750,
         width = 1500,
@@ -210,26 +210,23 @@ function low_level(selector, flight, ap_supplement, all_ap) {
         }
     });
 
-    svg.selectAll('.dot').data(airports)
-        .enter().append('circle')
-        .attr('class', 'dot')
-        .attr('cx', function (d) { return d.x; })
-        .attr('cy', function (d) { return d.y; })
-        .attr('r', 2);
 
+
+    // Draw select window
     function rect(x, y, w, h) {
         return "M"+[x,y]+" l"+[w,0]+" l"+[0,h]+" l"+[-w,0]+"z";
     }
 
     var selection = svg.append("path")
         .attr("class", "selection")
-        .attr("visibility", "hidden");
+        .attr("visibility", "visible");
 
     var startSelection = function(start) {
         selection.attr("d", rect(start[0], start[0], 0, 0))
             .attr("visibility", "visible")
             .attr('fill-opacity', '0')
             .attr('stroke', 'red')
+            .attr('stroke-width', 3)
             .attr('stroke-width', 3);
     };
 
@@ -242,51 +239,86 @@ function low_level(selector, flight, ap_supplement, all_ap) {
     };
 
     svg.on("mousedown", function() {
+        // Clear previous selected nodes;
+        d3.selectAll('.selected').remove('*');
+        d3.selectAll('.link').remove('*');
         var subject = d3.select(window),
             parent = this.parentNode,
             start = d3.mouse(parent);
         startSelection(start);
         subject
             .on("mousemove.selection", function() {
+
                 moveSelection(start, d3.mouse(parent));
             })
             .on("mouseup.selection", function() {
-            endSelection(start, d3.mouse(parent));
-            subject.on("mousemove.selection", null).on("mouseup.selection", null);
-        });
+                selectNode(start[0], start[1], d3.mouse(parent)[0], d3.mouse(parent)[1]);
+                endSelection(start, d3.mouse(parent));
+                subject.on("mousemove.selection", null).on("mouseup.selection", null);
+            });
     });
 
-    // Build links between nodes
-    var links = [],
-        len = airports.length;
 
-    airports.forEach(function (ap) {
-        var i = 0;
-        ap.out_edges.forEach(function (out_edge) {
-            for (i = 0; i < len; i++) {
-                if (airports[i].code === out_edge.edge_des) {
-                    out_edge.des_x = airports[i].x;
-                    out_edge.des_y = airports[i].y;
-                    break;
+    var dots = svg.selectAll('.dot').data(airports)
+        .enter().append('circle')
+        .attr('class', 'dot')
+        .attr('cx', function (d) { return d.x; })
+        .attr('cy', function (d) { return d.y; })
+        .attr('r', 2);
+
+    //console.log(dots);
+
+
+    function selectNode(x1, y1, x2, y2) {
+
+        var selected_ap = airports.filter(function(d) {
+            return d.x > x1 && d.x < x2 &&
+                d.y > y1 && d.y && d.y < y2
+        });
+
+        var sd = svg.selectAll('.selected')
+            .data(selected_ap)
+            .enter().append('circle')
+            .classed('selected', true)
+            .attr('cx', function (d) { return d.x; })
+            .attr('cy', function (d) { return d.y; })
+            .attr('r', 2)
+            .attr('fill', 'red');
+        console.log(sd)
+
+        // Build links between nodes
+        var links = [],
+            len = selected_ap.length;
+        selected_ap.forEach(function (ap) {
+            var i = 0;
+            ap.out_edges.forEach(function (out_edge) {
+                for (i = 0; i < len; i++) {
+                    if (airports[i].code === out_edge.edge_des) {
+                        out_edge.des_x = airports[i].x;
+                        out_edge.des_y = airports[i].y;
+                        break;
+                    }
                 }
-            }
+                var xs = out_edge.des_x, ys = out_edge.des_y,
+                    xe = ap.x, ye = ap.y,
+                    ctg = 1;
+                links = svg.append('path')
+                    .classed('link', true)
+                    .attr('d', 'M '+ xe +' '+ ye +' '
+                        + 'Q' + ' ' + ((ctg*xs+ctg*xe+ctg*ye-ys)/(ctg+ctg)) + ' '
+                        + ((ctg*ys+ctg*ye+ctg*xs-xe)/(ctg+ctg) +' '+ xs + ' ' + ys))
+                    .attr('stroke', 'red')
+                    .attr('stroke-width', 1)
+                    .attr('fill', 'none')
+                    .attr('opacity', 0.3)
+                    .attr('visibility', 'visible');
+                //console.log(links)
 
-            var x1 = out_edge.des_x, y1 = out_edge.des_y,
-                x2 = ap.x, y2 = ap.y,
-                ctg = 1;
-
-
-            links = svg.append('path')
-                .classed('link', true)
-                .attr('d', 'M '+ x2 +' '+ y2 +' '
-                        + 'Q' + ' ' + ((ctg*x1+ctg*x2+ctg*y2-y1)/(ctg+ctg)) + ' '
-                        + ((ctg*y1+ctg*y2+ctg*x1-x2)/(ctg+ctg) +' '+ x1 + ' ' + y1))
-                .attr('stroke', 'red')
-                .attr('stroke-width', 1)
-                .attr('fill', 'none')
-                .attr('opacity', 0.3);
-            //console.log(links)
-
+            })
         })
-    })
+    }
+
+
+
+
 }
