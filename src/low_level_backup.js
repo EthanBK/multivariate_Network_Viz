@@ -364,19 +364,19 @@ function low_level(selector, flight, ap_supplement, all_ap) {
                         }
                     }
                 }
-                //if (!out_edge.isShown) {
+                //if (!out_edge.ShownBefore) {
                 // draw only 'within' edges
                 if (x1 < out_edge.des_x && out_edge.des_x < x2 &&
                     y1 < out_edge.des_y && out_edge.des_y < y2) {
                     drawEdge(out_edge.des_x, out_edge.des_y, ap.x, ap.y, 1, win_id);
-                    out_edge.isShown = true;
+                    out_edge.ShownBefore = true;
 
                 }
                 // draw only 'between - out' edges
                 if (out_edge.des_x < x1 || x2 < out_edge.des_x ||
                     out_edge.des_y < y1 || y2 < out_edge.des_y) {
                     drawEdge(out_edge.des_x, out_edge.des_y, ap.x, ap.y, 1, win_id);
-                    out_edge.isShown = true;
+                    out_edge.ShownBefore = true;
                 }
                 //}
             });
@@ -393,12 +393,12 @@ function low_level(selector, flight, ap_supplement, all_ap) {
                         }
                     }
                 }
-                //if (!in_edge.isShown) {
+                //if (!in_edge.ShownBefore) {
                 // draw only 'between - out' edges
                 if (in_edge.src_x < x1 || x2 < in_edge.src_x ||
                     in_edge.src_y < y1 || y2 < in_edge.src_y) {
                     drawEdge(ap.x, ap.y, in_edge.src_x, in_edge.src_y, 1, win_id);
-                    in_edge.isShown = true;
+                    in_edge.ShownBefore = true;
                 }
                 //}
             })

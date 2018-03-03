@@ -1,6 +1,6 @@
 // Process data
 d3.queue()
-    .defer(d3.csv, 'data/test_data.csv')
+    .defer(d3.csv, 'data/routes.csv')
     .defer(d3.csv, 'data/airport_supplement.csv')
     .defer(d3.csv, 'data/all_airports.csv')
     .await(function (error, flight, ap_supt, all_ap){
@@ -23,10 +23,10 @@ function BuildData(flight, ap_supplement, all_ap) {
             al_src: flight.source_airport,
             al_srcID: +flight.source_airport_id,
             al_des: flight.destination_airport,
-            al_desID: +flight.destination_airport_id,
-            coshare: flight.coshare,
-            stops: +flight.stops,
-            equipment: flight.equipment
+            al_desID: +flight.destination_airport_id
+            //coshare: flight.coshare,
+            //stops: +flight.stops,
+            //equipment: flight.equipment
         };
     });
 
@@ -225,7 +225,7 @@ function low_level(selector, flight, ap_supplement, all_ap) {
         selection_color = getColor(Math.random());
 
         selection = svg.append("rect")
-            .attr("class", "selection "+win_id)
+            .attr("class", "selection"+win_id)
             .attr("visibility", "visible")
             .attr('selection_id', win_id);
 
@@ -292,8 +292,8 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             y1 = +this.getAttribute('y'),
             x2 = +this.getAttribute('x') + this.width.baseVal.value,
             y2 = +this.getAttribute('y') + this.height.baseVal.value;
-        deleteDot(x1, y1, x2, y2, this.getAttribute('stroke'), this.getAttribute('selection_id'));
-        selectNode(x1, y1, x2, y2, this.getAttribute('stroke'), this.getAttribute('selection_id'));
+        deleteDot(x1, y1, x2, y2, this.getAttribute('stroke'), +this.getAttribute('selection_id'));
+        selectNode(x1, y1, x2, y2, this.getAttribute('stroke'), +this.getAttribute('selection_id'));
         // deleteDot(x1, y1, x2, y2, this.getAttribute('stroke'));
     }
 
@@ -311,14 +311,14 @@ function low_level(selector, flight, ap_supplement, all_ap) {
         .attr('fill', 'white');
 
     // delete dots move out of the selection window
-    function deleteDot(x1, y1, x2, y2, color, win_id) {
-        d3.selectAll('.link'+win_id).remove();
-        d3.selectAll('.selected'+win_id).remove();
+    function deleteDot(x1, y1, x2, y2, color, ID) {
+        d3.selectAll("*[class~=link"+ID+"]").remove();
+        d3.selectAll('.selected'+ID).remove();
     }
 
 
-    // Draw selected dots
-    function selectNode(x1, y1, x2, y2, color, win_id) {
+    // Draw dots in the selection window
+    function selectNode(x1, y1, x2, y2, color, ID) {
 
         var selected_ap = airports.filter(function(d) {
             // if (x1 > x2) {
@@ -337,18 +337,17 @@ function low_level(selector, flight, ap_supplement, all_ap) {
 
         selectedDots = allDots.data(selected_ap)
             .enter().append('circle')
-            .classed('selected'+win_id, true)
+            .classed('selected'+ID, true)
             .attr('cx', function (d) { return d.x; })
             .attr('cy', function (d) { return d.y; })
             .attr('r', 1)
             .attr('fill', color)
-            //.exit().remove();
-        /* todo: why selected dots can not replace normal dots,
-           todo: now the colorful dots are covering white ones,
-           todo: take more resources.
-         */
+            .exit().remove();
 
+        BuildLinks(x1, y1, x2, y2, color, ID, selected_ap)
+    }
 
+    function BuildLinks (x1, y1, x2, y2, color, ID, selected_ap) {
         // Build links between selected nodes
         var links = [];
         selected_ap.forEach(function (ap) {
@@ -364,25 +363,36 @@ function low_level(selector, flight, ap_supplement, all_ap) {
                         }
                     }
                 }
-                //if (!out_edge.isShown) {
-                    // draw only 'within' edges
-                    if (x1 < out_edge.des_x && out_edge.des_x < x2 &&
-                        y1 < out_edge.des_y && out_edge.des_y < y2) {
-                        drawEdge(out_edge.des_x, out_edge.des_y, ap.x, ap.y, 1, win_id);
-                        out_edge.isShown = true;
+                // draw 'within' edges
+                if (x1 < out_edge.des_x && out_edge.des_x < x2 &&
+                    y1 < out_edge.des_y && out_edge.des_y < y2) {
+                    drawEdge(out_edge.des_x, out_edge.des_y, ap.x, ap.y, 1,
+                        ID, ID, color, undefined);
+                }
+                // // draw 'out' edges
+                // if (out_edge.des_x < x1 || x2 < out_edge.des_x ||
+                //     out_edge.des_y < y1 || y2 < out_edge.des_y) {
+                //     drawEdge(out_edge.des_x, out_edge.des_y, ap.x, ap.y, 1,
+                //      ID, undefined, color, undefined);
+                // }
 
+                // draw 'between-out' edges
+                for (i = 0; i < win_id; i++) {
+                    if (i === +ID) continue;
+                    var window = d3.select('.selection'+i);
+                    var w_x1 = +window.attr('x'),
+                        w_y1 = +window.attr('y'),
+                        w_x2 = w_x1 + (+window.attr('width')),
+                        w_y2 = w_y1 + (+window.attr('height'));
+                    if (w_x1 < out_edge.des_x && out_edge.des_x < w_x2 &&
+                        w_y1 < out_edge.des_y && out_edge.des_y < w_y2) {
+                        var color2 = window.attr('stroke');
+                        drawEdge(out_edge.des_x, out_edge.des_y, ap.x, ap.y, 1,
+                            ID, +window.attr('selection_id'), color, color2);
                     }
-                    // draw only 'between - out' edges
-                    if (out_edge.des_x < x1 || x2 < out_edge.des_x ||
-                        out_edge.des_y < y1 || y2 < out_edge.des_y) {
-                        drawEdge(out_edge.des_x, out_edge.des_y, ap.x, ap.y, 1, win_id);
-                        out_edge.isShown = true;
-                    }
-                //}
+                }
             });
             ap.in_edges.forEach(function (in_edge) {
-
-                // if the src_des of this edge exists, skip the calculation
                 if (in_edge.src_x === undefined) {
                     var len = airports.length;
                     for (var i = 0; i < len; i++) {
@@ -393,30 +403,90 @@ function low_level(selector, flight, ap_supplement, all_ap) {
                         }
                     }
                 }
-                //if (!in_edge.isShown) {
-                    // draw only 'between - out' edges
-                    if (in_edge.src_x < x1 || x2 < in_edge.src_x ||
-                        in_edge.src_y < y1 || y2 < in_edge.src_y) {
-                        drawEdge(ap.x, ap.y, in_edge.src_x, in_edge.src_y, 1, win_id);
-                        in_edge.isShown = true;
+                // // draw 'in' edges
+                // if (in_edge.src_x < x1 || x2 < in_edge.src_x ||
+                //     in_edge.src_y < y1 || y2 < in_edge.src_y) {
+                //     drawEdge(ap.x, ap.y, in_edge.src_x, in_edge.src_y, 1,
+                //              ID, undefined, color, undefined);
+                // }
+
+                // Draw 'between-in' edges
+                for (i = 0; i < win_id; i++) {
+                    if (i === +ID) continue;
+                    var window = d3.select('.selection' + i);
+                    var w_x1 = +window.attr('x'),
+                        w_y1 = +window.attr('y'),
+                        w_x2 = w_x1 + (+window.attr('width')),
+                        w_y2 = w_y1 + (+window.attr('height'));
+                    if (w_x1 < in_edge.src_x && in_edge.src_x < w_x2 &&
+                        w_y1 < in_edge.src_y && in_edge.src_y < w_y2) {
+                        var color2 = window.attr('stroke');
+                        drawEdge(ap.x, ap.y, in_edge.src_x, in_edge.src_y, 1,
+                            +window.attr("selection_id"), ID, color2, color, true);
                     }
-                //}
+                }
             })
         });
 
         // Draw links on given coordinate of the start point (Sx, Sy)
         // and end point (Ex, Ey)
-        function drawEdge(Ex, Ey, Sx, Sy, ctg, win_id) {
+        function drawEdge(Ex, Ey, Sx, Sy, ctg, ID, ID2, c1, c2, IN) {
+
             links = svg.append('path')
-                .classed('link'+win_id, true)
-                .attr('d', 'M '+ Sx +' '+ Sy +' '
-                    + 'Q' + ' ' + ((ctg*Ex+ctg*Sx+ctg*Sy-Ey)/(ctg+ctg)) + ' '
-                    + ((ctg*Ey+ctg*Sy+ctg*Ex-Sx)/(ctg+ctg) +' '+ Ex + ' ' + Ey))
-                .attr('stroke', color)
-                .attr('stroke-width', 1)
+                .attr('d', 'M ' + Sx + ' ' + Sy + ' '
+                    + 'Q' + ' ' + ((ctg * Ex + ctg * Sx + ctg * Sy - Ey) / (ctg + ctg)) + ' '
+                    + ((ctg * Ey + ctg * Sy + ctg * Ex - Sx) / (ctg + ctg) + ' ' + Ex + ' ' + Ey))
                 .attr('fill', 'none')
-                .attr('opacity', 0.3)
-                .attr('visibility', 'visible');
+                .attr('stroke-width', 1)
+                .attr('opacity', 0.5);
+            // within edges
+            if (ID === ID2) {
+                links
+                    .attr('stroke', c1)
+                    .classed('link'+ID, true);
+            }
+            // background edges
+            else if (ID2 === undefined) {
+                links
+                    .attr('stroke', 'url(#gradient_gray)')
+                    .classed('link'+ID, true);
+            }
+            // from/to other selection windows
+            else {
+                var rec_len = Math.max(Math.abs(Ex-Sx),Math.abs(Ey-Sy));
+                var X1 = (0.5 + (Sx - Ex)/2/rec_len)*100,
+                    X2 = (0.5 - (Sx - Ex)/2/rec_len)*100,
+                    Y1 = (0.5 + (Sy - Ey)/2/rec_len)*100,
+                    Y2 = (0.5 - (Sy - Ey)/2/rec_len)*100;
+
+                // if (d3.select('.selection' + ID).attr('stroke') !== c1) {
+                //     console.log('switch');
+                //     var temp = c1;
+                //     c1 = c2;
+                //     c2 = temp;
+                // }
+                console.log(c1, c2);
+                console.log(ID, ID2);
+
+                var defs = svg.append("defs");
+                var gradient = defs.append("svg:linearGradient")
+                    .attr("id", "gradient-"+ID+'-'+ID2)
+                    .attr("x1", X1+"%")
+                    .attr("y1", Y1+"%")
+                    .attr("x2", X2+"%")
+                    .attr("y2", Y2+"%");
+                gradient.append("stop")
+                    .attr('class', 'start')
+                    .attr("offset", "0%")
+                    .attr("stop-color", c1);
+                gradient.append("stop")
+                    .attr('class', 'end')
+                    .attr("offset", "100%")
+                    .attr("stop-color", c2);
+
+                links.classed('link' + ID + ' link' + ID2, true)
+                    .attr('stroke', 'url(#gradient-'+ID+'-'+ID2+')');
+            }
         }
     }
 }
