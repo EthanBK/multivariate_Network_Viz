@@ -184,8 +184,8 @@ function low_level(selector, flight, ap_supplement, all_ap) {
 
     var height = 750,
         width = 1500,
-        padding = {top: 20, left: 20,
-            right: 20, bottom: 20 };
+        padding = {top: 40, left: 20,
+            right: 20, bottom: 0 };
 
     var svg = d3.selectAll(selector).append('svg')
         .attr('id', 'low_svg')
@@ -199,7 +199,7 @@ function low_level(selector, flight, ap_supplement, all_ap) {
 
     var latitudeScale = d3.scaleLinear()
         .domain([-90, 90])
-        .range([height - padding.top - padding.bottom, 0]);
+        .range([height - padding.top - padding.bottom + 40, 40]);
 
     airports.forEach(function (ap) {
         if (ap.latitude !== undefined && ap.longitude !== undefined) {
@@ -213,6 +213,7 @@ function low_level(selector, flight, ap_supplement, all_ap) {
 
     var selection = null,
         selection_color = null,
+        randomColor = null,
         win_id = 0;
 
     // a random color generator to get get color for selection win.
@@ -220,9 +221,12 @@ function low_level(selector, flight, ap_supplement, all_ap) {
         .domain([0, 0.5, 1.0])
         .range(['#fc2b30', '#3f99d1', '#64be5c']);
 
+
     var startSelection = function(start) {
         // Set window and node color of this selection.
         selection_color = getColor(Math.random());
+        randomColor = "hsl(" + Math.random() * 360 + ",100%,50%)";
+
 
         selection = svg.append("rect")
             .attr("class", "selection"+win_id)
@@ -236,7 +240,8 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             .attr('height', 0)
             .attr("visibility", "visible")
             .attr('fill-opacity', '0')
-            .attr('stroke', selection_color)
+            //.attr('stroke', selection_color)
+            .attr('stroke', randomColor)
             .attr('stroke-width', 3)
             .call(d3.drag()
                 .on("start", dragstarted)
@@ -267,7 +272,7 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             .on("mouseup.selection", function() {
                 selectNode(start[0], start[1],
                     d3.mouse(parent)[0], d3.mouse(parent)[1],
-                    selection_color, win_id-1);
+                    randomColor, win_id-1);
                 subject
                     .on("mousemove.selection", null)
                     .on("mouseup.selection", null);
@@ -452,7 +457,7 @@ function low_level(selector, flight, ap_supplement, all_ap) {
                     .classed('link'+ID, true);
             }
             // from/to other selection windows
-            else {
+            else if (true) {
                 var rec_len = Math.max(Math.abs(Ex-Sx),Math.abs(Ey-Sy));
                 var X1 = (0.5 + (Sx - Ex)/2/rec_len)*100,
                     X2 = (0.5 - (Sx - Ex)/2/rec_len)*100,
