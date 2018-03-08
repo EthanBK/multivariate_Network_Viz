@@ -1,6 +1,6 @@
 // Process data
 d3.queue()
-    .defer(d3.csv, 'data/routes.csv')
+    .defer(d3.csv, 'data/test_data.csv')
     .defer(d3.csv, 'data/airport_supplement.csv')
     .defer(d3.csv, 'data/all_airports.csv')
     .await(function (error, flight, ap_supt, all_ap){
@@ -256,7 +256,8 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             .attr('height', moved[1]-start[1] )
     };
 
-    var endSelection = function(start, end) {
+    var endSelection = function(selection_color, start, end) {
+        SelectionComponentObj.addSelection(selection_color);
         // selection.attr("visibility", "hidden");
     };
 
@@ -276,7 +277,7 @@ function low_level(selector, flight, ap_supplement, all_ap) {
                 subject
                     .on("mousemove.selection", null)
                     .on("mouseup.selection", null);
-                endSelection(start, d3.mouse(parent));
+                endSelection(selection_color, start, d3.mouse(parent));
             });
     });
 
