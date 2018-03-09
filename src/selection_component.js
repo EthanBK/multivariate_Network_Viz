@@ -19,6 +19,6 @@ function SelectionComponent() {
             color: color,
             ref: $child
         });
-        $child.append('<div class="selection-color-box top-10" style="background:' + color + '"></div>')
+        $child.append('<div class="selection-color-box bottom-10" style="background:' + color + '"></div>')
     }
 };

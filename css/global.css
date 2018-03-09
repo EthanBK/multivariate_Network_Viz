@@ -2,7 +2,15 @@
     margin-top:10px !important;
 }
 
+.bottom-10 {
+    margin-bottom:10px !important;
+}
+
 .selection-color-box {
     height:50px;
     width:50px;
+}
+
+.theme-background-2 {
+    background:rgb(244,244,244);
 }
