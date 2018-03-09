@@ -333,8 +333,8 @@ function low_level(selector, flight, ap_supplement, all_ap) {
     };
 
     var endSelection = function(start, end) {
-
         // selection.attr("visibility", "hidden");
+        SelectionComponentObj.addSelection(selection_color);
     };
 
     svg.on("mousedown", function() {
