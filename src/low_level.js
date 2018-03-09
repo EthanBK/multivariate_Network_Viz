@@ -1,4 +1,4 @@
-$.get('/data/airports.json', function(data) {
+$.get('/data/test_data.json', function(data) {
 var airports = data;
 
 // Process data
@@ -19,7 +19,6 @@ var height = 750,
     right: 20, bottom: 0 };
 
 var flights,
-    airports = [],
     airport_dic = [],
     selections = [],
     num_window = 0;
@@ -270,9 +269,6 @@ function low_level(selector, flight, ap_supplement, all_ap) {
 
     // downloadCSV(airports);
     console.log(airports)
-
-    var myJSON = JSON.stringify(airports);
-    console.log(myJSON)
     // var ls = localStorage.setItem("testJSON", myJSON);
     //
     // downloadCSV(myJSON);

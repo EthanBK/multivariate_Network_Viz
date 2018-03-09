@@ -1,7 +1,7 @@
 var fs = require('fs');
 var d3 = require('d3');
 
-var flight_str = fs.readFileSync('../data/routes.csv', 'UTF-8');
+var flight_str = fs.readFileSync('../data/test_data.csv', 'UTF-8');
 var ap_supplement_str = fs.readFileSync('../data/airport_supplement.csv', 'UTF-8');
 var all_ap_str = fs.readFileSync('../data/all_airports.csv', 'UTF-8');
 
@@ -26,9 +26,15 @@ function str_to_csv(str) {
     })
     for(var i = 0; i < rows.length; ++i) {
         var row = rows[i].split(',');
-        var formatted_row = {}
+        var formatted_row = {};
+
+        // For each row, modify it to be an object with the header values as the key
         for(var n = 0; n < row.length; ++n) {
-            formatted_row[header[n]] = row[n];
+            var attr = row[n].trim();
+            // Filter out values that have "" around them
+            if(attr[0] == '"' && attr[attr.length - 1] == '"')
+                attr = attr.substring(1, attr.length - 1);
+            formatted_row[header[n]] = attr;
         }
        csv.push(formatted_row);
     }
@@ -185,6 +191,7 @@ function BuildData(flight, ap_supplement, all_ap) {
             return s.IATA === airport.code ||
                 s.ICAO === airport.code
         });
+
         if (search_ap !== undefined) {
             airport.name = search_ap.name;
             airport.country = search_ap.country;
