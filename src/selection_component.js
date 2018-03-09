@@ -14,11 +14,20 @@ function SelectionComponent() {
 
         // Retain a pointer to the element
         var $child = $('#' + id);
+
+        // Add color box
+        $child.append('<div class="selection-color-box bottom-10" style="background:' + color + '"></div>');
+
+        // Add selection name
+        $child.append('<p>' + id + '</p>')
+
+        // Add remove button
+        $child.append('<button class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>');
+
         this.Children.push({
             id: id,
             color: color,
             ref: $child
         });
-        $child.append('<div class="selection-color-box top-10" style="background:' + color + '"></div>')
     }
 };
