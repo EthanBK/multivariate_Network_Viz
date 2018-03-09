@@ -236,3 +236,4 @@ function BuildData(flight, ap_supplement, all_ap) {
     });
     return airports;
 }
+

@@ -266,8 +266,10 @@ function low_level(selector, flight, ap_supplement, all_ap) {
     // console.log('airport', airports);
 
     // downloadCSV(airports);
+    console.log(airports)
 
     var myJSON = JSON.stringify(airports);
+    console.log(myJSON)
     // var ls = localStorage.setItem("testJSON", myJSON);
     //
     // downloadCSV(myJSON);
@@ -403,8 +405,13 @@ function low_level(selector, flight, ap_supplement, all_ap) {
     }
 
 
+    // todo delete
+
     // Draw dots in the selection window
     function BuildSelection(x1, y1, x2, y2, color, ID) {
+
+
+
 
         // Only support make selection window to
         // bottom-right corner
@@ -504,6 +511,7 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             .exit().remove();
 
         BuildLinks(ID);
+        console.log(selections)
     }
 
     function BuildLinks (ID) {
@@ -563,13 +571,13 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             });
             ap.in_edges.forEach(function (in_edge) {
 
-                /*// draw 'in' edges
+                // draw 'in' edges
                 if (in_edge.src_x < x1 || x2 < in_edge.src_x ||
                     in_edge.src_y < y1 || y2 < in_edge.src_y) {
                     selections[ID].num_edge_in ++;
                     drawEdge(ap.x, ap.y, in_edge.src_x, in_edge.src_y, 1,
                              ID, undefined, color, undefined);
-                }*/
+                }
 
                 // Draw 'between-in' edges
                 for (var i = 0; i < num_window; i++) {
