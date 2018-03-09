@@ -6,11 +6,32 @@
     margin-bottom:10px !important;
 }
 
+.theme-background-2 {
+    background:rgb(244,244,244);
+}
+
+
+/* SELECTION COMPONENT */
 .selection-color-box {
     height:50px;
     width:50px;
+    float:left;
 }
 
-.theme-background-2 {
-    background:rgb(244,244,244);
+.sc-child p {
+   float:left;
+   font-size:15px;
+   margin-top:11px;
+   margin-left:5px;
+}
+
+.sc-child button {
+    margin-top:7px;
+    float:right;
+    border-radius:100%;
+    padding:7px 10px;
+}
+
+.sc-child button:focus  {
+    outline: none !important;
 }
