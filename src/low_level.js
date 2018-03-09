@@ -240,8 +240,8 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             .attr('height', 0)
             .attr("visibility", "visible")
             .attr('fill-opacity', '0')
-            //.attr('stroke', selection_color)
-            .attr('stroke', randomColor)
+            .attr('stroke', selection_color)
+            //.attr('stroke', randomColor)
             .attr('stroke-width', 3)
             .call(d3.drag()
                 .on("start", dragstarted)
@@ -273,10 +273,11 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             .on("mouseup.selection", function() {
                 selectNode(start[0], start[1],
                     d3.mouse(parent)[0], d3.mouse(parent)[1],
-                    randomColor, win_id-1);
+                    selection_color, win_id-1);
                 subject
                     .on("mousemove.selection", null)
                     .on("mouseup.selection", null);
+                
                 endSelection(selection_color, start, d3.mouse(parent));
             });
     });
