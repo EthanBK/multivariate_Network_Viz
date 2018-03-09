@@ -1,3 +1,6 @@
+$.get('/data/airports.json', function(data) {
+var airports = data;
+
 // Process data
 d3.queue()
     .defer(d3.csv, 'data/test_data.csv')
@@ -262,7 +265,7 @@ function BuildData(flight, ap_supplement, all_ap) {
 
 function low_level(selector, flight, ap_supplement, all_ap) {
 
-     var airports = BuildData(flight, ap_supplement, all_ap);
+     //var airports = BuildData(flight, ap_supplement, all_ap);
     // console.log('airport', airports);
 
     // downloadCSV(airports);
@@ -683,3 +686,5 @@ function low_level(selector, flight, ap_supplement, all_ap) {
         }
     }
 }
+
+})
