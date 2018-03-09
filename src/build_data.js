@@ -1,9 +1,51 @@
+var fs = require('fs');
+var d3 = require('d3');
+
+var flight_str = fs.readFileSync('../data/routes.csv', 'UTF-8');
+var ap_supplement_str = fs.readFileSync('../data/airport_supplement.csv', 'UTF-8');
+var all_ap_str = fs.readFileSync('../data/all_airports.csv', 'UTF-8');
+
+var flight = str_to_csv(flight_str);
+var ap_supplement = str_to_csv(ap_supplement_str);
+var all_ap = str_to_csv(all_ap_str);
+
+//console.log(flight[2]);
+//console.log(ap_supplement[5]);
+//console.log(all_ap[6]);
+
+var airports = BuildData(flight, ap_supplement, all_ap);
+var json = JSON.stringify(airports);
+fs.writeFile('airports.json', json);
+
+function str_to_csv(str) {
+    var csv = [];
+    var rows = str.split("\n");
+    var header = rows[0].split(',');
+    header = header.map(function(e) {
+        return e.trim();
+    })
+    for(var i = 0; i < rows.length; ++i) {
+        var row = rows[i].split(',');
+        var formatted_row = {}
+        for(var n = 0; n < row.length; ++n) {
+            formatted_row[header[n]] = row[n];
+        }
+       csv.push(formatted_row);
+    }
+    return csv;
+}
+
 // Build flights data
 function BuildData(flight, ap_supplement, all_ap) {
-
+    var airport_dic = [];
+    var airports = [];
+    
+    var height = 750;
+    var width = 1500;
+    var padding = {top: 40, left: 20, right: 20, bottom: 0};
 
     // flights consists of all the flights information
-    flights = flight.map(function (flight) {
+    var flights = flight.map(function (flight) {
         return {
             al_name: flight.airline,
             al_id: +flight.airline_ID,
