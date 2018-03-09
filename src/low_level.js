@@ -349,11 +349,11 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             .on("mouseup.selection", function() {
                 BuildSelection(start[0], start[1],
                     d3.mouse(parent)[0], d3.mouse(parent)[1],
-                    selection_color, win_id-1);
+                    selection_color, num_window-1);
                 subject
                     .on("mousemove.selection", null)
                     .on("mouseup.selection", null);
-                
+
                 endSelection(selection_color, start, d3.mouse(parent));
             });
     });
