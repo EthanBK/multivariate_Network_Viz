@@ -10,11 +10,21 @@ d3.queue()
         low_level('#low_level', flight, ap_supt, all_ap)
     });
 
+var height = 750,
+    width = 1500,
+    padding = {top: 40, left: 20,
+    right: 20, bottom: 0 };
+
+var flights,
+    airports = [],
+    airport_dic = [],
+    selections = [],
+    num_window = 0;
+
 // Build flights data
 function BuildData(flight, ap_supplement, all_ap) {
-    var flights,
-        airports = [],
-        airport_dic = [];
+
+
     // flights consists of all the flights information
     flights = flight.map(function (flight) {
         return {
@@ -45,7 +55,7 @@ function BuildData(flight, ap_supplement, all_ap) {
                 out_edges: [{
                     edge_des: f.al_des,
                     edge_desId: f.al_desID,
-                    flight: [f]
+                    flight: [f.al_name]
                 }],
                 out_edge_dic: [f.al_des],
                 num_out_airline: 1,
@@ -71,7 +81,7 @@ function BuildData(flight, ap_supplement, all_ap) {
                         var edge_tmp = {
                             edge_des: f.al_des,
                             edge_desId: f.al_desID,
-                            flight: [f]
+                            flight: [f.al_name]
                         };
                         airports[i].out_edges.push(edge_tmp);
                         airports[i].out_edge_dic.push(f.al_des);
@@ -80,7 +90,7 @@ function BuildData(flight, ap_supplement, all_ap) {
                     else {
                         airports[i].out_edges.forEach(function (edge) {
                             if (edge.edge_des === f.al_des) {
-                                edge.flight.push(f);
+                                edge.flight.push(f.al_name);
                             }
                         });
                     }
@@ -100,7 +110,7 @@ function BuildData(flight, ap_supplement, all_ap) {
                 in_edges: [{
                     edge_src: f.al_src,
                     edge_srcId: f.al_srcID,
-                    flight: [f]
+                    flight: [f.al_name]
                 }],
                 in_edge_dic: [f.al_src],
                 num_in_airline: 1
@@ -120,7 +130,7 @@ function BuildData(flight, ap_supplement, all_ap) {
                         edge_tmp = {
                             edge_src: f.al_src,
                             edge_srcId: f.al_srcID,
-                            flight: [f]
+                            flight: [f.al_name]
                         };
                         airports[i].in_edges.push(edge_tmp);
                         airports[i].in_edge_dic.push(f.al_src);
@@ -130,7 +140,7 @@ function BuildData(flight, ap_supplement, all_ap) {
                     else {
                         airports[i].in_edges.forEach(function (edge) {
                             if (edge.edge_src === f.src) {
-                                edge.flight.push(f);
+                                edge.flight.push(f.al_name);
                             }
                         });
                     }
@@ -139,59 +149,7 @@ function BuildData(flight, ap_supplement, all_ap) {
             }
         }
     });
-    airports.sort(function (a, b) {
-        if (isNaN(a.id)) return -1;
-        if (isNaN(b.id)) return 1;
-        else {
-            return a.id - b.id;
-        }
-    });
 
-    // add extra airport information
-    airports.forEach(function (airport) {
-        var search_ap = ap_supplement.filter(function (s) {
-            return s.IATA === airport.code || s.ICAO === airport.code
-        });
-        if(search_ap[0] !== undefined) {
-            airport.name = search_ap[0].name;
-            airport.country = search_ap[0].country;
-            airport.latitude = +search_ap[0].latitude;
-            airport.longitude = +search_ap[0].longitude;
-            airport.altitude = +search_ap[0].altitude;
-        } else {
-            for (var i = 0; i < all_ap.length; i++) {
-                if (airport.code === all_ap[i].gps_code ||
-                    airport.code === all_ap[i].iata_code ||
-                    airport.code === all_ap[i].local_code) {
-
-                    airport.name = all_ap[i].name;
-                    airport.country = all_ap[i].iso_country;
-                    airport.latitude = +all_ap[i].latitude_deg;
-                    airport.longitude = +all_ap[i].longitude_deg;
-                    airport.altitude = +all_ap[i].elevation_ft;
-                    break;
-                }
-            }
-        }
-    });
-    return airports;
-}
-
-function low_level(selector, flight, ap_supplement, all_ap) {
-
-    var airports = BuildData(flight, ap_supplement, all_ap);
-    // console.log('airport', airports);
-
-    var height = 750,
-        width = 1500,
-        padding = {top: 40, left: 20,
-            right: 20, bottom: 0 };
-
-    var svg = d3.selectAll(selector).append('svg')
-        .attr('id', 'low_svg')
-        .attr('width', width)
-        .attr('height', height)
-        .style('background', '#131410');
 
     var longitudeScale = d3.scaleLinear()
         .domain([-180.0, 180.0])
@@ -201,20 +159,139 @@ function low_level(selector, flight, ap_supplement, all_ap) {
         .domain([-90, 90])
         .range([height - padding.top - padding.bottom + 40, 40]);
 
-    airports.forEach(function (ap) {
-        if (ap.latitude !== undefined && ap.longitude !== undefined) {
-            ap.x = +longitudeScale(ap.longitude);
-            ap.y = +latitudeScale(ap.latitude);
+    // add extra airport information
+    var order = 0;
+    airports.forEach(function (airport) {
+        var search_ap = ap_supplement.find(function (s) {
+            return s.IATA === airport.code ||
+                s.ICAO === airport.code
+        });
+        if (search_ap !== undefined) {
+            airport.name = search_ap.name;
+            airport.country = search_ap.country;
+            airport.latitude = +search_ap.latitude;
+            airport.longitude = +search_ap.longitude;
+            airport.altitude = +search_ap.altitude;
         } else {
-            ap.x = 0;
-            ap.y = 0;
+            search_ap = all_ap.find(function (s) {
+                return airport.code === s.gps_code ||
+                    airport.code === s.iata_code ||
+                    airport.code === s.local_code
+            });
+            if (search_ap !== undefined) {
+                airport.name = search_ap.name;
+                airport.country = search_ap.iso_country;
+                airport.latitude = +search_ap.latitude_deg;
+                airport.longitude = +search_ap.longitude_deg;
+                airport.altitude = +search_ap.elevation_ft;
+            }
+        }
+
+        // modify data for undocumented airport;
+        if (isNaN(airport.longitude) || isNaN(airport.latitude)) {
+            airport.x = 0;
+            airport.y = 0;
+        } else {
+            airport.x = +longitudeScale(airport.longitude);
+            airport.y = +latitudeScale(airport.latitude);
+        }
+
+        if (isNaN(airport.id)) {
+            airport.id = order--;
+        }
+
+    });
+
+    airports.sort(function (a, b) {
+        if (isNaN(a.id)) return -1;
+        if (isNaN(b.id)) return 1;
+        else {
+            return a.id - b.id;
         }
     });
 
+    // Build coordinate for edges.
+    var ap_len = airports.length;
+    airports.forEach(function (ap) {
+        ap.out_edges.forEach(function (oe) {
+            if (!isNaN(oe.edge_desId)) {
+                for (var i = 0; i < ap_len; i++) {
+                    if (oe.edge_desId === airports[i].id) {
+                        oe.des_x = airports[i].x;
+                        oe.des_y = airports[i].y;
+                        break;
+                    }
+                }
+
+            }
+            else {
+                for (i = 0; i < ap_len; i++) {
+                    if (oe.edge_des === airports[i].name) {
+                        oe.des_x = airports[i].x;
+                        oe.des_y = airports[i].y;
+                        break;
+                    }
+                }
+            }
+        });
+
+        ap.in_edges.forEach(function (ie) {
+            if (!isNaN(ie.edge_srcId)) {
+                for (var i = 0; i < ap_len; i++) {
+                    if (ie.edge_srcId === airports[i].id) {
+                        ie.src_x = airports[i].x;
+                        ie.src_y = airports[i].y;
+                        break;
+                    }
+                }
+
+            }
+            else {
+                for (i = 0; i < ap_len; i++) {
+                    if (ie.edge_src === airports[i].name) {
+                        ie.src_x = airports[i].x;
+                        ie.src_y = airports[i].y;
+                        break;
+                    }
+                }
+            }
+        })
+    });
+    return airports;
+}
+
+function low_level(selector, flight, ap_supplement, all_ap) {
+
+     var airports = BuildData(flight, ap_supplement, all_ap);
+    // console.log('airport', airports);
+
+
+    // downloadCSV(airports);
+
+    var myJSON = JSON.stringify(airports);
+    // var ls = localStorage.setItem("testJSON", myJSON);
+    //
+    // downloadCSV(myJSON);
+
+    // var text = localStorage.getItem("testJSON");
+    // airports = JSON.parse(text);
+    // // downloadCSV(ls)
+    // //
+    //  console.log(airports);
+
+
+
+    var svg = d3.selectAll(selector).append('svg')
+        .attr('id', 'low_svg')
+        .attr('width', width)
+        .attr('height', height)
+        .style('background', '#131410');
+
+
     var selection = null,
         selection_color = null,
-        randomColor = null,
-        win_id = 0;
+        randomColor = null;
+
 
     // a random color generator to get get color for selection win.
     var getColor = d3.scaleLinear()
@@ -229,9 +306,9 @@ function low_level(selector, flight, ap_supplement, all_ap) {
 
 
         selection = svg.append("rect")
-            .attr("class", "selection"+win_id)
+            .attr("class", "selection"+num_window)
             .attr("visibility", "visible")
-            .attr('selection_id', win_id);
+            .attr('selection_id', num_window);
 
         selection
             .attr('x', start[0])
@@ -247,7 +324,7 @@ function low_level(selector, flight, ap_supplement, all_ap) {
                 .on("start", dragstarted)
                 .on("drag", dragged)
                 .on("end", dragended));
-        win_id += 1;
+        num_window += 1;
     };
 
     var moveSelection = function(start, moved) {
@@ -256,8 +333,8 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             .attr('height', moved[1]-start[1] )
     };
 
-    var endSelection = function(selection_color, start, end) {
-        SelectionComponentObj.addSelection(selection_color);
+    var endSelection = function(start, end) {
+
         // selection.attr("visibility", "hidden");
     };
 
@@ -271,13 +348,13 @@ function low_level(selector, flight, ap_supplement, all_ap) {
                 moveSelection(start, d3.mouse(parent));
             })
             .on("mouseup.selection", function() {
-                selectNode(start[0], start[1],
+                BuildSelection(start[0], start[1],
                     d3.mouse(parent)[0], d3.mouse(parent)[1],
-                    randomColor, win_id-1);
+                    randomColor, num_window-1);
                 subject
                     .on("mousemove.selection", null)
                     .on("mouseup.selection", null);
-                endSelection(selection_color, start, d3.mouse(parent));
+                endSelection(start, d3.mouse(parent));
             });
     });
 
@@ -299,7 +376,7 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             x2 = +this.getAttribute('x') + this.width.baseVal.value,
             y2 = +this.getAttribute('y') + this.height.baseVal.value;
         deleteDot(x1, y1, x2, y2, this.getAttribute('stroke'), +this.getAttribute('selection_id'));
-        selectNode(x1, y1, x2, y2, this.getAttribute('stroke'), +this.getAttribute('selection_id'));
+        BuildSelection(x1, y1, x2, y2, this.getAttribute('stroke'), +this.getAttribute('selection_id'));
         // deleteDot(x1, y1, x2, y2, this.getAttribute('stroke'));
     }
 
@@ -324,22 +401,94 @@ function low_level(selector, flight, ap_supplement, all_ap) {
 
 
     // Draw dots in the selection window
-    function selectNode(x1, y1, x2, y2, color, ID) {
+    function BuildSelection(x1, y1, x2, y2, color, ID) {
 
+        // Case 1. Create new selecti
+        // on window
+        // Only support make selection window to
+        // bottom-right corner
+        if (x1 > x2 || y1 > y2) return;
+
+        // new selection.
+        if (ID >= selections.length) {
+            var newSelection = {
+                id: ID,
+                x1: x1,
+                y1: y1,
+                x2: x2,
+                y2: y2,
+                num_ap: 0,
+                num_edge_within: 0,
+                num_edge_out: 0,
+                num_edge_in: 0,
+                between: [],
+                color: color,
+                airport: null
+            };
+
+            // create empty sluts in newSelection.between
+            // for other selections
+            for (var i = 0; i < ID; i++) {
+                if (i === ID) break;
+                var temp = {
+                    id_be: i,
+                    num_be_out: 0,
+                    num_be_in: 0
+                };
+                newSelection.between.push(temp)
+            }
+            selections.push(newSelection);
+
+            // Create new empty slut in 'between' of other
+            // existing selections for newSelection
+            for (var j = 0; j < ID; j++) {
+                if (j === ID) break;
+                temp = {
+                    id_be: ID,
+                    num_be_out: 0,
+                    num_be_in: 0
+                };
+                selections[j].between.push(temp)
+            }
+        }
+
+        // Case 2. Update selection window ID (Dragging)
+        // In this case
+        // 0) update selection[ID]'s x,y data;
+        // 1) reset selection[ID]'s ap count;
+        // 2) reset selection[others].between[ID]'s data
+        else {
+            selections.forEach(function (selection) {
+                if (selection.id === ID) {
+                    selection.x1 = x1;
+                    selection.x2 = x2;
+                    selection.y1 = y1;
+                    selection.y2 = y2;
+                    selection.num_edge_within = 0;
+                    selection.num_edge_out = 0;
+                    selection.num_edge_in = 0;
+                    selection.airport = null;
+                }
+                else {
+                    selection.between.forEach(function (be) {
+                        if (be.id_be === ID) {
+                            be.num_be_in = 0;
+                            be.num_be_out = 0;
+                        }
+                    });
+                }
+            })
+        }
+
+        // filter the airports within the selection window
+        // from all airports
         var selected_ap = airports.filter(function(d) {
-            // if (x1 > x2) {
-            //     var temp = x2;
-            //     x2 = x1;
-            //     x1 = temp;
-            // }
-            // if (y1 > y2) {
-            //     temp = y2;
-            //     y2 = y1;
-            //     y1 = temp;
-            // }
             return d.x > x1 && d.x < x2 &&
                 d.y > y1 && d.y && d.y < y2
         });
+        selections[ID].num_ap = selected_ap.length;
+        selections[ID].airport = selected_ap;
+        // todo use kd-tree for fast search
 
         selectedDots = allDots.data(selected_ap)
             .enter().append('circle')
@@ -350,41 +499,46 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             .attr('fill', color)
             .exit().remove();
 
-        BuildLinks(x1, y1, x2, y2, color, ID, selected_ap)
+        BuildLinks(ID);
+        console.log(selections);
     }
 
-    function BuildLinks (x1, y1, x2, y2, color, ID, selected_ap) {
+    function BuildLinks (ID) {
+
+        var x1 = selections[ID].x1,
+            y1 = selections[ID].y1,
+            x2 = selections[ID].x2,
+            y2 = selections[ID].y2,
+            color = selections[ID].color,
+            selected_ap = selections[ID].airport;
+
         // Build links between selected nodes
         var links = [];
         selected_ap.forEach(function (ap) {
             // get destination of edges
             ap.out_edges.forEach(function (out_edge) {
-                if (out_edge.des_y === undefined) {
-                    var len = airports.length;
-                    for (var i = 0; i < len; i++) {
-                        if (airports[i].code === out_edge.edge_des) {
-                            out_edge.des_x = airports[i].x;
-                            out_edge.des_y = airports[i].y;
-                            break;
-                        }
-                    }
-                }
+
                 // draw 'within' edges
                 if (x1 < out_edge.des_x && out_edge.des_x < x2 &&
                     y1 < out_edge.des_y && out_edge.des_y < y2) {
+                    selections[ID].num_edge_within ++;
                     drawEdge(out_edge.des_x, out_edge.des_y, ap.x, ap.y, 1,
                         ID, ID, color, undefined);
                 }
-                // // draw 'out' edges
-                // if (out_edge.des_x < x1 || x2 < out_edge.des_x ||
-                //     out_edge.des_y < y1 || y2 < out_edge.des_y) {
-                //     drawEdge(out_edge.des_x, out_edge.des_y, ap.x, ap.y, 1,
-                //      ID, undefined, color, undefined);
-                // }
+
+                // draw 'out' edges
+                if (out_edge.des_x < x1 || x2 < out_edge.des_x ||
+                    out_edge.des_y < y1 || y2 < out_edge.des_y) {
+                    selections[ID].num_edge_out ++;
+                    drawEdge(out_edge.des_x, out_edge.des_y, ap.x, ap.y, 1,
+                     ID, undefined, color, undefined);
+                }
 
                 // draw 'between-out' edges
-                for (i = 0; i < win_id; i++) {
+                for (i = 0; i < num_window; i++) {
                     if (i === +ID) continue;
+
+                    // todo: below, use selections[i] instead of d3.select
                     var window = d3.select('.selection'+i);
                     var w_x1 = +window.attr('x'),
                         w_y1 = +window.attr('y'),
@@ -392,6 +546,10 @@ function low_level(selector, flight, ap_supplement, all_ap) {
                         w_y2 = w_y1 + (+window.attr('height'));
                     if (w_x1 < out_edge.des_x && out_edge.des_x < w_x2 &&
                         w_y1 < out_edge.des_y && out_edge.des_y < w_y2) {
+
+                        selections[ID].between[i].num_be_out ++;
+                        selections[i].between.find(function (value) { return value.id_be === ID }).num_be_in ++;
+
                         var color2 = window.attr('stroke');
                         drawEdge(out_edge.des_x, out_edge.des_y, ap.x, ap.y, 1,
                             ID, +window.attr('selection_id'), color, color2);
@@ -399,25 +557,19 @@ function low_level(selector, flight, ap_supplement, all_ap) {
                 }
             });
             ap.in_edges.forEach(function (in_edge) {
-                if (in_edge.src_x === undefined) {
-                    var len = airports.length;
-                    for (var i = 0; i < len; i++) {
-                        if (airports[i].code === in_edge.edge_src) {
-                            in_edge.src_x = airports[i].x;
-                            in_edge.src_y = airports[i].y;
-                            break;
-                        }
-                    }
+
+                // draw 'in' edges
+                if (in_edge.src_x < x1 || x2 < in_edge.src_x ||
+                    in_edge.src_y < y1 || y2 < in_edge.src_y) {
+
+                    selections[ID].num_edge_in ++;
+
+                    drawEdge(ap.x, ap.y, in_edge.src_x, in_edge.src_y, 1,
+                             ID, undefined, color, undefined);
                 }
-                // // draw 'in' edges
-                // if (in_edge.src_x < x1 || x2 < in_edge.src_x ||
-                //     in_edge.src_y < y1 || y2 < in_edge.src_y) {
-                //     drawEdge(ap.x, ap.y, in_edge.src_x, in_edge.src_y, 1,
-                //              ID, undefined, color, undefined);
-                // }
 
                 // Draw 'between-in' edges
-                for (i = 0; i < win_id; i++) {
+                for (var i = 0; i < num_window; i++) {
                     if (i === +ID) continue;
                     var window = d3.select('.selection' + i);
                     var w_x1 = +window.attr('x'),
@@ -426,6 +578,10 @@ function low_level(selector, flight, ap_supplement, all_ap) {
                         w_y2 = w_y1 + (+window.attr('height'));
                     if (w_x1 < in_edge.src_x && in_edge.src_x < w_x2 &&
                         w_y1 < in_edge.src_y && in_edge.src_y < w_y2) {
+
+                        selections[ID].between[i].num_be_in ++;
+                        selections[i].between.find(function (value) { return value.id_be === ID }).num_be_out ++;
+
                         var color2 = window.attr('stroke');
                         drawEdge(ap.x, ap.y, in_edge.src_x, in_edge.src_y, 1,
                             +window.attr("selection_id"), ID, color2, color, true);
@@ -433,6 +589,8 @@ function low_level(selector, flight, ap_supplement, all_ap) {
                 }
             })
         });
+
+        // console.log(selections[ID]);
 
         // Draw links on given coordinate of the start point (Sx, Sy)
         // and end point (Ex, Ey)
@@ -471,8 +629,8 @@ function low_level(selector, flight, ap_supplement, all_ap) {
                 //     c1 = c2;
                 //     c2 = temp;
                 // }
-                console.log(c1, c2);
-                console.log(ID, ID2);
+                // console.log(c1, c2);
+                // console.log(ID, ID2);
 
                 var defs = svg.append("defs");
                 var gradient = defs.append("svg:linearGradient")
