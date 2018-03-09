@@ -265,7 +265,6 @@ function low_level(selector, flight, ap_supplement, all_ap) {
      var airports = BuildData(flight, ap_supplement, all_ap);
     // console.log('airport', airports);
 
-
     // downloadCSV(airports);
 
     var myJSON = JSON.stringify(airports);
@@ -395,7 +394,10 @@ function low_level(selector, flight, ap_supplement, all_ap) {
 
     // delete dots move out of the selection window
     function deleteDot(x1, y1, x2, y2, color, ID) {
-        d3.selectAll("*[class~=link"+ID+"]").remove();
+        // remove all edge classed:
+        // 'within_linkID', 'bg_linkID', 'from_linkID', 'to_linkID'
+        // --> contains linkID
+        d3.selectAll("*[class*=link"+ID+"]").remove();
         d3.selectAll('.selected'+ID).remove();
     }
 
@@ -403,13 +405,14 @@ function low_level(selector, flight, ap_supplement, all_ap) {
     // Draw dots in the selection window
     function BuildSelection(x1, y1, x2, y2, color, ID) {
 
-        // Case 1. Create new selecti
-        // on window
         // Only support make selection window to
         // bottom-right corner
-        if (x1 > x2 || y1 > y2) return;
+        if (x1 > x2 || y1 > y2) {
+            num_window -= 1;
+            return;
+        }
 
-        // new selection.
+        // Case 1. Create new selection window
         if (ID >= selections.length) {
             var newSelection = {
                 id: ID,
@@ -500,7 +503,6 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             .exit().remove();
 
         BuildLinks(ID);
-        console.log(selections);
     }
 
     function BuildLinks (ID) {
@@ -535,56 +537,56 @@ function low_level(selector, flight, ap_supplement, all_ap) {
                 }
 
                 // draw 'between-out' edges
-                for (i = 0; i < num_window; i++) {
+                for (var i = 0; i < num_window; i++) {
                     if (i === +ID) continue;
 
-                    // todo: below, use selections[i] instead of d3.select
-                    var window = d3.select('.selection'+i);
-                    var w_x1 = +window.attr('x'),
-                        w_y1 = +window.attr('y'),
-                        w_x2 = w_x1 + (+window.attr('width')),
-                        w_y2 = w_y1 + (+window.attr('height'));
-                    if (w_x1 < out_edge.des_x && out_edge.des_x < w_x2 &&
-                        w_y1 < out_edge.des_y && out_edge.des_y < w_y2) {
+                    var window = selections[i];
 
-                        selections[ID].between[i].num_be_out ++;
-                        selections[i].between.find(function (value) { return value.id_be === ID }).num_be_in ++;
+                    if (window.x1 < out_edge.des_x &&
+                        out_edge.des_x < window.x2 &&
+                        window.y1 < out_edge.des_y &&
+                        out_edge.des_y < window.y2) {
 
-                        var color2 = window.attr('stroke');
+                        selections[ID].between.find(function (value) {
+                            return value.id_be === i
+                        }).num_be_out ++;
+                        selections[i].between.find(function (value) {
+                            return value.id_be === ID
+                        }).num_be_in ++;
+
+                        var color2 = window.color;
                         drawEdge(out_edge.des_x, out_edge.des_y, ap.x, ap.y, 1,
-                            ID, +window.attr('selection_id'), color, color2);
+                            ID, i, color, color2);
                     }
                 }
             });
             ap.in_edges.forEach(function (in_edge) {
 
-                // draw 'in' edges
+                /*// draw 'in' edges
                 if (in_edge.src_x < x1 || x2 < in_edge.src_x ||
                     in_edge.src_y < y1 || y2 < in_edge.src_y) {
-
                     selections[ID].num_edge_in ++;
-
                     drawEdge(ap.x, ap.y, in_edge.src_x, in_edge.src_y, 1,
                              ID, undefined, color, undefined);
-                }
+                }*/
 
                 // Draw 'between-in' edges
                 for (var i = 0; i < num_window; i++) {
                     if (i === +ID) continue;
-                    var window = d3.select('.selection' + i);
-                    var w_x1 = +window.attr('x'),
-                        w_y1 = +window.attr('y'),
-                        w_x2 = w_x1 + (+window.attr('width')),
-                        w_y2 = w_y1 + (+window.attr('height'));
-                    if (w_x1 < in_edge.src_x && in_edge.src_x < w_x2 &&
-                        w_y1 < in_edge.src_y && in_edge.src_y < w_y2) {
-
-                        selections[ID].between[i].num_be_in ++;
-                        selections[i].between.find(function (value) { return value.id_be === ID }).num_be_out ++;
-
-                        var color2 = window.attr('stroke');
+                    var window = selections[i];
+                    if (window.x1 < in_edge.src_x &&
+                        in_edge.src_x < window.x2 &&
+                        window.y1 < in_edge.src_y &&
+                        in_edge.src_y < window.y2) {
+                        selections[ID].between.find(function (value) {
+                            return value.id_be === i
+                        }).num_be_in ++;
+                        selections[i].between.find(function (value) {
+                            return value.id_be === ID
+                        }).num_be_out ++;
+                        var color2 = window.color;
                         drawEdge(ap.x, ap.y, in_edge.src_x, in_edge.src_y, 1,
-                            +window.attr("selection_id"), ID, color2, color, true);
+                            i, ID, color2, color, true);
                     }
                 }
             })
@@ -594,34 +596,51 @@ function low_level(selector, flight, ap_supplement, all_ap) {
 
         // Draw links on given coordinate of the start point (Sx, Sy)
         // and end point (Ex, Ey)
-        function drawEdge(Ex, Ey, Sx, Sy, ctg, ID, ID2, c1, c2, IN) {
+        function drawEdge(Dx, Dy, Sx, Sy, ctg, ID, ID2, color1, color2, IN) {
 
             links = svg.append('path')
                 .attr('d', 'M ' + Sx + ' ' + Sy + ' '
-                    + 'Q' + ' ' + ((ctg * Ex + ctg * Sx + ctg * Sy - Ey) / (ctg + ctg)) + ' '
-                    + ((ctg * Ey + ctg * Sy + ctg * Ex - Sx) / (ctg + ctg) + ' ' + Ex + ' ' + Ey))
+                    + 'Q' + ' ' + ((ctg * Dx + ctg * Sx + ctg * Sy - Dy) / (ctg + ctg)) + ' '
+                    + ((ctg * Dy + ctg * Sy + ctg * Dx - Sx) / (ctg + ctg) + ' ' + Dx + ' ' + Dy))
                 .attr('fill', 'none')
                 .attr('stroke-width', 1)
                 .attr('opacity', 0.5);
             // within edges
             if (ID === ID2) {
                 links
-                    .attr('stroke', c1)
-                    .classed('link'+ID, true);
+                    .attr('stroke', color1)
+                    .classed('within_link'+ID, true);
             }
             // background edges
             else if (ID2 === undefined) {
+
+                if (document.getElementById('gradient_bg'+ID) == null){
+                    console.log('no')
+                }
+
+                var radialGradient = svg.append("defs")
+                    .append("radialGradient")
+                    .attr("id", 'gradient_bg'+ID);
+                radialGradient.append("stop")
+                    .attr("offset", "0%")
+                    .attr("stop-color", color1);
+                radialGradient.append("stop")
+                    .attr("offset", "100%")
+                    .attr("stop-color", "#131410");
+
                 links
-                    .attr('stroke', 'url(#gradient_gray)')
-                    .classed('link'+ID, true);
+                    .attr('stroke', 'url(#gradient_bg'+ID+')')
+                    .classed('bg_link'+ID, true);
             }
+            // todo build background link gradient;
+
             // from/to other selection windows
-            else if (true) {
-                var rec_len = Math.max(Math.abs(Ex-Sx),Math.abs(Ey-Sy));
-                var X1 = (0.5 + (Sx - Ex)/2/rec_len)*100,
-                    X2 = (0.5 - (Sx - Ex)/2/rec_len)*100,
-                    Y1 = (0.5 + (Sy - Ey)/2/rec_len)*100,
-                    Y2 = (0.5 - (Sy - Ey)/2/rec_len)*100;
+            else {
+                var rec_len = Math.max(Math.abs(Dx-Sx),Math.abs(Dy-Sy));
+                var X1 = (0.5 + (Sx - Dx)/2/rec_len)*100,
+                    X2 = (0.5 - (Sx - Dx)/2/rec_len)*100,
+                    Y1 = (0.5 + (Sy - Dy)/2/rec_len)*100,
+                    Y2 = (0.5 - (Sy - Dy)/2/rec_len)*100;
 
                 // if (d3.select('.selection' + ID).attr('stroke') !== c1) {
                 //     console.log('switch');
@@ -632,8 +651,8 @@ function low_level(selector, flight, ap_supplement, all_ap) {
                 // console.log(c1, c2);
                 // console.log(ID, ID2);
 
-                var defs = svg.append("defs");
-                var gradient = defs.append("svg:linearGradient")
+                var gradient = svg.append("defs")
+                    .append("svg:linearGradient")
                     .attr("id", "gradient-"+ID+'-'+ID2)
                     .attr("x1", X1+"%")
                     .attr("y1", Y1+"%")
@@ -642,14 +661,15 @@ function low_level(selector, flight, ap_supplement, all_ap) {
                 gradient.append("stop")
                     .attr('class', 'start')
                     .attr("offset", "0%")
-                    .attr("stop-color", c1);
+                    .attr("stop-color", color1);
                 gradient.append("stop")
                     .attr('class', 'end')
                     .attr("offset", "100%")
-                    .attr("stop-color", c2);
+                    .attr("stop-color", color2);
 
-                links.classed('link' + ID + ' link' + ID2, true)
-                    .attr('stroke', 'url(#gradient-'+ID+'-'+ID2+')');
+                links
+                    .attr('stroke', 'url(#gradient-'+ID+'-'+ID2+')')
+                    .classed('from_link' + ID + 'to_link' + ID2, true);
             }
         }
     }
