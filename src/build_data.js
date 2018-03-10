@@ -23,7 +23,7 @@ function str_to_csv(str) {
     var header = rows[0].split(',');
     header = header.map(function(e) {
         return e.trim();
-    })
+    });
     for(var i = 0; i < rows.length; ++i) {
         var row = rows[i].split(',');
         var formatted_row = {};
@@ -32,7 +32,7 @@ function str_to_csv(str) {
         for(var n = 0; n < row.length; ++n) {
             var attr = row[n].trim();
             // Filter out values that have "" around them
-            if(attr[0] == '"' && attr[attr.length - 1] == '"')
+            if(attr[0] === '"' && attr[attr.length - 1] === '"')
                 attr = attr.substring(1, attr.length - 1);
             formatted_row[header[n]] = attr;
         }
@@ -45,7 +45,7 @@ function str_to_csv(str) {
 function BuildData(flight, ap_supplement, all_ap) {
     var airport_dic = [];
     var airports = [];
-    
+
     var height = 750;
     var width = 1500;
     var padding = {top: 40, left: 20, right: 20, bottom: 0};

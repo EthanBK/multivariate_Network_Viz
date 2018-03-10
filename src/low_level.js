@@ -24,7 +24,7 @@ var flights,
     num_window = 0;
 
 // Build flights data
-function BuildData(flight, ap_supplement, all_ap) {
+function buildData(flight, ap_supplement, all_ap) {
 
 
     // flights consists of all the flights information
@@ -262,24 +262,9 @@ function BuildData(flight, ap_supplement, all_ap) {
     return airports;
 }
 
-function low_level(selector, flight, ap_supplement, all_ap) {
+function low_level(selector) {
 
-     //var airports = BuildData(flight, ap_supplement, all_ap);
-    // console.log('airport', airports);
-
-    // downloadCSV(airports);
-    console.log(airports)
-    // var ls = localStorage.setItem("testJSON", myJSON);
-    //
-    // downloadCSV(myJSON);
-
-    // var text = localStorage.getItem("testJSON");
-    // airports = JSON.parse(text);
-    // // downloadCSV(ls)
-    // //
-    //  console.log(airports);
-
-
+     //var airports = buildData(flight, ap_supplement, all_ap);
 
     var svg = d3.selectAll(selector).append('svg')
         .attr('id', 'low_svg')
@@ -348,7 +333,7 @@ function low_level(selector, flight, ap_supplement, all_ap) {
                 moveSelection(start, d3.mouse(parent));
             })
             .on("mouseup.selection", function() {
-                BuildSelection(start[0], start[1],
+                buildSelection(start[0], start[1],
                     d3.mouse(parent)[0], d3.mouse(parent)[1],
                     selection_color, num_window-1);
                 subject
@@ -377,7 +362,7 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             x2 = +this.getAttribute('x') + this.width.baseVal.value,
             y2 = +this.getAttribute('y') + this.height.baseVal.value;
         deleteDot(x1, y1, x2, y2, this.getAttribute('stroke'), +this.getAttribute('selection_id'));
-        BuildSelection(x1, y1, x2, y2, this.getAttribute('stroke'), +this.getAttribute('selection_id'));
+        buildSelection(x1, y1, x2, y2, this.getAttribute('stroke'), +this.getAttribute('selection_id'));
         // deleteDot(x1, y1, x2, y2, this.getAttribute('stroke'));
     }
 
@@ -401,13 +386,14 @@ function low_level(selector, flight, ap_supplement, all_ap) {
         // --> contains linkID
         d3.selectAll("*[class*=link"+ID+"]").remove();
         d3.selectAll('.selected'+ID).remove();
+        d3.selectAll("*[id*=btg"+ID+"]").remove();
     }
 
 
     // todo delete
 
     // Draw dots in the selection window
-    function BuildSelection(x1, y1, x2, y2, color, ID) {
+    function buildSelection(x1, y1, x2, y2, color, ID) {
 
 
 
@@ -509,11 +495,10 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             .attr('fill', color)
             .exit().remove();
 
-        BuildLinks(ID);
-        console.log(selections)
+        buildLinks(ID);
     }
 
-    function BuildLinks (ID) {
+    function buildLinks (ID) {
 
         var x1 = selections[ID].x1,
             y1 = selections[ID].y1,
@@ -623,18 +608,18 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             else if (ID2 === undefined) {
 
                 if (document.getElementById('gradient_bg'+ID) == null){
-                    console.log('no')
+                    var radialGradient = svg.append("defs")
+                        .append("radialGradient")
+                        .attr("id", 'gradient_bg'+ID);
+                    radialGradient.append("stop")
+                        .attr("offset", "0%")
+                        .attr("stop-color", color1);
+                    radialGradient.append("stop")
+                        .attr("offset", "100%")
+                        .attr("stop-color", "#131410");
                 }
 
-                var radialGradient = svg.append("defs")
-                    .append("radialGradient")
-                    .attr("id", 'gradient_bg'+ID);
-                radialGradient.append("stop")
-                    .attr("offset", "0%")
-                    .attr("stop-color", color1);
-                radialGradient.append("stop")
-                    .attr("offset", "100%")
-                    .attr("stop-color", "#131410");
+
 
                 links
                     .attr('stroke', 'url(#gradient_bg'+ID+')')
@@ -659,28 +644,39 @@ function low_level(selector, flight, ap_supplement, all_ap) {
                 // console.log(c1, c2);
                 // console.log(ID, ID2);
 
-                var gradient = svg.append("defs")
-                    .append("svg:linearGradient")
-                    .attr("id", "gradient-"+ID+'-'+ID2)
-                    .attr("x1", X1+"%")
-                    .attr("y1", Y1+"%")
-                    .attr("x2", X2+"%")
-                    .attr("y2", Y2+"%");
-                gradient.append("stop")
-                    .attr('class', 'start')
-                    .attr("offset", "0%")
-                    .attr("stop-color", color1);
-                gradient.append("stop")
-                    .attr('class', 'end')
-                    .attr("offset", "100%")
-                    .attr("stop-color", color2);
+                if (document.getElementById("btg" + ID + 'btg' + ID2) === null ||
+                    document.getElementById("btg" + ID2 + 'btg' + ID) === null) {
+                    console.log("create")
+                    var gradient = svg.append("defs")
+                        .append("svg:linearGradient")
+                        .attr("id", "btg" + ID + 'btg' + ID2)
+                        .attr("x1", X1 + "%")
+                        .attr("y1", Y1 + "%")
+                        .attr("x2", X2 + "%")
+                        .attr("y2", Y2 + "%");
+                    gradient.append("stop")
+                        .attr('class', 'start')
+                        .attr("offset", "0%")
+                        .attr("stop-color", color1);
+                    gradient.append("stop")
+                        .attr('class', 'end')
+                        .attr("offset", "100%")
+                        .attr("stop-color", color2);
+                }
 
                 links
-                    .attr('stroke', 'url(#gradient-'+ID+'-'+ID2+')')
+                    .attr('stroke', 'url(#btg'+ID+'btg'+ID2+')')
                     .classed('from_link' + ID + 'to_link' + ID2, true);
             }
         }
     }
+
+    function deleteSelection(ID) {
+        d3.selectAll("*[class*=link"+ID+"]").remove();
+        d3.selectAll('.selected'+ID).remove();
+        d3.selectAll("*[id*=btg"+ID+"]").remove();
+        d3.select('selection'+ID).remove();
+    }
 }
 
-})
+});
