@@ -1,4 +1,4 @@
-$.get('/data/test_data.json', function(data) {
+$.get('data/test_data.json', function(data) {
 var airports = data;
 
 // Process data
