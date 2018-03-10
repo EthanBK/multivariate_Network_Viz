@@ -1,0 +1,18 @@
+- Current:
+
+We currently are polishing the implementation of A (low level detail view), C (attribute component), and D (selection component). 
+The interface for these parts are mostly done; users can now create different selection windows. 
+
+There is no limitation on the number of the windows that can be created.
+however, it takes more resources to render and build edges as the number of windows increase.
+The selecion windows can be marked with different colors and are draggable.
+Also three types of edges can be built, and they can be colored based on the window it connects.
+We are still working on connecting these parts together. 
+
+- Next step:
+
+1) For part A, we want to be able to modify and delete the selection window after its creation and to be able resize it.
+2) Also, there still are some problems with the background edge rendering (edges connect airports inside of the selection widow and ouside airports).
+3) Connect part A with the selection component (part C).
+4) Build up Part B (high-level overview).
+
