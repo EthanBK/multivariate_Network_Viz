@@ -1,7 +1,7 @@
 var fs = require('fs');
 var d3 = require('d3');
 
-var flight_str = fs.readFileSync('../data/test_data.csv', 'UTF-8');
+var flight_str = fs.readFileSync('../data/routes.csv', 'UTF-8');
 var ap_supplement_str = fs.readFileSync('../data/airport_supplement.csv', 'UTF-8');
 var all_ap_str = fs.readFileSync('../data/all_airports.csv', 'UTF-8');
 
