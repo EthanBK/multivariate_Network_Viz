@@ -35,3 +35,19 @@
 .sc-child button:focus  {
     outline: none !important;
 }
+
+#high_level {
+    position: absolute;
+    top: 760px;
+    left: 25%;
+    stroke: #2b2b2b;
+    stroke-width: 5px;
+
+}
+
+#high_level_svg {
+    background: #131410;
+    position: relative;
+    float: left;
+
+}

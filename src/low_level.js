@@ -272,6 +272,8 @@ function low_level(selector) {
         .attr('height', height)
         .style('background', '#131410');
 
+    high_level('#high_level');
+
 
     var selection = null,
         selection_color = null,
@@ -320,7 +322,7 @@ function low_level(selector) {
 
     var endSelection = function(start, end) {
         // selection.attr("visibility", "hidden");
-        SelectionComponentObj.addSelection(selection_color);
+
     };
 
     svg.on("mousedown", function() {
@@ -395,18 +397,25 @@ function low_level(selector) {
     // Draw dots in the selection window
     function buildSelection(x1, y1, x2, y2, color, ID) {
 
-
-
-
         // Only support make selection window to
         // bottom-right corner
-        if (x1 > x2 || y1 > y2) {
+        if (x1 >= x2 || y1 >= y2) {
             num_window -= 1;
             return;
         }
 
+        // If this is new selection window or drag old window
+        var isNew = false;
+
+
+        // I moved your left_column function entrance to here,
+        // so you can avoid creating selection component for
+        // invalid selections
+        SelectionComponentObj.addSelection(color);
+
         // Case 1. Create new selection window
         if (ID >= selections.length) {
+            isNew = true;
             var newSelection = {
                 id: ID,
                 x1: x1,
@@ -496,6 +505,8 @@ function low_level(selector) {
             .exit().remove();
 
         buildLinks(ID);
+
+        buildBlock(selections[ID], isNew);
     }
 
     function buildLinks (ID) {
