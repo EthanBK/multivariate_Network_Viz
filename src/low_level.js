@@ -5,7 +5,7 @@ var height = 750,
 var selections = [],
     num_window = 0;
 
-$.get('data/test_data.json', function(data) {
+$.get('data/airports.json', function(data) {
     // var airports = data;
     low_level('#low_level', data)
 });

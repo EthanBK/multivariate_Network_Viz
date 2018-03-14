@@ -26,7 +26,7 @@ function buildBlock(ID, isNew) {
 
     var arrow_width_scale = d3.scaleLinear()
         .domain([0, maxWithin])
-        .range([0, 20]);
+        .range([0, 15]);
 
 
     if (isNew) {
@@ -48,9 +48,9 @@ function buildBlock(ID, isNew) {
             .attr('y', selection.y1);
 
         // Within Arrow
-        var path_start_within = parseInt(selection.x1 + square_width) +
-                                ' ' + parseInt(selection.y1 + square_width / 2),
-            path_end_within = parseInt(selection.x1 + square_width / 2) +
+        var path_start_within = (selection.x1 + square_width) +
+                                ' ' + (selection.y1 + square_width / 2),
+            path_end_within = (selection.x1 + square_width / 2) +
                                 ' ' + (+selection.y1 - 10) ;
         nodes.append('path')
             .classed('within_arrow' + selection.id, true)
@@ -62,11 +62,25 @@ function buildBlock(ID, isNew) {
                         ', 1, 1, 0, ' + path_end_within)
             .attr('marker-end', 'url(#arrow' + selection.id + ')');
 
+        nodes.append('svg')
+            .attr('x', (selection.x1 + square_width * 3 / 2 - 60))
+            .attr('y', (selection.y1 - 30))
+            .attr('height', 30)
+            .attr('width', 100)
+            .append('text')
+            .classed('within_num', true)
+            .attr('font-size', 30)
+            .attr('fill', 'white')
+            .style('text-align', 'center')
+            .attr('transform', 'translate(0, 30)')
+            .text(selection.num_edge_within);
+
+
         // out arrow
-        var path_start_out = parseInt(selection.x1 + square_width) +
-            ' ' + parseInt(selection.y1 + square_width * 3 / 4),
-            path_end_out = parseInt(selection.x1 + square_width * 2) +
-                ' ' + parseInt(selection.y1  + square_width * 2);
+        var path_start_out = (selection.x1 + square_width) +
+            ' ' + (selection.y1 + square_width * 3 / 4),
+            path_end_out = (selection.x1 + square_width * 2) +
+                ' ' + (selection.y1  + square_width * 2);
         nodes.append('path')
             .classed('out_arrrow' + selection.id, true)
             .attr('stroke', 'url(#in_out' + selection.id + ')')
@@ -78,10 +92,10 @@ function buildBlock(ID, isNew) {
             .attr('marker-end', 'url(#arrow_bg' + selection.id + ')');
 
         // in arrow
-        var path_start_in = parseInt(selection.x1 + square_width * 7 / 4) +
-                ' ' + parseInt(selection.y1 + square_width * 2),
-            path_end_in = parseInt(selection.x1 + square_width * 3 / 4) + ' ' +
-            parseInt(selection.y1 + square_width + 10);
+        var path_start_in = (selection.x1 + square_width * 7 / 4) +
+                ' ' + (selection.y1 + square_width * 2),
+            path_end_in = (selection.x1 + square_width * 3 / 4) + ' ' +
+            (selection.y1 + square_width + 10);
         nodes.append('path')
             .classed('in_arrow' + selection.id, true)
             .attr('stroke', 'url(#in_out' + selection.id + ')')
