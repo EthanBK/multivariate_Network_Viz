@@ -391,9 +391,6 @@ function low_level(selector) {
         d3.selectAll("*[id*=btg"+ID+"]").remove();
     }
 
-
-    // todo delete
-
     // Draw dots in the selection window
     function buildSelection(x1, y1, x2, y2, color, ID) {
 
@@ -636,7 +633,6 @@ function low_level(selector) {
                     .attr('stroke', 'url(#gradient_bg'+ID+')')
                     .classed('bg_link'+ID, true);
             }
-            // todo build background link gradient;
 
             // from/to other selection windows
             else {
