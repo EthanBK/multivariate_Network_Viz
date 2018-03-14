@@ -1,268 +1,16 @@
-$.get('data/test_data.json', function(data) {
-var airports = data;
-
-// Process data
-d3.queue()
-    .defer(d3.csv, 'data/test_data.csv')
-    .defer(d3.csv, 'data/airport_supplement.csv')
-    .defer(d3.csv, 'data/all_airports.csv')
-    .await(function (error, flight, ap_supt, all_ap){
-        if (error) {
-            console.log(error)
-        }
-        low_level('#low_level', flight, ap_supt, all_ap)
-    });
 
 var height = 750,
-    width = 1500,
-    padding = {top: 40, left: 20,
-    right: 20, bottom: 0 };
+    width = 1500;
 
-var flights,
-    airport_dic = [],
-    selections = [],
+var selections = [],
     num_window = 0;
 
-// Build flights data
-function buildData(flight, ap_supplement, all_ap) {
+$.get('data/test_data.json', function(data) {
+    // var airports = data;
+    low_level('#low_level', data)
+});
 
-
-    // flights consists of all the flights information
-    flights = flight.map(function (flight) {
-        return {
-            al_name: flight.airline,
-            al_id: +flight.airline_ID,
-            al_src: flight.source_airport,
-            al_srcID: +flight.source_airport_id,
-            al_des: flight.destination_airport,
-            al_desID: +flight.destination_airport_id
-            //coshare: flight.coshare,
-            //stops: +flight.stops,
-            //equipment: flight.equipment
-        };
-    });
-
-    // Build airport data
-    flights.forEach(function (f) {
-        // build or update al_src airport
-
-        // al_src airport not in the dic.
-        if (airport_dic.indexOf(f.al_src) < 0) {
-            var ap_temp = {
-                code: f.al_src,
-                id: f.al_srcID,
-                // edges is a list of dictionary consists
-                // of all airports connected with this airport.
-                // out_edges and in_edges.
-                out_edges: [{
-                    edge_des: f.al_des,
-                    edge_desId: f.al_desID,
-                    flight: [f.al_name]
-                }],
-                out_edge_dic: [f.al_des],
-                num_out_airline: 1,
-                // record in and out separately
-                in_edges: [],
-                in_edge_dic: [],
-                num_in_airline: 0
-            };
-            airports.push(ap_temp);
-            airport_dic.push(f.al_src);
-        }
-
-        // Existing airport, add this flight
-        else {
-            var num_ap = airports.length;
-            for (var i = 0; i < num_ap; i++) {
-                // update edge or create a new edge
-                if (airports[i].code === f.al_src) {
-                    airports[i].num_out_airline += 1;
-                    // a new edge. Create a new edge and push
-                    if (airports[i].out_edge_dic.indexOf(f.al_des) < 0) {
-                        // new edge
-                        var edge_tmp = {
-                            edge_des: f.al_des,
-                            edge_desId: f.al_desID,
-                            flight: [f.al_name]
-                        };
-                        airports[i].out_edges.push(edge_tmp);
-                        airports[i].out_edge_dic.push(f.al_des);
-                    }
-                    // Existing edge, just need to update
-                    else {
-                        airports[i].out_edges.forEach(function (edge) {
-                            if (edge.edge_des === f.al_des) {
-                                edge.flight.push(f.al_name);
-                            }
-                        });
-                    }
-                    break;
-                }
-            }
-        }
-
-        // build or update al_des airport, basic the same for src airport
-        if (airport_dic.indexOf(f.al_des) < 0) {
-            ap_temp = {
-                code: f.al_des,
-                id: f.al_desID,
-                out_edges: [],
-                out_edge_dic: [],
-                num_out_airline: 0,
-                in_edges: [{
-                    edge_src: f.al_src,
-                    edge_srcId: f.al_srcID,
-                    flight: [f.al_name]
-                }],
-                in_edge_dic: [f.al_src],
-                num_in_airline: 1
-            };
-            airports.push(ap_temp);
-            airport_dic.push(f.al_des);
-        }
-        else {
-            num_ap = airports.length;
-            for (i = 0; i < num_ap; i++) {
-                // update edge or create a new edge
-                if (airports[i].code === f.al_des) {
-                    airports[i].num_in_airline += 1;
-                    // a new edge. Create a new edge and push
-                    if (airports[i].in_edge_dic.indexOf(f.al_src) < 0) {
-                        // new edge
-                        edge_tmp = {
-                            edge_src: f.al_src,
-                            edge_srcId: f.al_srcID,
-                            flight: [f.al_name]
-                        };
-                        airports[i].in_edges.push(edge_tmp);
-                        airports[i].in_edge_dic.push(f.al_src);
-                    }
-
-                    // Existing edge, just need to update
-                    else {
-                        airports[i].in_edges.forEach(function (edge) {
-                            if (edge.edge_src === f.src) {
-                                edge.flight.push(f.al_name);
-                            }
-                        });
-                    }
-                    break;
-                }
-            }
-        }
-    });
-
-
-    var longitudeScale = d3.scaleLinear()
-        .domain([-180.0, 180.0])
-        .range([0, width - padding.left - padding.right]);
-
-    var latitudeScale = d3.scaleLinear()
-        .domain([-90, 90])
-        .range([height - padding.top - padding.bottom + 40, 40]);
-
-    // add extra airport information
-    var order = 0;
-    airports.forEach(function (airport) {
-        var search_ap = ap_supplement.find(function (s) {
-            return s.IATA === airport.code ||
-                s.ICAO === airport.code
-        });
-        if (search_ap !== undefined) {
-            airport.name = search_ap.name;
-            airport.country = search_ap.country;
-            airport.latitude = +search_ap.latitude;
-            airport.longitude = +search_ap.longitude;
-            airport.altitude = +search_ap.altitude;
-        } else {
-            search_ap = all_ap.find(function (s) {
-                return airport.code === s.gps_code ||
-                    airport.code === s.iata_code ||
-                    airport.code === s.local_code
-            });
-            if (search_ap !== undefined) {
-                airport.name = search_ap.name;
-                airport.country = search_ap.iso_country;
-                airport.latitude = +search_ap.latitude_deg;
-                airport.longitude = +search_ap.longitude_deg;
-                airport.altitude = +search_ap.elevation_ft;
-            }
-        }
-
-        // modify data for undocumented airport;
-        if (isNaN(airport.longitude) || isNaN(airport.latitude)) {
-            airport.x = 0;
-            airport.y = 0;
-        } else {
-            airport.x = +longitudeScale(airport.longitude);
-            airport.y = +latitudeScale(airport.latitude);
-        }
-
-        if (isNaN(airport.id)) {
-            airport.id = order--;
-        }
-
-    });
-
-    airports.sort(function (a, b) {
-        if (isNaN(a.id)) return -1;
-        if (isNaN(b.id)) return 1;
-        else {
-            return a.id - b.id;
-        }
-    });
-
-    // Build coordinate for edges.
-    var ap_len = airports.length;
-    airports.forEach(function (ap) {
-        ap.out_edges.forEach(function (oe) {
-            if (!isNaN(oe.edge_desId)) {
-                for (var i = 0; i < ap_len; i++) {
-                    if (oe.edge_desId === airports[i].id) {
-                        oe.des_x = airports[i].x;
-                        oe.des_y = airports[i].y;
-                        break;
-                    }
-                }
-
-            }
-            else {
-                for (i = 0; i < ap_len; i++) {
-                    if (oe.edge_des === airports[i].name) {
-                        oe.des_x = airports[i].x;
-                        oe.des_y = airports[i].y;
-                        break;
-                    }
-                }
-            }
-        });
-
-        ap.in_edges.forEach(function (ie) {
-            if (!isNaN(ie.edge_srcId)) {
-                for (var i = 0; i < ap_len; i++) {
-                    if (ie.edge_srcId === airports[i].id) {
-                        ie.src_x = airports[i].x;
-                        ie.src_y = airports[i].y;
-                        break;
-                    }
-                }
-
-            }
-            else {
-                for (i = 0; i < ap_len; i++) {
-                    if (ie.edge_src === airports[i].name) {
-                        ie.src_x = airports[i].x;
-                        ie.src_y = airports[i].y;
-                        break;
-                    }
-                }
-            }
-        })
-    });
-    return airports;
-}
-
-function low_level(selector) {
+function low_level(selector, airports) {
 
      //var airports = buildData(flight, ap_supplement, all_ap);
 
@@ -284,6 +32,7 @@ function low_level(selector) {
     var getColor = d3.scaleLinear()
         .domain([0, 0.5, 1.0])
         .range(['#fc2b30', '#3f99d1', '#64be5c']);
+        //.range(['red', 'orange', 'yellow', 'green', 'blue', 'purple']);
 
 
     var startSelection = function(start) {
@@ -503,7 +252,7 @@ function low_level(selector) {
 
         buildLinks(ID);
 
-        buildBlock(selections[ID], isNew);
+        buildBlock(ID, isNew);
     }
 
     function buildLinks (ID) {
@@ -593,8 +342,6 @@ function low_level(selector) {
             })
         });
 
-        // console.log(selections[ID]);
-
         // Draw links on given coordinate of the start point (Sx, Sy)
         // and end point (Ex, Ey)
         function drawEdge(Dx, Dy, Sx, Sy, ctg, ID, ID2, color1, color2, IN) {
@@ -627,8 +374,6 @@ function low_level(selector) {
                         .attr("stop-color", "#131410");
                 }
 
-
-
                 links
                     .attr('stroke', 'url(#gradient_bg'+ID+')')
                     .classed('bg_link'+ID, true);
@@ -642,18 +387,8 @@ function low_level(selector) {
                     Y1 = (0.5 + (Sy - Dy)/2/rec_len)*100,
                     Y2 = (0.5 - (Sy - Dy)/2/rec_len)*100;
 
-                // if (d3.select('.selection' + ID).attr('stroke') !== c1) {
-                //     console.log('switch');
-                //     var temp = c1;
-                //     c1 = c2;
-                //     c2 = temp;
-                // }
-                // console.log(c1, c2);
-                // console.log(ID, ID2);
-
                 if (document.getElementById("btg" + ID + 'btg' + ID2) === null ||
                     document.getElementById("btg" + ID2 + 'btg' + ID) === null) {
-                    console.log("create")
                     var gradient = svg.append("defs")
                         .append("svg:linearGradient")
                         .attr("id", "btg" + ID + 'btg' + ID2)
@@ -683,7 +418,6 @@ function low_level(selector) {
         d3.selectAll('.selected'+ID).remove();
         d3.selectAll("*[id*=btg"+ID+"]").remove();
         d3.select('selection'+ID).remove();
+        selections.splice(ID, 1)
     }
 }
-
-});

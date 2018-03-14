@@ -499,9 +499,7 @@ function low_level(selector, flight, ap_supplement, all_ap) {
             .attr('fill', color)
             .exit().remove();
 
-
         BuildLinks(ID);
-        console.log(selections);
     }
 
     function BuildLinks (ID) {
