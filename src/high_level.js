@@ -62,19 +62,14 @@ function buildBlock(ID, isNew) {
                         ', 1, 1, 0, ' + path_end_within)
             .attr('marker-end', 'url(#arrow' + selection.id + ')');
 
-        nodes.append('svg')
+        // within text
+        nodes.append('text')
             .attr('x', (selection.x1 + square_width * 3 / 2 - 60))
-            .attr('y', (selection.y1 - 30))
-            .attr('height', 30)
-            .attr('width', 100)
-            .append('text')
+            .attr('y', (selection.y1))
             .classed('within_num', true)
             .attr('font-size', 30)
             .attr('fill', 'white')
-            .style('text-align', 'center')
-            .attr('transform', 'translate(0, 30)')
             .text(selection.num_edge_within);
-
 
         // out arrow
         var path_start_out = (selection.x1 + square_width) +
@@ -91,6 +86,15 @@ function buildBlock(ID, isNew) {
                 ', 0, 0, 1, ' + path_end_out)
             .attr('marker-end', 'url(#arrow_bg' + selection.id + ')');
 
+        // out text
+        nodes.append('text')
+            .attr('x', selection.x1 + square_width * 3 / 2)
+            .attr('y', selection.y1 + square_width * 11 / 8)
+            .classed('out_num', true)
+            .attr('font-size', 30)
+            .attr('fill', 'white')
+            .text(selection.num_edge_out);
+
         // in arrow
         var path_start_in = (selection.x1 + square_width * 7 / 4) +
                 ' ' + (selection.y1 + square_width * 2),
@@ -105,6 +109,15 @@ function buildBlock(ID, isNew) {
                 ' A ' + square_width*2 + ' ' + square_width*2 +
                 ', 1, 0, 1, ' + path_end_in)
             .attr('marker-end', 'url(#arrow' + selection.id + ')');
+
+        // in text
+        nodes.append('text')
+            .attr('x', selection.x1 + square_width * 4 / 5 )
+            .attr('y', selection.y1 + square_width * 3 / 2 + 5)
+            .classed('in_num', true)
+            .attr('font-size', 30)
+            .attr('fill', 'white')
+            .text(selection.num_edge_in);
 
         // Between
         for (var i = 0; i < selections.length; i++) {
@@ -154,6 +167,15 @@ function buildBlock(ID, isNew) {
                     ', 1, 0, 0, ' + (xe - xm) + ' ' + (ye + ym))
                 .attr('marker-end', 'url(#arrow' + selections[i].id + ')');
 
+            // between out num
+            nodes.append('text')
+                .attr('x', (xs + xe) / 2 - xm)
+                .attr('y', (ys + ye) / 2 + ym)
+                .classed('out_num', true)
+                .attr('font-size', 30)
+                .attr('fill', 'white')
+                .text(num_be_out);
+
             // Between in
             high_level_svg.append('path')
                 .classed('be_arrow' + selection.id +
@@ -166,6 +188,15 @@ function buildBlock(ID, isNew) {
                     ' A ' + radian + ' ' + radian +
                     ', 0, 0, 0, ' + (xs + xm) + ' ' + (ys - ym))
                 .attr('marker-end', 'url(#arrow' + selection.id + ')');
+
+            // Between in num
+            nodes.append('text')
+                .attr('x', (xs + xe) / 2 + xm)
+                .attr('y', (ys + ye) / 2 - ym)
+                .classed('out_num', true)
+                .attr('font-size', 30)
+                .attr('fill', 'white')
+                .text(num_be_in);
 
             // Between gradient
             var rec_len = Math.max(Math.abs(xe-xs),Math.abs(ye-ys));
@@ -188,13 +219,11 @@ function buildBlock(ID, isNew) {
                 .attr('class', 'end')
                 .attr("offset", "100%")
                 .attr("stop-color", selections[i].color);
-
-
         }
 
         // Every aggregation has its own Arrow id
         defs = nodes.append('defs');
-        // normal arrow
+        // normal arrow marker
         defs.append('svg:marker')
             .attr('markerHeight', 5)
             .attr('markerWidth', 5)
@@ -206,7 +235,7 @@ function buildBlock(ID, isNew) {
             .attr('stroke-width', 10)
             .append('svg:path')
             .attr('d', 'M 0,0 m -5,-5 L 5,0 L -5,5 Z');
-        // background arrow
+        // background arrow marker
         defs.append('svg:marker')
             .attr('id', 'arrow_bg' + selection.id)
             .attr('markerHeight', 5)
@@ -245,6 +274,12 @@ function buildBlock(ID, isNew) {
 
     }
     else {
+        var group_update = d3.selectAll('#group' + ID);
+
+        group_update = d3.selectin
+
+
+
 
     }
 

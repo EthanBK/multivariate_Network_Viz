@@ -359,6 +359,7 @@ function low_level(selector, airports) {
                     .attr('stroke', color1)
                     .classed('within_link'+ID, true);
             }
+
             // background edges
             else if (ID2 === undefined) {
 
@@ -376,7 +377,8 @@ function low_level(selector, airports) {
 
                 links
                     .attr('stroke', 'url(#gradient_bg'+ID+')')
-                    .classed('bg_link'+ID, true);
+                    .classed('bg_link'+ID, true)
+                    .attr('visibility', 'hidden');
             }
 
             // from/to other selection windows
