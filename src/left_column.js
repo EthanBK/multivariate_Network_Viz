@@ -84,10 +84,6 @@ function SelectionComponent(api) {
             $(this).css('background', 'rgb(255,255,255)');
         });
 
-        $child.on('click', function() {
-            FilterComponentObj.init(selections[id]);
-        })
-
         /* Add subcomponents */
 
         // Add remove button
@@ -100,14 +96,21 @@ function SelectionComponent(api) {
         // Add toggle
         var toggle_id = id_to_toggle(id);
         $child.append('<div class="checkbox"><label><input id="' + toggle_id + '" type="checkbox" data-toggle="toggle"></label></div>')
-        $('#' + toggle_id).bootstrapToggle('on').change(function() {
-            if($(this).prop('checked'))
+        var $toggle = $('#' + toggle_id);
+        $toggle.bootstrapToggle('on').change(function() {
+            if($toggle.prop('checked'))
                 Obj.show(id);
             else
                 Obj.hide(id);
         });
+        
+        FilterComponentObj.init(api.selections[id]);
 
-        FilterComponentObj.init(api.selections[id])
+        // If child is selected, show filter options
+        $child.on('click', function() {
+            if($toggle.prop('checked'))
+                FilterComponentObj.init(selections[id]);
+        });
     }
 
     this.removeSelection = function(id) {
