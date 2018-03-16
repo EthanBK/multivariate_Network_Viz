@@ -33,10 +33,10 @@ function buildBlock(ID, isNew) {
         // Create New Block
         var nodes = high_level_svg.append('g')
             .attr('id', 'group'+ selection.id)
-            .attr('width', block_width)
-            .attr('height', block_height)
-            .attr('x', selection.x1)
-            .attr('y', selection.y1);
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
 
         var rect = nodes.append('rect')
             .attr('width', square_width)
@@ -47,79 +47,86 @@ function buildBlock(ID, isNew) {
             .attr('x', selection.x1)
             .attr('y', selection.y1);
 
-        // Within Arrow
-        var path_start_within = (selection.x1 + square_width) +
-                                ' ' + (selection.y1 + square_width / 2),
-            path_end_within = (selection.x1 + square_width / 2) +
-                                ' ' + (+selection.y1 - 10) ;
-        nodes.append('path')
-            .classed('within_arrow' + selection.id, true)
-            .attr('stroke', selection.color)
-            .attr('stroke-width', arrow_width_scale(selection.num_edge_within))
-            .attr('fill-opacity', 0)
-            .attr('d', 'M ' + path_start_within +
-                        ' A ' + square_width/2 + ' ' + square_width/2 +
-                        ', 1, 1, 0, ' + path_end_within)
-            .attr('marker-end', 'url(#arrow' + selection.id + ')');
 
-        // within text
-        nodes.append('text')
-            .attr('x', (selection.x1 + square_width * 3 / 2 - 60))
-            .attr('y', (selection.y1))
-            .classed('within_num', true)
-            .attr('font-size', 30)
-            .attr('fill', 'white')
-            .text(selection.num_edge_within);
+        // Build Within, background_in, background_out arrows
+        {
+            // Within Arrow
+            var path_start_within = (selection.x1 + square_width) +
+                ' ' + (selection.y1 + square_width / 2),
+                path_end_within = (selection.x1 + square_width / 2) +
+                    ' ' + (+selection.y1 - 10);
+            nodes.append('path')
+                .classed('within_arrow' + selection.id, true)
+                .attr('stroke', selection.color)
+                .attr('stroke-width', arrow_width_scale(selection.num_edge_within))
+                .attr('fill-opacity', 0)
+                .attr('d', 'M ' + path_start_within +
+                    ' A ' + square_width / 2 + ' ' + square_width / 2 +
+                    ', 1, 1, 0, ' + path_end_within)
+                .attr('marker-end', 'url(#arrow' + selection.id + ')');
 
-        // out arrow
-        var path_start_out = (selection.x1 + square_width) +
-            ' ' + (selection.y1 + square_width * 3 / 4),
-            path_end_out = (selection.x1 + square_width * 2) +
-                ' ' + (selection.y1  + square_width * 2);
-        nodes.append('path')
-            .classed('out_arrrow' + selection.id, true)
-            .attr('stroke', 'url(#in_out' + selection.id + ')')
-            .attr('stroke-width', 5)
-            .attr('fill-opacity', 0)
-            .attr('d', 'M ' + path_start_out +
-                ' A ' + square_width*2 + ' ' + square_width*2 +
-                ', 0, 0, 1, ' + path_end_out)
-            .attr('marker-end', 'url(#arrow_bg' + selection.id + ')');
+            // out arrow
+            var path_start_out = (selection.x1 + square_width) +
+                ' ' + (selection.y1 + square_width * 3 / 4),
+                path_end_out = (selection.x1 + square_width * 2) +
+                    ' ' + (selection.y1 + square_width * 2);
+            nodes.append('path')
+                .classed('out_arrow' + selection.id, true)
+                .attr('stroke', 'url(#in_out' + selection.id + ')')
+                .attr('stroke-width', 5)
+                .attr('fill-opacity', 0)
+                .attr('d', 'M ' + path_start_out +
+                    ' A ' + square_width * 2 + ' ' + square_width * 2 +
+                    ', 0, 0, 1, ' + path_end_out)
+                .attr('marker-end', 'url(#arrow_bg' + selection.id + ')');
 
-        // out text
-        nodes.append('text')
-            .attr('x', selection.x1 + square_width * 3 / 2)
-            .attr('y', selection.y1 + square_width * 11 / 8)
-            .classed('out_num', true)
-            .attr('font-size', 30)
-            .attr('fill', 'white')
-            .text(selection.num_edge_out);
-
-        // in arrow
-        var path_start_in = (selection.x1 + square_width * 7 / 4) +
+            // in arrow
+            var path_start_in = (selection.x1 + square_width * 7 / 4) +
                 ' ' + (selection.y1 + square_width * 2),
-            path_end_in = (selection.x1 + square_width * 3 / 4) + ' ' +
-            (selection.y1 + square_width + 10);
-        nodes.append('path')
-            .classed('in_arrow' + selection.id, true)
-            .attr('stroke', 'url(#in_out' + selection.id + ')')
-            .attr('stroke-width', 5)
-            .attr('fill-opacity', 0)
-            .attr('d', 'M ' + path_start_in +
-                ' A ' + square_width*2 + ' ' + square_width*2 +
-                ', 1, 0, 1, ' + path_end_in)
-            .attr('marker-end', 'url(#arrow' + selection.id + ')');
+                path_end_in = (selection.x1 + square_width * 3 / 4) + ' ' +
+                    (selection.y1 + square_width + 10);
+            nodes.append('path')
+                .classed('in_arrow' + selection.id, true)
+                .attr('stroke', 'url(#in_out' + selection.id + ')')
+                .attr('stroke-width', 5)
+                .attr('fill-opacity', 0)
+                .attr('d', 'M ' + path_start_in +
+                    ' A ' + square_width * 2 + ' ' + square_width * 2 +
+                    ', 1, 0, 1, ' + path_end_in)
+                .attr('marker-end', 'url(#arrow' + selection.id + ')');
+        }
 
-        // in text
-        nodes.append('text')
-            .attr('x', selection.x1 + square_width * 4 / 5 )
-            .attr('y', selection.y1 + square_width * 3 / 2 + 5)
-            .classed('in_num', true)
-            .attr('font-size', 30)
-            .attr('fill', 'white')
-            .text(selection.num_edge_in);
+        // Build Three types of number display for the above arrows
+        {
+            // within text
+            nodes.append('text')
+                .attr('x', (selection.x1 + square_width * 3 / 2 - 60))
+                .attr('y', (selection.y1))
+                .attr('id', 'within_num' + selection.id)
+                .attr('font-size', 30)
+                .attr('fill', 'white')
+                .text(selection.num_edge_within);
 
-        // Between
+            // bg out text
+            nodes.append('text')
+                .attr('x', selection.x1 + square_width * 3 / 2)
+                .attr('y', selection.y1 + square_width * 11 / 8)
+                .attr('id', 'out_num' + selection.id)
+                .attr('font-size', 30)
+                .attr('fill', 'white')
+                .text(selection.num_bg_out);
+
+            // bg in text
+            nodes.append('text')
+                .attr('x', selection.x1 + square_width * 4 / 5)
+                .attr('y', selection.y1 + square_width * 3 / 2 + 5)
+                .attr('id', 'in_num' + selection.id)
+                .attr('font-size', 30)
+                .attr('fill', 'white')
+                .text(selection.num_bg_in);
+        }
+
+        // Build Between Arrows and Number Display
         for (var i = 0; i < selections.length; i++) {
             if (i === selection.id) continue;
 
@@ -156,8 +163,8 @@ function buildBlock(ID, isNew) {
 
             // Between out
             high_level_svg.append('path')
-                .classed('be_arrow' + selection.id +
-                    'be_arrow' + selections[i].id, true)
+                .attr('id', 'be_arrow' + selection.id +
+                    'be_arrow' + selections[i].id)
                 .attr('stroke', 'url(#bag' + selection.id +
                     'bag' + selections[i].id + ")")
                 .attr('stroke-width', 5)
@@ -171,7 +178,7 @@ function buildBlock(ID, isNew) {
             nodes.append('text')
                 .attr('x', (xs + xe) / 2 - xm)
                 .attr('y', (ys + ye) / 2 + ym)
-                .classed('out_num', true)
+                .attr('id', 'from'+ selection.id +'to'+selections[i].id+'_num')
                 .attr('font-size', 30)
                 .attr('fill', 'white')
                 .text(num_be_out);
@@ -193,7 +200,7 @@ function buildBlock(ID, isNew) {
             nodes.append('text')
                 .attr('x', (xs + xe) / 2 + xm)
                 .attr('y', (ys + ye) / 2 - ym)
-                .classed('out_num', true)
+                .attr('id', 'from'+selections[i].id+'to'+selection.id+'_num')
                 .attr('font-size', 30)
                 .attr('fill', 'white')
                 .text(num_be_in);
@@ -221,66 +228,98 @@ function buildBlock(ID, isNew) {
                 .attr("stop-color", selections[i].color);
         }
 
-        // Every aggregation has its own Arrow id
-        defs = nodes.append('defs');
-        // normal arrow marker
-        defs.append('svg:marker')
-            .attr('markerHeight', 5)
-            .attr('markerWidth', 5)
-            .attr('markerUnits', 'strokeWidth')
-            .attr('orient', 'auto')
-            .attr('viewBox', '-5 -5 10 10')
-            .attr('id', 'arrow' + selection.id)
-            .attr('fill', selection.color)
-            .attr('stroke-width', 10)
-            .append('svg:path')
-            .attr('d', 'M 0,0 m -5,-5 L 5,0 L -5,5 Z');
-        // background arrow marker
-        defs.append('svg:marker')
-            .attr('id', 'arrow_bg' + selection.id)
-            .attr('markerHeight', 5)
-            .attr('markerWidth', 5)
-            .attr('markerUnits', 'strokeWidth')
-            .attr('orient', 'auto')
-            .attr('viewBox', '-5 -5 10 10')
-            .attr('fill', selection.color)
-            .attr('opacity', 0.1)
-            .attr('stroke-width', 10)
-            .append('svg:path')
-            .attr('d', 'M 0,0 m -5,-5 L 5,0 L -5,5 Z');
+        // Marker for each box
+        {
+            defs = nodes.append('defs');
+            // normal arrow marker
+            defs.append('svg:marker')
+                .attr('markerHeight', 5)
+                .attr('markerWidth', 5)
+                .attr('markerUnits', 'strokeWidth')
+                .attr('orient', 'auto')
+                .attr('viewBox', '-5 -5 10 10')
+                .attr('id', 'arrow' + selection.id)
+                .attr('fill', selection.color)
+                .attr('stroke-width', 10)
+                .append('svg:path')
+                .attr('d', 'M 0,0 m -5,-5 L 5,0 L -5,5 Z');
+            // background arrow marker
+            defs.append('svg:marker')
+                .attr('id', 'arrow_bg' + selection.id)
+                .attr('markerHeight', 5)
+                .attr('markerWidth', 5)
+                .attr('markerUnits', 'strokeWidth')
+                .attr('orient', 'auto')
+                .attr('viewBox', '-5 -5 10 10')
+                .attr('fill', selection.color)
+                .attr('opacity', 0.1)
+                .attr('stroke-width', 10)
+                .append('svg:path')
+                .attr('d', 'M 0,0 m -5,-5 L 5,0 L -5,5 Z');
 
-        //todo drag
-
-        buildLinks(selection);
+        }
 
         // in and out edges gradient
-        var gradient = high_level_svg.append("defs")
-            .append("svg:linearGradient")
-            .attr("id", "in_out" + selection.id)
-            .attr("x1", '0%')
-            .attr("y1", '0%')
-            .attr("x2", '100%')
-            .attr("y2", '100%');
-        gradient.append("stop")
-            .attr('class', 'start')
-            .attr("offset", "0%")
-            .attr("stop-color", selection.color);
-        gradient.append("stop")
-            .attr('class', 'end')
-            .attr("offset", "100%")
-            .attr("stop-color", '#131410');
-
-
-
+        {
+            var gradient = high_level_svg.append("defs")
+                .append("svg:linearGradient")
+                .attr("id", "in_out" + selection.id)
+                .attr("x1", '0%')
+                .attr("y1", '0%')
+                .attr("x2", '100%')
+                .attr("y2", '100%');
+            gradient.append("stop")
+                .attr('class', 'start')
+                .attr("offset", "0%")
+                .attr("stop-color", selection.color);
+            gradient.append("stop")
+                .attr('class', 'end')
+                .attr("offset", "100%")
+                .attr("stop-color", '#131410');
+        }
     }
+    // Update number display for all boxes
     else {
         var group_update = d3.selectAll('#group' + ID);
+        var num_within = selections[ID].num_edge_within,
+            num_bg_out = selections[ID].num_bg_out,
+            num_bg_in = selections[ID].num_bg_in;
 
-        group_update = d3.selectin
+        // Update Arrow count
+        d3.selectAll('#within_num'+ID)
+            .text(num_within);
 
+        d3.selectAll('#out_num'+ID)
+            .text(num_bg_out);
 
+        d3.selectAll('#in_num'+ID)
+            .text(num_bg_in);
 
+        for (i = 0; i < selection.between.length; i++) {
+            var target_id = selection.between[i].id_be;
+            if (target_id === ID) continue;
 
+            d3.selectAll('#from'+ID+'to'+target_id+'_num')
+                .text(selection.between[i].num_be_out);
+
+            d3.selectAll('#from'+target_id+'to'+ID+'_num')
+                .text(selection.between[i].num_be_in);
+        }
+    }
+
+    function dragstarted(d) {
+        d.fx = d.x;
+        d.fy = d.y;
+    }
+
+    function dragged(d) {
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+    }
+
+    function dragended(d) {
+        d.fx = null;
+        d.fy = null;
     }
 
 }

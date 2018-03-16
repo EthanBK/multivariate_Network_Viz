@@ -5,23 +5,97 @@ var height = 750,
 var selections = [],
     num_window = 0;
 
-$.get('data/airports.json', function(data) {
+$.get('data/test_data.json', function(data) {
     // var airports = data;
     low_level('#low_level', data)
 });
 
 function low_level(selector, airports) {
 
-     //var airports = buildData(flight, ap_supplement, all_ap);
+    //var airports = buildData(flight, ap_supplement, all_ap);
+
+    var zoom = d3.zoom()
+        .scaleExtent([1, 10])
+        .on('zoom', zoomed);
+
+    var xAxisScale = d3.scaleLinear()
+        .domain([-180, 180])
+        .range([0, width]);
+
+    var yAxisScale = d3.scaleLinear()
+        .domain([-90, 90])
+        .range([0, height])
+
+    var xAxis = d3.axisBottom(xAxisScale)
+        // .ticks(width / height * 10)
+        // .tickSize(height)
+        // .tickPadding(8 - height);
+
+    var yAxis = d3.axisRight(yAxisScale)
+        // .tick(10)
+        // .tickSize(width)
+        // .tickPadding(8 - width);
+
 
     var svg = d3.selectAll(selector).append('svg')
         .attr('id', 'low_svg')
         .attr('width', width)
         .attr('height', height)
-        .style('background', '#131410');
+        .style('background', '#ffffff');
+
+    svg.append("rect")
+        .classed('background', true)
+        .attr("width", width)
+        .attr("height", height)
+
+    var gX = svg.append('g')
+        .attr('class', 'axis axis--x')
+        .attr('stroke', 'white')
+        .call(xAxis);
+
+    var gY = svg.append('g')
+        .attr('class', 'axis axis--y')
+        .attr('stroke', 'white')
+        .call(yAxis);
+
+    var container_zoom = svg.append('g')
+        .attr('id', 'container_zoom');
+
+    svg.call(zoom);
 
     high_level('#high_level');
 
+
+    //
+    // var drag = d3.behavior.drag()
+    //     .orgin(function (d) { return d; })
+    //     .on("dragstart", dragstarted_map)
+    //     .on("drag", dragged_map)
+    //     .on("dragend", dragended_map);
+    //
+    function zoomed() {
+        container_zoom.attr("transform", d3.event.transform);
+        var new_xScale = d3.event.transform.rescaleX(xAxisScale)
+        var new_yScale = d3.event.transform.rescaleY(yAxisScale)
+        console.log(d3.event.transform)
+
+        // update axes
+        gX.call(xAxis.scale(new_xScale));
+        gY.call(yAxis.scale(new_yScale));
+    }
+    //
+    // function dragstarted_map(d) {
+    //     d3.event.sourceEvent.stopPropagation();
+    //     d3.select(this).classed("dragging", true);
+    // }
+    //
+    // function dragged_map(d) {
+    //     d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
+    // }
+    //
+    // function dragended_map(d) {
+    //     d3.select(this).classed("dragging", false);
+    // }
 
     var selection = null,
         selection_color = null,
@@ -32,96 +106,96 @@ function low_level(selector, airports) {
     var getColor = d3.scaleLinear()
         .domain([0, 0.5, 1.0])
         .range(['#fc2b30', '#3f99d1', '#64be5c']);
-        //.range(['red', 'orange', 'yellow', 'green', 'blue', 'purple']);
+    //.range(['red', 'orange', 'yellow', 'green', 'blue', 'purple']);
 
 
-    var startSelection = function(start) {
-        // Set window and node color of this selection.
-        selection_color = getColor(Math.random());
-        randomColor = "hsl(" + Math.random() * 360 + ",100%,50%)";
-
-
-        selection = svg.append("rect")
-            .attr("class", "selection"+num_window)
-            .attr("visibility", "visible")
-            .attr('selection_id', num_window);
-
-        selection
-            .attr('x', start[0])
-            .attr('y', start[1])
-            .attr('width', 0)
-            .attr('height', 0)
-            .attr("visibility", "visible")
-            .attr('fill-opacity', '0')
-            .attr('stroke', selection_color)
-            //.attr('stroke', randomColor)
-            .attr('stroke-width', 3)
-            .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended));
-        num_window += 1;
-    };
-
-    var moveSelection = function(start, moved) {
-        selection
-            .attr('width', moved[0]-start[0])
-            .attr('height', moved[1]-start[1] )
-    };
-
-    var endSelection = function(start, end) {
-        // selection.attr("visibility", "hidden");
-
-    };
-
-    svg.on("mousedown", function() {
-        var subject = d3.select(window),
-            parent = this.parentNode,
-            start = d3.mouse(parent);
-        startSelection(start);
-        subject
-            .on("mousemove.selection", function() {
-                moveSelection(start, d3.mouse(parent));
-            })
-            .on("mouseup.selection", function() {
-                buildSelection(start[0], start[1],
-                    d3.mouse(parent)[0], d3.mouse(parent)[1],
-                    selection_color, num_window-1);
-                subject
-                    .on("mousemove.selection", null)
-                    .on("mouseup.selection", null);
-
-                endSelection(selection_color, start, d3.mouse(parent));
-            });
-    });
-
-    // Manipulate selection rect
-    function dragstarted() {
-        d3.select(this).raise().classed("active", true);
-    }
-
-    function dragged() {
-        d3.select(this)
-            .attr('x', this.x.baseVal.value + d3.event.dx)
-            .attr('y', this.y.baseVal.value + d3.event.dy)
-    }
-
-    function dragended() {
-        d3.select(this).classed("active", false);
-        var x1 = +this.getAttribute('x'),
-            y1 = +this.getAttribute('y'),
-            x2 = +this.getAttribute('x') + this.width.baseVal.value,
-            y2 = +this.getAttribute('y') + this.height.baseVal.value;
-        deleteDot(x1, y1, x2, y2, this.getAttribute('stroke'), +this.getAttribute('selection_id'));
-        buildSelection(x1, y1, x2, y2, this.getAttribute('stroke'), +this.getAttribute('selection_id'));
-        // deleteDot(x1, y1, x2, y2, this.getAttribute('stroke'));
-    }
+    // var startSelection = function(start) {
+    //     // Set window and node color of this selection.
+    //     selection_color = getColor(Math.random());
+    //     randomColor = "hsl(" + Math.random() * 360 + ",100%,50%)";
+    //
+    //
+    //     selection = container_zoom.append("rect")
+    //         .attr("class", "selection"+num_window)
+    //         .attr("visibility", "visible")
+    //         .attr('selection_id', num_window);
+    //
+    //     selection
+    //         .attr('x', start[0])
+    //         .attr('y', start[1])
+    //         .attr('width', 0)
+    //         .attr('height', 0)
+    //         .attr("visibility", "visible")
+    //         .attr('fill-opacity', '0')
+    //         .attr('stroke', selection_color)
+    //         //.attr('stroke', randomColor)
+    //         .attr('stroke-width', 3)
+    //         .call(d3.drag()
+    //             .on("start", dragstarted)
+    //             .on("drag", dragged)
+    //             .on("end", dragended));
+    //     num_window += 1;
+    // };
+    //
+    // var moveSelection = function(start, moved) {
+    //     selection
+    //         .attr('width', moved[0]-start[0])
+    //         .attr('height', moved[1]-start[1] )
+    // };
+    //
+    // var endSelection = function(start, end) {
+    //     // selection.attr("visibility", "hidden");
+    // };
+    //
+    // container_zoom.on("mousedown", function() {
+    //     var subject = d3.select(window),
+    //         parent = this.parentNode,
+    //         start = d3.mouse(parent);
+    //     startSelection(start);
+    //     subject
+    //         .on("mousemove.selection", function() {
+    //             moveSelection(start, d3.mouse(parent));
+    //         })
+    //         .on("mouseup.selection", function() {
+    //             buildSelection(start[0], start[1],
+    //                 d3.mouse(parent)[0], d3.mouse(parent)[1],
+    //                 selection_color, num_window-1);
+    //             subject
+    //                 .on("mousemove.selection", null)
+    //                 .on("mouseup.selection", null);
+    //
+    //             endSelection(selection_color, start, d3.mouse(parent));
+    //         });
+    // });
+    //
+    // // Manipulate selection rect
+    // function dragstarted() {
+    //     d3.select(this).raise().classed("active", true);
+    // }
+    //
+    // function dragged() {
+    //     d3.select(this)
+    //         .attr('x', this.x.baseVal.value + d3.event.dx)
+    //         .attr('y', this.y.baseVal.value + d3.event.dy)
+    // }
+    //
+    // function dragended() {
+    //     d3.select(this).classed("active", false);
+    //     var x1 = +this.getAttribute('x'),
+    //         y1 = +this.getAttribute('y'),
+    //         x2 = +this.getAttribute('x') + this.width.baseVal.value,
+    //         y2 = +this.getAttribute('y') + this.height.baseVal.value;
+    //     deleteDot( +this.getAttribute('selection_id'));
+    //     buildSelection(x1, y1, x2, y2, this.getAttribute('stroke'), +this.getAttribute('selection_id'));
+    // }
 
     var allDots = null;
     var selectedDots = null;
 
     // Draw all the dots
-    allDots = svg.selectAll('.dot').data(airports);
+    allDots = container_zoom.append('g')
+        .attr('id', 'dot_group')
+        .selectAll('.dot').data(airports);
 
     allDots.enter().append('circle')
         .attr('class', 'dot')
@@ -131,7 +205,7 @@ function low_level(selector, airports) {
         .attr('fill', 'white');
 
     // delete dots move out of the selection window
-    function deleteDot(x1, y1, x2, y2, color, ID) {
+    function deleteDot(ID) {
         // remove all edge classed:
         // 'within_linkID', 'bg_linkID', 'from_linkID', 'to_linkID'
         // --> contains linkID
@@ -154,13 +228,16 @@ function low_level(selector, airports) {
         var isNew = false;
 
 
-        // I moved your left_column function entrance to here,
-        // so you can avoid creating selection component for
-        // invalid selections
-        SelectionComponentObj.addSelection(color);
+
 
         // Case 1. Create new selection window
         if (ID >= selections.length) {
+
+            // I moved your left_column function entrance to here,
+            // so you can avoid creating selection component for
+            // invalid selections
+            SelectionComponentObj.addSelection(color);
+
             isNew = true;
             var newSelection = {
                 id: ID,
@@ -218,7 +295,13 @@ function low_level(selector, airports) {
                     selection.num_edge_within = 0;
                     selection.num_edge_out = 0;
                     selection.num_edge_in = 0;
+                    selection.num_bg_in = 0;
+                    selection.num_bg_out = 0;
                     selection.airport = null;
+                    selection.between.forEach(function (be) {
+                        be.num_be_in = 0;
+                        be.num_be_out = 0;
+                    })
                 }
                 else {
                     selection.between.forEach(function (be) {
@@ -239,7 +322,6 @@ function low_level(selector, airports) {
         });
         selections[ID].num_ap = selected_ap.length;
         selections[ID].airport = selected_ap;
-        // todo use kd-tree for fast search
 
         selectedDots = allDots.data(selected_ap)
             .enter().append('circle')
@@ -251,6 +333,17 @@ function low_level(selector, airports) {
             .exit().remove();
 
         buildLinks(ID);
+
+        // Update num of background edges
+        selections.forEach(function (selection) {
+            selection.num_bg_in = selection.num_edge_in;
+            selection.num_bg_out = selection.num_edge_out;
+            selection.between.forEach(function (be) {
+                selection.num_bg_in -= be.num_be_in;
+                selection.num_bg_out -= be.num_be_out
+            });
+        });
+
 
         buildBlock(ID, isNew);
     }
@@ -283,7 +376,7 @@ function low_level(selector, airports) {
                     out_edge.des_y < y1 || y2 < out_edge.des_y) {
                     selections[ID].num_edge_out ++;
                     drawEdge(out_edge.des_x, out_edge.des_y, ap.x, ap.y, 1,
-                     ID, undefined, color, undefined);
+                        ID, undefined, color, undefined);
                 }
 
                 // draw 'between-out' edges
@@ -317,7 +410,7 @@ function low_level(selector, airports) {
                     in_edge.src_y < y1 || y2 < in_edge.src_y) {
                     selections[ID].num_edge_in ++;
                     drawEdge(ap.x, ap.y, in_edge.src_x, in_edge.src_y, 1,
-                             ID, undefined, color, undefined);
+                        ID, undefined, color, undefined);
                 }
 
                 // Draw 'between-in' edges
