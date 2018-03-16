@@ -18,15 +18,20 @@
     float:left;
 }
 
+.sc-child {
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
 .sc-child p {
    float:left;
    font-size:15px;
-   margin-top:11px;
+   margin-top:13px;
    margin-left:5px;
 }
 
 .sc-child button {
-    margin-top:7px;
+    margin-top:8px;
     float:right;
     border-radius:100%;
     padding:7px 10px;
@@ -34,6 +39,11 @@
 
 .sc-child button:focus  {
     outline: none !important;
+}
+
+.sc-child div.checkbox {
+    margin-top:8px;
+    float:right;
 }
 
 #high_level {
