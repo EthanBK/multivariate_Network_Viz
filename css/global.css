@@ -18,6 +18,11 @@
     float:left;
 }
 
+.sc-child {
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
 .sc-child p {
    float:left;
    font-size:15px;

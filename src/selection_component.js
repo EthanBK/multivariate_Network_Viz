@@ -2,6 +2,7 @@
 function SelectionComponent(api) {
     var $selection_component = $('#selection_component');
     var Obj = this;
+    var Selected;
 
     this.HiddenSelections = {};
 
@@ -9,16 +10,30 @@ function SelectionComponent(api) {
         var selection_id = id_to_selection(id);
 
         // Create the element
-        $selection_component.append('<div id="' + selection_id + '"class="container-fluid sc-child"></div>');
+        $selection_component.append('<div id="' + selection_id + '"class="container-fluid sc-child bottom-10"></div>');
 
         // Retain a pointer to the element
         var $child = $('#' + selection_id);
 
         // Add color box
-        $child.append('<div class="selection-color-box bottom-10" style="background:' + color + '"></div>');
+        $child.append('<div class="selection-color-box" style="background:' + color + '"></div>');
 
         // Add selection name
-        $child.append('<p>' + selection_id + '</p>')
+        $child.append('<p>' + selection_id + '</p>');
+
+        $child.on('mouseover', function() {
+            $(this).css('background', 'rgb(240,240,240)');
+        });
+
+        $child.on('mouseleave', function() {
+            $(this).css('background', 'rgb(255,255,255)');
+        });
+
+        $child.on('click', function() {
+            Selected = id;
+        })
+
+        /* Add subcomponents */
 
         // Add remove button
         var remove_id = id_to_remove(id) ;
