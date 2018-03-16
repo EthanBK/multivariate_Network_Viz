@@ -3,7 +3,6 @@ function SelectionComponent(api) {
     var $selection_component = $('#selection_component');
     var Obj = this;
 
-    this.Selections = {};
     this.HiddenSelections = {};
 
     this.addSelection = function(id, color) {
@@ -45,8 +44,8 @@ function SelectionComponent(api) {
         $selection.remove();
     }
 
-    this.hide = function(id) {
-        this.HiddenSelections[id] = selections[id];
+    this.hide = function(id) {  
+        this.HiddenSelections[id] = $.extend({}, selections[id]);
         api.deleteSelection(id);
     }
 
