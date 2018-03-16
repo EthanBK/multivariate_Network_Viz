@@ -14,6 +14,8 @@ function low_level(selector, airports) {
     
     // Expose an API to selection component
     var SelectionComponentObj = new SelectionComponent({
+        selections: selections,
+        buildSelection: buildSelection,
         deleteSelection: deleteSelection
     })
      //var airports = buildData(flight, ap_supplement, all_ap);
