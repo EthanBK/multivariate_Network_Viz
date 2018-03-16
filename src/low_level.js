@@ -11,7 +11,11 @@ $.get('data/airports.json', function(data) {
 });
 
 function low_level(selector, airports) {
-
+    
+    // Expose an API to selection component
+    var SelectionComponentObj = new SelectionComponent({
+        deleteSelection: deleteSelection
+    })
      //var airports = buildData(flight, ap_supplement, all_ap);
 
     var svg = d3.selectAll(selector).append('svg')
@@ -153,12 +157,6 @@ function low_level(selector, airports) {
         // If this is new selection window or drag old window
         var isNew = false;
 
-
-        // I moved your left_column function entrance to here,
-        // so you can avoid creating selection component for
-        // invalid selections
-        SelectionComponentObj.addSelection(color);
-
         // Case 1. Create new selection window
         if (ID >= selections.length) {
             isNew = true;
@@ -189,6 +187,9 @@ function low_level(selector, airports) {
                 newSelection.between.push(temp)
             }
             selections.push(newSelection);
+
+            // Update selections
+            SelectionComponentObj.addSelection(ID, color);
 
             // Create new empty slut in 'between' of other
             // existing selections for newSelection

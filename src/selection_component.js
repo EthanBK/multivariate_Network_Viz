@@ -1,33 +1,42 @@
-var SelectionComponentObj = new SelectionComponent()
 
-function SelectionComponent() {
+function SelectionComponent(api) {
     var $selection_component = $('#selection_component');
+    var Obj = this;
 
-    this.Children = [];
+    this.Selections = {};
 
-    this.addSelection = function(color) {
-        var child_count = Object.keys(this.Children).length;
-        var id = 'sc-' + child_count;
+    this.addSelection = function(id, color) {
+        var selection_id = id_to_selection(id);
 
         // Create the element
-        $selection_component.append('<div id="' + id + '"class="container-fluid sc-child"></div>');
+        $selection_component.append('<div id="' + selection_id + '"class="container-fluid sc-child"></div>');
 
         // Retain a pointer to the element
-        var $child = $('#' + id);
+        var $child = $('#' + selection_id);
 
         // Add color box
         $child.append('<div class="selection-color-box bottom-10" style="background:' + color + '"></div>');
 
         // Add selection name
-        $child.append('<p>' + id + '</p>')
+        $child.append('<p>' + selection_id + '</p>')
 
         // Add remove button
-        $child.append('<button class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>');
+        var remove_id = id + '-remove';
+        $child.append('<button id="' + remove_id + '" target="' + id + '" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>');
+        
+        // Add remove listener
+        $('#' + remove_id).on('click', function() {
+            Obj.removeSelection($(this).attr('target'));
+        })
+    }
 
-        this.Children.push({
-            id: id,
-            color: color,
-            ref: $child
-        });
+    this.removeSelection = function(id) {
+        api.deleteSelection(id);
+        var $selection = $('#' + id_to_selection(id));
+        $selection.remove();
+    }
+
+    var id_to_selection = function(id) {
+        return 'sc-' + id;
     }
 };
