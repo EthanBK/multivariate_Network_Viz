@@ -17,8 +17,8 @@ function low_level(selector, airports) {
         selections: selections,
         buildSelection: buildSelection,
         deleteSelection: deleteSelection
-    })
-     //var airports = buildData(flight, ap_supplement, all_ap);
+    });
+    //var airports = buildData(flight, ap_supplement, all_ap);
 
     var svg = d3.selectAll(selector).append('svg')
         .attr('id', 'low_svg')
