@@ -61,8 +61,8 @@ function low_level(selector, airports) {
         .attr('stroke', 'white')
         .call(yAxis);
 
-    var container_zoom = svg.append('g')
-        .attr('id', 'container_zoom');
+    // var container_zoom = svg.append('g')
+    //     .attr('id', 'container_zoom');
 
     // svg.call(zoom);
 
@@ -342,8 +342,6 @@ function low_level(selector, airports) {
             });
         });
 
-
-
         high_level.buildBlock(ID, isNew)
     }
 
@@ -397,9 +395,8 @@ function low_level(selector, airports) {
                             return value.id_be === ID
                         }).num_be_in ++;
 
-                        var color2 = window.color;
                         drawEdge(out_edge.des_x, out_edge.des_y, ap.x, ap.y, 1,
-                            ID, i, color, color2);
+                            ID, i, color, window.color);
                     }
                 }
             });
@@ -428,9 +425,8 @@ function low_level(selector, airports) {
                         selections[i].between.find(function (value) {
                             return value.id_be === ID
                         }).num_be_out ++;
-                        var color2 = window.color;
                         drawEdge(ap.x, ap.y, in_edge.src_x, in_edge.src_y, 1,
-                            i, ID, color2, color, true);
+                            i, ID, window.color, color, true);
                     }
                 }
             })
@@ -438,7 +434,7 @@ function low_level(selector, airports) {
 
         // Draw links on given coordinate of the start point (Sx, Sy)
         // and end point (Ex, Ey)
-        function drawEdge(Dx, Dy, Sx, Sy, ctg, ID, ID2, color1, color2, IN) {
+        function drawEdge(Dx, Dy, Sx, Sy, ctg, ID, ID2, color1, color2) {
 
             links = svg.append('path')
                 .attr('d', 'M ' + Sx + ' ' + Sy + ' '

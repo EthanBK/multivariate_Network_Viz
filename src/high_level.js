@@ -26,7 +26,6 @@ function high_level() {
         .classed('background', true)
         .attr("width", width)
         .attr("height", height)
-        .attr('fill-opacity', 0)
         .on('click', reset);
 
     container_zoom = high_level_svg.append('g')
@@ -202,8 +201,8 @@ function high_level() {
 
                 // Between in
                 container_zoom.append('path')
-                    .attr('id', 'be_arrow_num' + selection.id +
-                        'be_arrow_num' + selections[i].id)
+                    .attr('id', 'be_arrow' + selection.id +
+                        'be_arrow' + selections[i].id)
                     .attr('stroke', 'url(#bag' + selection.id +
                         'bag' + selections[i].id + ")")
                     .attr('stroke-width', 5)
@@ -217,7 +216,7 @@ function high_level() {
                 nodes.append('text')
                     .attr('x', (xs + xe) / 2 + xm)
                     .attr('y', (ys + ye) / 2 - ym)
-                    .attr('id', 'arrow_be_num' + selections[i].id + 'arrow_be_num' + selection.id)
+                    .attr('id', 'be_arrow_num' + selections[i].id + 'be_arrow_num' + selection.id)
                     .attr('font-size', 30)
                     .attr('fill', 'white')
                     .text(num_be_in);
@@ -345,43 +344,41 @@ function high_level() {
 
     }
 
-    // Zooming and Drag helper function
-    {
-        function zoomed() {
-            container_zoom.attr("transform", d3.event.transform);
-        }
 
-        function stopped() {
-            if (d3.event.defaultPrevented)
-                d3.event.stopPropagation();
-        }
+    function zoomed() {
+        container_zoom.attr("transform", d3.event.transform);
+    }
 
-        function reset() {
-            active.classed("active", false);
-            active = d3.select(null);
+    function stopped() {
+        if (d3.event.defaultPrevented)
+            d3.event.stopPropagation();
+    }
 
-            high_level_svg.transition()
-                .duration(750)
-                .call(zoom.transform, d3.zoomIdentity);
-        }
+    function reset() {
+        active.classed("active", false);
+        active = d3.select(null);
 
-        function clicked() {
+        high_level_svg.transition()
+            .duration(750)
+            .call(zoom.transform, d3.zoomIdentity);
+    }
 
-            if (active.node === this) return reset();
-            active.classed('active', true);
+    function clicked() {
 
-            var x1 = +this.getAttribute('x'),
-                y1 = +this.getAttribute('y');
+        if (active.node === this) return reset();
+        active.classed('active', true);
 
-            var x = x1 + square_width / 2,
-                y = y1 + square_width / 2;
-            var scale = Math.max(1, Math.min(8, 0.9 * height / square_width));
-            var translate = [width / 2 - x * scale, height / 2 - y * scale];
+        var x1 = +this.getAttribute('x'),
+            y1 = +this.getAttribute('y');
 
-            high_level_svg.transition()
-                .duration(750)
-                .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale))
-        }
+        var x = x1 + square_width / 2,
+            y = y1 + square_width / 2;
+        var scale = Math.max(1, Math.min(8, 0.9 * height/ square_width));
+        var translate = [width / 2 - x * scale, height / 2 - y * scale];
+
+        high_level_svg.transition()
+            .duration(750)
+            .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale))
     }
 
     high_level.buildBlock = buildBlock;
