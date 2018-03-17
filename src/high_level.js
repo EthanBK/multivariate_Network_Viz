@@ -1,4 +1,5 @@
 var high_level_svg,
+    container_zoom = null,
     maxWithin = 0;
 
 var block_width = 300,
@@ -11,10 +12,10 @@ function high_level() {
     var width = 1500,
         height = 750;
 
-    // var zoom = d3.zoom()
-    //     .scaleExtent([1, 10])
-    //     .on('zoom', zoomed);
-    //
+    var zoom = d3.zoom()
+        .scaleExtent([1, 10])
+        .on('zoom', zoomed);
+
     // var xAxisScale = d3.scaleLinear()
     //     .domain([-180, 180])
     //     .range([0, width]);
@@ -22,7 +23,7 @@ function high_level() {
     // var yAxisScale = d3.scaleLinear()
     //     .domain([-90, 90])
     //     .range([0, height]);
-    //
+
     // var xAxis = d3.axisBottom(xAxisScale);
     // var yAxis = d3.axisRight(yAxisScale);
 
@@ -30,7 +31,23 @@ function high_level() {
         .append('svg')
         .attr('id', "high_level_svg")
         .attr('width', width)
-        .attr('height', height)
+        .attr('height', height);
+
+    high_level_svg.append("rect")
+        .classed('background', true)
+        .attr("width", width)
+        .attr("height", height);
+
+    container_zoom = high_level_svg.append('g')
+        .attr('id', 'container_zoom');
+
+    high_level_svg.call(zoom);
+
+    function zoomed() {
+        container_zoom.attr("transform", d3.event.transform);
+        // var new_xScale = d3.event.transform.rescaleX(xAxisScale)
+        // var new_yScale = d3.event.transform.rescaleY(yAxisScale)
+    }
 
 
 }
@@ -48,7 +65,7 @@ function buildBlock(ID, isNew) {
 
     if (isNew) {
         // Create New Block
-        var nodes = high_level_svg.append('g')
+        var nodes = container_zoom.append('g')
             .attr('id', 'group'+ selection.id)
             .call(d3.drag()
                 .on("start", dragstarted)
@@ -294,6 +311,8 @@ function buildBlock(ID, isNew) {
                 .attr("offset", "100%")
                 .attr("stop-color", '#131410');
         }
+
+
     }
     // Update number display for all boxes
     else {

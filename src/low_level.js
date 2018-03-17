@@ -14,9 +14,9 @@ function low_level(selector, airports) {
 
     //var airports = buildData(flight, ap_supplement, all_ap);
 
-    var zoom = d3.zoom()
-        .scaleExtent([1, 10])
-        .on('zoom', zoomed);
+    // var zoom = d3.zoom()
+    //     .scaleExtent([1, 10])
+    //     .on('zoom', zoomed);
 
     var xAxisScale = d3.scaleLinear()
         .domain([-180, 180])
@@ -74,16 +74,8 @@ function low_level(selector, airports) {
     //     .on("drag", dragged_map)
     //     .on("dragend", dragended_map);
     //
-    function zoomed() {
-        container_zoom.attr("transform", d3.event.transform);
-        var new_xScale = d3.event.transform.rescaleX(xAxisScale)
-        var new_yScale = d3.event.transform.rescaleY(yAxisScale)
-        console.log(d3.event.transform)
 
-        // update axes
-        gX.call(xAxis.scale(new_xScale));
-        gY.call(yAxis.scale(new_yScale));
-    }
+
     //
     // function dragstarted_map(d) {
     //     d3.event.sourceEvent.stopPropagation();

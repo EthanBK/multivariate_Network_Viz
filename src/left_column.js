@@ -119,6 +119,7 @@ function SelectionComponent(api) {
         $selection.remove();
     }
 
+    // todo
     this.hide = function(id) {
         this.HiddenSelections[id] = $.extend({}, selections[id]);
         api.deleteSelection(id);
