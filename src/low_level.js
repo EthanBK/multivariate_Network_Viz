@@ -43,18 +43,19 @@ function low_level(selector, airports) {
         buildSelection: buildSelection,
         deleteSelection: deleteSelection
     });
+
     //var airports = buildData(flight, ap_supplement, all_ap);
 
     var svg = d3.selectAll(selector).append('svg')
         .attr('id', 'low_svg')
         .attr('width', width)
         .attr('height', height)
-        .style('background', '#ffffff');
+        .style('background', '#131410');
 
-    svg.append("rect")
-        .classed('background', true)
-        .attr("width", width)
-        .attr("height", height)
+    // svg.append("rect")
+    //     .classed('background', true)
+    //     .attr("width", width)
+    //     .attr("height", height)
 
     var gX = svg.append('g')
         .attr('class', 'axis axis--x')
@@ -69,7 +70,7 @@ function low_level(selector, airports) {
     var container_zoom = svg.append('g')
         .attr('id', 'container_zoom');
 
-    svg.call(zoom);
+    // svg.call(zoom);
 
     high_level('#high_level');
 
@@ -117,91 +118,91 @@ function low_level(selector, airports) {
     //.range(['red', 'orange', 'yellow', 'green', 'blue', 'purple']);
 
 
-    // var startSelection = function(start) {
-    //     // Set window and node color of this selection.
-    //     selection_color = getColor(Math.random());
-    //     randomColor = "hsl(" + Math.random() * 360 + ",100%,50%)";
-    //
-    //
-    //     selection = container_zoom.append("rect")
-    //         .attr("class", "selection"+num_window)
-    //         .attr("visibility", "visible")
-    //         .attr('selection_id', num_window);
-    //
-    //     selection
-    //         .attr('x', start[0])
-    //         .attr('y', start[1])
-    //         .attr('width', 0)
-    //         .attr('height', 0)
-    //         .attr("visibility", "visible")
-    //         .attr('fill-opacity', '0')
-    //         .attr('stroke', selection_color)
-    //         //.attr('stroke', randomColor)
-    //         .attr('stroke-width', 3)
-    //         .call(d3.drag()
-    //             .on("start", dragstarted)
-    //             .on("drag", dragged)
-    //             .on("end", dragended));
-    //     num_window += 1;
-    // };
-    //
-    // var moveSelection = function(start, moved) {
-    //     selection
-    //         .attr('width', moved[0]-start[0])
-    //         .attr('height', moved[1]-start[1] )
-    // };
-    //
-    // var endSelection = function(start, end) {
-    //     // selection.attr("visibility", "hidden");
-    // };
-    //
-    // container_zoom.on("mousedown", function() {
-    //     var subject = d3.select(window),
-    //         parent = this.parentNode,
-    //         start = d3.mouse(parent);
-    //     startSelection(start);
-    //     subject
-    //         .on("mousemove.selection", function() {
-    //             moveSelection(start, d3.mouse(parent));
-    //         })
-    //         .on("mouseup.selection", function() {
-    //             buildSelection(start[0], start[1],
-    //                 d3.mouse(parent)[0], d3.mouse(parent)[1],
-    //                 selection_color, num_window-1);
-    //             subject
-    //                 .on("mousemove.selection", null)
-    //                 .on("mouseup.selection", null);
-    //
-    //             endSelection(selection_color, start, d3.mouse(parent));
-    //         });
-    // });
-    //
-    // // Manipulate selection rect
-    // function dragstarted() {
-    //     d3.select(this).raise().classed("active", true);
-    // }
-    //
-    // function dragged() {
-    //     d3.select(this)
-    //         .attr('x', this.x.baseVal.value + d3.event.dx)
-    //         .attr('y', this.y.baseVal.value + d3.event.dy)
-    // }
-    //
-    // function dragended() {
-    //     d3.select(this).classed("active", false);
-    //     var x1 = +this.getAttribute('x'),
-    //         y1 = +this.getAttribute('y'),
-    //         x2 = +this.getAttribute('x') + this.width.baseVal.value,
-    //         y2 = +this.getAttribute('y') + this.height.baseVal.value;
-    //     deleteDot( +this.getAttribute('selection_id'));
-    //     buildSelection(x1, y1, x2, y2, this.getAttribute('stroke'), +this.getAttribute('selection_id'));
-    // }
+    var startSelection = function(start) {
+        // Set window and node color of this selection.
+        selection_color = getColor(Math.random());
+        randomColor = "hsl(" + Math.random() * 360 + ",100%,50%)";
+
+
+        selection = svg.append("rect")
+            .attr("class", "selection"+num_window)
+            .attr("visibility", "visible")
+            .attr('selection_id', num_window);
+
+        selection
+            .attr('x', start[0])
+            .attr('y', start[1])
+            .attr('width', 0)
+            .attr('height', 0)
+            .attr("visibility", "visible")
+            .attr('fill-opacity', '0')
+            .attr('stroke', selection_color)
+            //.attr('stroke', randomColor)
+            .attr('stroke-width', 3)
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
+        num_window += 1;
+    };
+
+    var moveSelection = function(start, moved) {
+        selection
+            .attr('width', moved[0]-start[0])
+            .attr('height', moved[1]-start[1] )
+    };
+
+    var endSelection = function(start, end) {
+        // selection.attr("visibility", "hidden");
+    };
+
+    svg.on("mousedown", function() {
+        var subject = d3.select(window),
+            parent = this.parentNode,
+            start = d3.mouse(parent);
+        startSelection(start);
+        subject
+            .on("mousemove.selection", function() {
+                moveSelection(start, d3.mouse(parent));
+            })
+            .on("mouseup.selection", function() {
+                buildSelection(start[0], start[1],
+                    d3.mouse(parent)[0], d3.mouse(parent)[1],
+                    selection_color, num_window-1);
+                subject
+                    .on("mousemove.selection", null)
+                    .on("mouseup.selection", null);
+
+                endSelection(selection_color, start, d3.mouse(parent));
+            });
+    });
+
+    // Manipulate selection rect
+    function dragstarted() {
+        d3.select(this).raise().classed("active", true);
+    }
+
+    function dragged() {
+        d3.select(this)
+            .attr('x', this.x.baseVal.value + d3.event.dx)
+            .attr('y', this.y.baseVal.value + d3.event.dy)
+    }
+
+    function dragended() {
+        d3.select(this).classed("active", false);
+        var x1 = +this.getAttribute('x'),
+            y1 = +this.getAttribute('y'),
+            x2 = +this.getAttribute('x') + this.width.baseVal.value,
+            y2 = +this.getAttribute('y') + this.height.baseVal.value;
+        deleteDot( +this.getAttribute('selection_id'));
+        buildSelection(x1, y1, x2, y2, this.getAttribute('stroke'), +this.getAttribute('selection_id'));
+    }
 
     var allDots = null;
     var selectedDots = null;
 
     // Draw all the dots
-    allDots = container_zoom.append('g')
+    allDots = svg.append('g')
         .attr('id', 'dot_group')
         .selectAll('.dot').data(airports);
 
@@ -241,7 +242,7 @@ function low_level(selector, airports) {
             // I moved your left_column function entrance to here,
             // so you can avoid creating selection component for
             // invalid selections
-            SelectionComponentObj.addSelection(color);
+            //SelectionComponentObj.addSelection(ID, color);
 
             isNew = true;
             var newSelection = {
@@ -353,7 +354,7 @@ function low_level(selector, airports) {
         });
 
 
-        buildBlock(ID, isNew);
+        buildBlock(ID, isNew)
     }
 
     function buildLinks (ID) {
@@ -520,7 +521,7 @@ function low_level(selector, airports) {
         d3.selectAll("*[class*=link"+ID+"]").remove();
         d3.selectAll('.selected'+ID).remove();
         d3.selectAll("*[id*=btg"+ID+"]").remove();
-        d3.select('selection'+ID).remove();
+        d3.select('.selection'+ID).remove();
         selections.splice(ID, 1)
     }
 }

@@ -40,7 +40,7 @@ function FilterComponent(api) {
             s.x2 = event.value[1];
             api.buildSelection(s.x1, s.x2, s.y1, s.y2, s.color, s.id);
         });
-        
+
         this.addSlider({
             title: 'Longitude',
             id: 'attr-longitude',
@@ -92,7 +92,7 @@ function SelectionComponent(api) {
         $('#' + remove_id).on('click', function() {
             Obj.removeSelection($(this).attr('target'));
         })
-        
+
         // Add toggle
         var toggle_id = id_to_toggle(id);
         $child.append('<div class="checkbox"><label><input id="' + toggle_id + '" type="checkbox" data-toggle="toggle"></label></div>')
@@ -103,7 +103,7 @@ function SelectionComponent(api) {
             else
                 Obj.hide(id);
         });
-        
+
         FilterComponentObj.init(api.selections[id]);
 
         // If child is selected, show filter options
@@ -119,7 +119,7 @@ function SelectionComponent(api) {
         $selection.remove();
     }
 
-    this.hide = function(id) {  
+    this.hide = function(id) {
         this.HiddenSelections[id] = $.extend({}, selections[id]);
         api.deleteSelection(id);
     }
@@ -128,6 +128,8 @@ function SelectionComponent(api) {
         var s = this.HiddenSelections[id];
         selections.splice(id, 0 , s);
         api.buildSelection(s.x1, s.y1, s.x2, s.y2, s.color, s.id);
+        // todo control the visualibility
+
     }
 
     var id_to_remove = function(id) {
