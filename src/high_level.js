@@ -1,16 +1,20 @@
 var high_level_svg,
     container_zoom = null,
-    maxWithin = 0;
+    maxWithin = 0,
+    active = d3.select('null');
 
 var block_width = 300,
     block_height = 300;
+
+var width = 1500,
+    height = 750;
 
 var square_width = block_width / 2;
 
 function high_level() {
 
-    var width = 1500,
-        height = 750;
+
+
 
     var zoom = d3.zoom()
         .scaleExtent([1, 10])
@@ -31,12 +35,14 @@ function high_level() {
         .append('svg')
         .attr('id', "high_level_svg")
         .attr('width', width)
-        .attr('height', height);
+        .attr('height', height)
+        .on('click', stopped, true);
 
     high_level_svg.append("rect")
         .classed('background', true)
         .attr("width", width)
-        .attr("height", height);
+        .attr("height", height)
+        .on('click', reset);
 
     container_zoom = high_level_svg.append('g')
         .attr('id', 'container_zoom');
@@ -45,11 +51,21 @@ function high_level() {
 
     function zoomed() {
         container_zoom.attr("transform", d3.event.transform);
-        // var new_xScale = d3.event.transform.rescaleX(xAxisScale)
-        // var new_yScale = d3.event.transform.rescaleY(yAxisScale)
     }
 
+    function stopped() {
+        if (d3.event.defaultPrevented)
+            d3.event.stopPropagation();
+    }
+}
 
+function reset() {
+    active.classed("active", false);
+    active = d3.select(null);
+    svg.transition()
+        .duration(750)
+        // .call( zoom.transform, d3.zoomIdentity.translate(0, 0).scale(1) ); // not in d3 v4
+        .call( zoom.transform, d3.zoomIdentity ); // updated for d3 v4
 }
 
 function buildBlock(ID, isNew) {
@@ -310,6 +326,26 @@ function buildBlock(ID, isNew) {
                 .attr('class', 'end')
                 .attr("offset", "100%")
                 .attr("stop-color", '#131410');
+        }
+
+
+        rect.on('click', clicked);
+
+        function clicked(d) {
+
+            if (active.node === this) return reset();
+            active.classed('active', true);
+            var dx = d.width,
+                dy = d.height,
+                x = d.x1 + d.width / 2 ,
+                y = d.y1 + d.height / 2;
+
+            var scale = Math.max(1, Math.min(8, 0.9 / Math.max(dx / width, dy / height))),
+                translate = [width / 2 - scale * x, height / 2 - scale * y];
+
+            high_level_svg.transition()
+                .duration(750)
+                .call(zoom.transform, d3.zoomIdentity.translate(translate[0],translate[1]).scale(scale))
         }
 
 
