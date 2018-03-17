@@ -7,8 +7,8 @@
     <list default="true" id="59fca950-d5f7-42bd-907e-c28fd8acc72d" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/src/high_level.js" afterPath="$PROJECT_DIR$/src/high_level.js" />
-      <change beforePath="$PROJECT_DIR$/src/high_level_backup.js" afterPath="$PROJECT_DIR$/src/high_level_backup.js" />
       <change beforePath="$PROJECT_DIR$/src/low_level.js" afterPath="$PROJECT_DIR$/src/low_level.js" />
+      <change beforePath="$PROJECT_DIR$/src/low_level_backup.js" afterPath="$PROJECT_DIR$/src/low_level_backup.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -26,22 +26,29 @@
       <file leaf-file-name="high_level.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/high_level.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="307">
-              <caret line="349" column="5" lean-forward="true" selection-start-line="349" selection-start-column="5" selection-end-line="349" selection-end-column="5" />
-              <folding />
+            <state relative-caret-position="290">
+              <caret line="342" column="8" lean-forward="true" selection-start-line="342" selection-start-column="8" selection-end-line="342" selection-end-column="8" />
+              <folding>
+                <element signature="e#4540#5744#0" expanded="false" />
+                <element signature="e#5857#10560#0" expanded="false" />
+                <element signature="e#10609#11932#0" expanded="false" />
+                <element signature="e#11987#12689#0" expanded="false" />
+                <element signature="e#12760#13699#0" expanded="false" />
+                <element signature="n#!!block;n#zoomed#0;n#!!block;n#high_level#0" expanded="false" />
+                <element signature="n#!!block;n#stopped#0;n#!!block;n#high_level#0" expanded="false" />
+                <element signature="n#!!block;n#reset#0;n#!!block;n#high_level#0" expanded="false" />
+                <element signature="n#!!block;n#clicked#0;n#!!block;n#high_level#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="low_level.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/low_level.js">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="244">
-              <caret line="316" column="35" lean-forward="false" selection-start-line="316" selection-start-column="35" selection-end-line="316" selection-end-column="35" />
-              <folding>
-                <element signature="n#!!block;n#buildLinks#0;n#!!block;n#low_level#0" expanded="false" />
-                <element signature="n#!!block;n#drawEdge#0;n#!!block;n#buildLinks#0;n#!!block;n#low_level#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="-794">
+              <caret line="21" column="31" lean-forward="false" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -49,18 +56,9 @@
       <file leaf-file-name="high_level_backup.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/high_level_backup.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="94">
-              <caret line="358" column="0" lean-forward="false" selection-start-line="358" selection-start-column="0" selection-end-line="358" selection-end-column="0" />
-              <folding>
-                <element signature="e#4478#5682#0" expanded="false" />
-                <element signature="e#10547#11815#0" expanded="false" />
-                <element signature="e#13626#13973#0" expanded="false" />
-                <marker date="1521269302772" expanded="true" signature="14069:14074" ph="{...}" />
-                <marker date="1521269302772" expanded="true" signature="14069:15006" ph="{...}" />
-                <marker date="1521269302772" expanded="true" signature="14180:14185" ph="{...}" />
-                <marker date="1521269302772" expanded="true" signature="14251:14406" ph="{...}" />
-                <marker date="1521269302772" expanded="true" signature="14431:15000" ph="{...}" />
-              </folding>
+            <state relative-caret-position="669">
+              <caret line="384" column="1" lean-forward="false" selection-start-line="384" selection-start-column="1" selection-end-line="384" selection-end-column="1" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -76,13 +74,9 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>in edge</find>
-      <find>visual</find>
       <find>visu</find>
       <find>vis</find>
-      <find>drag</find>
       <find>num_edge_out</find>
-      <find>remove</find>
       <find>append('g')</find>
       <find>svg</find>
       <find>domain</find>
@@ -106,6 +100,10 @@
       <find>group</find>
       <find>background</find>
       <find>container</find>
+      <find>clicked</find>
+      <find>drag</find>
+      <find>remove</find>
+      <find>element</find>
     </findStrings>
     <replaceStrings>
       <replace>ap</replace>
@@ -131,13 +129,13 @@
         <option value="$PROJECT_DIR$/src/build_data.js" />
         <option value="$PROJECT_DIR$/src/selection_component.js" />
         <option value="$PROJECT_DIR$/src/arrow.js" />
-        <option value="$PROJECT_DIR$/src/low_level_backup.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/css/global.css" />
         <option value="$PROJECT_DIR$/src/left_column.js" />
-        <option value="$PROJECT_DIR$/src/low_level.js" />
         <option value="$PROJECT_DIR$/src/high_level_backup.js" />
         <option value="$PROJECT_DIR$/src/high_level.js" />
+        <option value="$PROJECT_DIR$/src/low_level_backup.js" />
+        <option value="$PROJECT_DIR$/src/low_level.js" />
       </list>
     </option>
   </component>
@@ -220,7 +218,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1.Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/css/global.css&#10;low&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1.Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/src/low_level.js&#10;ind&#9;RUN_CONFIGURATION&#9;index.html&#10;hig&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1. Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/src/high_level.js&#10;lo&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1. Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/src/low_level.js&#10;hi&#9;null&#9;null&#10;glo&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1. Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/css/global.css&#10;inde&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1. Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/index.html" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1.Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/src/low_level_backup.js&#10;low&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1.Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/src/low_level.js&#10;ind&#9;RUN_CONFIGURATION&#9;index.html&#10;hig&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1. Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/src/high_level.js&#10;lo&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1. Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/src/low_level.js&#10;hi&#9;null&#9;null&#10;glo&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1. Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/css/global.css&#10;inde&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1. Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/index.html" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -294,7 +292,7 @@
       <workItem from="1520972082348" duration="22264000" />
       <workItem from="1521019776742" duration="1443000" />
       <workItem from="1521144744477" duration="12338000" />
-      <workItem from="1521233649042" duration="19820000" />
+      <workItem from="1521233649042" duration="29995000" />
     </task>
     <task id="LOCAL-00001" summary="Creation outline of the project">
       <created>1519702338392</created>
@@ -482,7 +480,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="196281000" />
+    <option name="totallyTimeSpent" value="206456000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -497,7 +495,7 @@
     <frame x="988" y="23" width="932" height="1057" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24314025" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24259056" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26482213" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32776934" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -505,7 +503,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.6482214" sideWeight="0.4932486" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290735" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.12555066" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38658148" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26517573" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23715416" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="1132" y="45" width="788" height="1035" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -570,7 +568,7 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="28" />
+      <option name="time" value="32" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="JavascriptDebugType">
@@ -874,47 +872,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/low_level_backup.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="39" column="6" lean-forward="true" selection-start-line="39" selection-start-column="6" selection-end-line="39" selection-end-column="6" />
-          <folding>
-            <element signature="n#!!block;n#buildLinks#0;n#!!block;n#low_level#0" expanded="false" />
-            <element signature="n#!!block;n#deleteSelection#0;n#!!block;n#low_level#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/css/global.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-435">
           <caret line="16" column="15" lean-forward="false" selection-start-line="16" selection-start-column="15" selection-end-line="16" selection-end-column="15" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="21" column="31" lean-forward="true" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/high_level_backup.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="94">
-          <caret line="358" column="0" lean-forward="false" selection-start-line="358" selection-start-column="0" selection-end-line="358" selection-end-column="0" />
-          <folding>
-            <element signature="e#4478#5682#0" expanded="false" />
-            <element signature="e#10547#11815#0" expanded="false" />
-            <element signature="e#13626#13973#0" expanded="false" />
-            <marker date="1521269302772" expanded="true" signature="14069:14074" ph="{...}" />
-            <marker date="1521269302772" expanded="true" signature="14069:15006" ph="{...}" />
-            <marker date="1521269302772" expanded="true" signature="14180:14185" ph="{...}" />
-            <marker date="1521269302772" expanded="true" signature="14251:14406" ph="{...}" />
-            <marker date="1521269302772" expanded="true" signature="14431:15000" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -928,22 +890,63 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/low_level.js">
+    <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="316" column="35" lean-forward="false" selection-start-line="316" selection-start-column="35" selection-end-line="316" selection-end-column="35" />
+        <state relative-caret-position="-794">
+          <caret line="21" column="31" lean-forward="false" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/high_level_backup.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="669">
+          <caret line="384" column="1" lean-forward="false" selection-start-line="384" selection-start-column="1" selection-end-line="384" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/low_level_backup.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="549" column="0" lean-forward="true" selection-start-line="549" selection-start-column="0" selection-end-line="549" selection-end-column="0" />
           <folding>
+            <element signature="n#!!block;n#buildSelection#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#buildLinks#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#drawEdge#0;n#!!block;n#buildLinks#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#hideSelection#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#showSelection#0;n#!!block;n#low_level#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/low_level.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="576" column="0" lean-forward="true" selection-start-line="576" selection-start-column="0" selection-end-line="576" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!block;n#buildSelection#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#hideSelection#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#showSelection#0;n#!!block;n#low_level#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/high_level.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="307">
-          <caret line="349" column="5" lean-forward="true" selection-start-line="349" selection-start-column="5" selection-end-line="349" selection-end-column="5" />
-          <folding />
+        <state relative-caret-position="290">
+          <caret line="342" column="8" lean-forward="true" selection-start-line="342" selection-start-column="8" selection-end-line="342" selection-end-column="8" />
+          <folding>
+            <element signature="e#4540#5744#0" expanded="false" />
+            <element signature="e#5857#10560#0" expanded="false" />
+            <element signature="e#10609#11932#0" expanded="false" />
+            <element signature="e#11987#12689#0" expanded="false" />
+            <element signature="e#12760#13699#0" expanded="false" />
+            <element signature="n#!!block;n#zoomed#0;n#!!block;n#high_level#0" expanded="false" />
+            <element signature="n#!!block;n#stopped#0;n#!!block;n#high_level#0" expanded="false" />
+            <element signature="n#!!block;n#reset#0;n#!!block;n#high_level#0" expanded="false" />
+            <element signature="n#!!block;n#clicked#0;n#!!block;n#high_level#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

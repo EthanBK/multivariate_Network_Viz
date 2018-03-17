@@ -94,7 +94,8 @@ function low_level(selector, airports) {
 
     var selection = null,
         selection_color = null,
-        randomColor = null;
+        randomColor = null,
+        sel_group = null
 
 
     // a random color generator to get get color for selection win.
@@ -110,12 +111,19 @@ function low_level(selector, airports) {
         randomColor = "hsl(" + Math.random() * 360 + ",100%,50%)";
 
 
-        selection = svg.append("rect")
-            .attr("class", "selection"+num_window)
-            .attr("visibility", "visible")
-            .attr('selection_id', num_window);
+        sel_group = svg.append('g')
+            .classed('sel_group', true)
+            .attr('id', 'sel_group' + num_window)
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
 
-        selection
+        selection = sel_group.append("rect")
+            .classed('selection', true)
+            .attr("id", "selection"+num_window)
+            .attr("visibility", "visible")
+            .attr('selection_id', num_window)
             .attr('x', start[0])
             .attr('y', start[1])
             .attr('width', 0)
@@ -125,10 +133,7 @@ function low_level(selector, airports) {
             .attr('stroke', selection_color)
             //.attr('stroke', randomColor)
             .attr('stroke-width', 3)
-            .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended));
+            ;
         num_window += 1;
     };
 
@@ -139,6 +144,7 @@ function low_level(selector, airports) {
     };
 
     var endSelection = function(start, end) {
+        sel_group.on('click', clickRect)
         // selection.attr("visibility", "hidden");
     };
 
@@ -169,19 +175,36 @@ function low_level(selector, airports) {
     }
 
     function dragged() {
-        d3.select(this)
-            .attr('x', this.x.baseVal.value + d3.event.dx)
-            .attr('y', this.y.baseVal.value + d3.event.dy)
+        this.x = this.x || 0;
+        this.y = this.y || 0;
+        this.x += d3.event.dx;
+        this.y += d3.event.dy;
+        d3.select(this).attr("transform", "translate(" + this.x + "," + this.y + ")");
     }
 
     function dragended() {
         d3.select(this).classed("active", false);
-        var x1 = +this.getAttribute('x'),
-            y1 = +this.getAttribute('y'),
-            x2 = +this.getAttribute('x') + this.width.baseVal.value,
-            y2 = +this.getAttribute('y') + this.height.baseVal.value;
-        deleteDot( +this.getAttribute('selection_id'));
-        buildSelection(x1, y1, x2, y2, this.getAttribute('stroke'), +this.getAttribute('selection_id'));
+
+        var trans_x = 0,
+            trans_y = 0;
+        if (this.getAttribute('transform') !== null) {
+            var transform = this.getAttribute('transform'),
+                regExp_x = /\(([^)]+),/,
+                regExp_y = /,([^)]+)\)/;
+                trans_x = regExp_x.exec(transform)[1];
+                trans_y = regExp_y.exec(transform)[1];
+        }
+
+        var id = +this.getAttribute('id').substring(9),
+            sel_dom = document.getElementById('selection' + id);
+
+        var x1 = +sel_dom.getAttribute('x') + parseInt(trans_x),
+            y1 = +sel_dom.getAttribute('y') + parseInt(trans_y),
+            x2 = x1 + +sel_dom.getAttribute('width'),
+            y2 = y1 + +sel_dom.getAttribute('height');
+
+        deleteDot(id);
+        buildSelection(x1, y1, x2, y2, sel_dom.getAttribute('stroke'), id);
     }
 
     var allDots = null;
@@ -509,9 +532,9 @@ function low_level(selector, airports) {
         d3.selectAll("*[class*=link"+ID+"]").remove();
         d3.selectAll('.selected'+ID).remove();
         d3.selectAll("*[id*=btg"+ID+"]").remove();
-        d3.select('.selection'+ID).remove();
+        d3.select('#selection'+ID).remove();
         selections[ID] = null;
-        d3.selectAll('#group'+ID).remove();
+        d3.selectAll('#high_group'+ID).remove();
         d3.selectAll("*[id*=be_arrow"+ID+"]").remove();
         d3.selectAll("*[id*=be_arrow_num"+ID+"]").remove();
     }
@@ -529,4 +552,52 @@ function low_level(selector, airports) {
         $("*[id*=btg"+ID+"]").css('display', 'block');
         $('.selection'+ID).css('display', 'block');
     }
+
+    function clickRect() {
+
+
+
+        // console.log(selections)
+        var group = this,
+            id = +this.getAttribute('selection_id'),
+            selection = selections.find(function (sel) {
+                // console.log('sel',sel)
+                return sel.id === id;
+            });
+
+        console.log(id)
+
+        // Increase stroke width
+        var sel_dom = d3.select('#selection'+id)
+            .attr('stroke-width', 6)
+
+        // console.log('click', sel_dom)
+
+        // console.log(selection)
+
+        var sq_width = 12;
+
+        var x = selection.x1,
+            y = selection.y1,
+            sel_width = selection.width,
+            sel_height = selection.height,
+            color = selection.color;
+
+        d3.select(this).append('rect')
+            .classed('handle'+id, true)
+            .attr('x', x - sq_width / 2)
+            .attr('y', y - sq_width / 2)
+            .attr('width', sq_width)
+            .attr('height', sq_width)
+            .attr('stroke', color)
+            .attr('fill', color)
+
+
+
+
+
+
+    }
+
+
 }

@@ -14,19 +14,57 @@ function low_level(selector, airports) {
 
     //var airports = buildData(flight, ap_supplement, all_ap);
 
-    // var zoom = d3.behavior.zoom()
+    // var zoom = d3.zoom()
     //     .scaleExtent([1, 10])
     //     .on('zoom', zoomed);
+
+    var xAxisScale = d3.scaleLinear()
+        .domain([-180, 180])
+        .range([0, width]);
+
+    var yAxisScale = d3.scaleLinear()
+        .domain([-90, 90])
+        .range([0, height]);
+
+    var xAxis = d3.axisBottom(xAxisScale);
+    var yAxis = d3.axisRight(yAxisScale);
+
+    // Expose an API to selection component
+    var SelectionComponentObj = new SelectionComponent({
+        selections: selections,
+        buildSelection: buildSelection,
+        deleteSelection: deleteSelection,
+        hideSelection: hideSelection,
+        showSelection: showSelection
+    });
+
+    //var airports = buildData(flight, ap_supplement, all_ap);
 
     var svg = d3.selectAll(selector).append('svg')
         .attr('id', 'low_svg')
         .attr('width', width)
         .attr('height', height)
-        .style('background', '#131410')
-    //.append('g')
-    //.call(zoom);
+        .style('background', '#141411');
+
+    // svg.append("rect")
+    //     .classed('background', true)
+    //     .attr("width", width)
+    //     .attr("height", height)
+
+    var gX = svg.append('g')
+        .attr('class', 'axis axis--x')
+        .attr('stroke', 'white')
+        .call(xAxis);
+
+    var gY = svg.append('g')
+        .attr('class', 'axis axis--y')
+        .attr('stroke', 'white')
+        .call(yAxis);
 
     // var container_zoom = svg.append('g')
+    //     .attr('id', 'container_zoom');
+
+    // svg.call(zoom);
 
     high_level('#high_level');
 
@@ -38,10 +76,8 @@ function low_level(selector, airports) {
     //     .on("drag", dragged_map)
     //     .on("dragend", dragended_map);
     //
-    function zoomed() {
-        container.attr('transform', 'translate(' + d3.event.translate +
-            ')scale(' + d3.event.scale + ")");
-    }
+
+
     //
     // function dragstarted_map(d) {
     //     d3.event.sourceEvent.stopPropagation();
@@ -58,7 +94,8 @@ function low_level(selector, airports) {
 
     var selection = null,
         selection_color = null,
-        randomColor = null;
+        randomColor = null,
+        sel_group = null
 
 
     // a random color generator to get get color for selection win.
@@ -74,12 +111,15 @@ function low_level(selector, airports) {
         randomColor = "hsl(" + Math.random() * 360 + ",100%,50%)";
 
 
-        selection = svg.append("rect")
-            .attr("class", "selection"+num_window)
-            .attr("visibility", "visible")
-            .attr('selection_id', num_window);
+        sel_group = svg.append('g')
+            .classed('sel_group', true)
+            .attr('id', 'sel_group' + num_window);
 
-        selection
+        selection = sel_group.append("rect")
+            .classed('selection', true)
+            .attr("id", "selection"+num_window)
+            .attr("visibility", "visible")
+            .attr('selection_id', num_window)
             .attr('x', start[0])
             .attr('y', start[1])
             .attr('width', 0)
@@ -103,6 +143,7 @@ function low_level(selector, airports) {
     };
 
     var endSelection = function(start, end) {
+        sel_group.on('click', clickRect)
         // selection.attr("visibility", "hidden");
     };
 
@@ -144,6 +185,7 @@ function low_level(selector, airports) {
             y1 = +this.getAttribute('y'),
             x2 = +this.getAttribute('x') + this.width.baseVal.value,
             y2 = +this.getAttribute('y') + this.height.baseVal.value;
+
         deleteDot( +this.getAttribute('selection_id'));
         buildSelection(x1, y1, x2, y2, this.getAttribute('stroke'), +this.getAttribute('selection_id'));
     }
@@ -152,7 +194,9 @@ function low_level(selector, airports) {
     var selectedDots = null;
 
     // Draw all the dots
-    allDots = svg.selectAll('.dot').data(airports);
+    allDots = svg.append('g')
+        .attr('id', 'dot_group')
+        .selectAll('.dot').data(airports);
 
     allDots.enter().append('circle')
         .attr('class', 'dot')
@@ -184,16 +228,13 @@ function low_level(selector, airports) {
         // If this is new selection window or drag old window
         var isNew = false;
 
-
-
-
         // Case 1. Create new selection window
         if (ID >= selections.length) {
 
             // I moved your left_column function entrance to here,
             // so you can avoid creating selection component for
             // invalid selections
-            SelectionComponentObj.addSelection(color);
+            //SelectionComponentObj.addSelection(ID, color);
 
             isNew = true;
             var newSelection = {
@@ -224,6 +265,9 @@ function low_level(selector, airports) {
             }
             selections.push(newSelection);
 
+            // Update selections
+            SelectionComponentObj.addSelection(ID, color);
+
             // Create new empty slut in 'between' of other
             // existing selections for newSelection
             for (var j = 0; j < ID; j++) {
@@ -233,6 +277,7 @@ function low_level(selector, airports) {
                     num_be_out: 0,
                     num_be_in: 0
                 };
+                if(!selections[j]) continue;
                 selections[j].between.push(temp)
             }
         }
@@ -244,6 +289,7 @@ function low_level(selector, airports) {
         // 2) reset selection[others].between[ID]'s data
         else {
             selections.forEach(function (selection) {
+                if(!selection) return true;
                 if (selection.id === ID) {
                     selection.x1 = x1;
                     selection.x2 = x2;
@@ -293,6 +339,7 @@ function low_level(selector, airports) {
 
         // Update num of background edges
         selections.forEach(function (selection) {
+            if(!selection) return true;
             selection.num_bg_in = selection.num_edge_in;
             selection.num_bg_out = selection.num_edge_out;
             selection.between.forEach(function (be) {
@@ -301,8 +348,7 @@ function low_level(selector, airports) {
             });
         });
 
-
-        buildBlock(ID, isNew);
+        high_level.buildBlock(ID, isNew)
     }
 
     function buildLinks (ID) {
@@ -340,6 +386,7 @@ function low_level(selector, airports) {
                 for (var i = 0; i < num_window; i++) {
                     if (i === +ID) continue;
 
+                    if(!selections[i]) continue;
                     var window = selections[i];
 
                     if (window.x1 < out_edge.des_x &&
@@ -354,9 +401,8 @@ function low_level(selector, airports) {
                             return value.id_be === ID
                         }).num_be_in ++;
 
-                        var color2 = window.color;
                         drawEdge(out_edge.des_x, out_edge.des_y, ap.x, ap.y, 1,
-                            ID, i, color, color2);
+                            ID, i, color, window.color);
                     }
                 }
             });
@@ -374,6 +420,7 @@ function low_level(selector, airports) {
                 for (var i = 0; i < num_window; i++) {
                     if (i === +ID) continue;
                     var window = selections[i];
+                    if(!selections[i]) continue;
                     if (window.x1 < in_edge.src_x &&
                         in_edge.src_x < window.x2 &&
                         window.y1 < in_edge.src_y &&
@@ -384,9 +431,8 @@ function low_level(selector, airports) {
                         selections[i].between.find(function (value) {
                             return value.id_be === ID
                         }).num_be_out ++;
-                        var color2 = window.color;
                         drawEdge(ap.x, ap.y, in_edge.src_x, in_edge.src_y, 1,
-                            i, ID, color2, color, true);
+                            i, ID, window.color, color, true);
                     }
                 }
             })
@@ -394,7 +440,7 @@ function low_level(selector, airports) {
 
         // Draw links on given coordinate of the start point (Sx, Sy)
         // and end point (Ex, Ey)
-        function drawEdge(Dx, Dy, Sx, Sy, ctg, ID, ID2, color1, color2, IN) {
+        function drawEdge(Dx, Dy, Sx, Sy, ctg, ID, ID2, color1, color2) {
 
             links = svg.append('path')
                 .attr('d', 'M ' + Sx + ' ' + Sy + ' '
@@ -469,7 +515,68 @@ function low_level(selector, airports) {
         d3.selectAll("*[class*=link"+ID+"]").remove();
         d3.selectAll('.selected'+ID).remove();
         d3.selectAll("*[id*=btg"+ID+"]").remove();
-        d3.select('selection'+ID).remove();
-        selections.splice(ID, 1)
+        d3.select('#selection'+ID).remove();
+        selections[ID] = null;
+        d3.selectAll('#high_group'+ID).remove();
+        d3.selectAll("*[id*=be_arrow"+ID+"]").remove();
+        d3.selectAll("*[id*=be_arrow_num"+ID+"]").remove();
     }
+
+    function hideSelection(ID) {
+        $("*[class*=link"+ID+"]").css('display', 'none');
+        $('.selected'+ID).css('display', 'none');
+        $("*[id*=btg"+ID+"]").css('display', 'none');
+        $('.selection'+ID).css('display', 'none');
+    }
+
+    function showSelection(ID) {
+        $("*[class*=link"+ID+"]").css('display', 'block');
+        $('.selected'+ID).css('display', 'block');
+        $("*[id*=btg"+ID+"]").css('display', 'block');
+        $('.selection'+ID).css('display', 'block');
+    }
+
+    function clickRect() {
+
+
+
+        console.log(selections)
+        var group = this,
+            id = +this.getAttribute('selection_id'),
+            selection = selections.find(function (sel) {
+                console.log('sel',sel)
+                return sel.id === id;
+            });
+
+        // Increase stroke width
+        var sel_dom = d3.select('#selection'+id)
+            .attr('stroke-width', 6)
+
+        console.log(selection)
+
+        var sq_width = 12;
+
+        var x = selection.x1,
+            y = selection.y1,
+            sel_width = selection.width,
+            sel_height = selection.height,
+            color = selection.color;
+
+        d3.select(this).append('rect')
+            .classed('handle'+id, true)
+            .attr('x', x - sq_width / 2)
+            .attr('y', y - sq_width / 2)
+            .attr('width', sq_width)
+            .attr('height', sq_width)
+            .attr('stroke', color)
+            .attr('fill', color)
+
+
+
+
+
+
+    }
+
+
 }

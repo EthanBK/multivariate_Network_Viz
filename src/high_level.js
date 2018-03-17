@@ -47,11 +47,12 @@ function high_level() {
         if (isNew) {
             // Create New Block
             var nodes = container_zoom.append('g')
-                .attr('id', 'group' + selection.id);
-            // .call(d3.drag()
-            //     .on("start", dragstarted)
-            //     .on("drag", dragged)
-            //     .on("end", dragended));
+                .classed('high_group', true)
+                .attr('id', 'high_group' + selection.id)
+                .call(d3.drag()
+                    .on("start", dragstarted_hi)
+                    .on("drag", dragged_hi)
+                    .on("end", dragended_hi));
 
             var rect = nodes.append('rect')
                 .attr('width', square_width)
@@ -246,6 +247,7 @@ function high_level() {
 
             // Marker for each box
             {
+                // todo work on the size of the marker
                 defs = nodes.append('defs');
                 // normal arrow marker
                 defs.append('svg:marker')
@@ -326,24 +328,25 @@ function high_level() {
 
         // Drag helper Functions
         {
-            function dragstarted(d) {
+            function dragstarted_hi(d) {
                 d.fx = d.x;
                 d.fy = d.y;
             }
 
-            function dragged(d) {
+            function dragged_hi(d) {
+
+                console.log('something', this)
                 d.fx = d3.event.x;
                 d.fy = d3.event.y;
             }
 
-            function dragended(d) {
+            function dragended_hi(d) {
                 d.fx = null;
                 d.fy = null;
             }
         }
 
     }
-
 
     function zoomed() {
         container_zoom.attr("transform", d3.event.transform);
