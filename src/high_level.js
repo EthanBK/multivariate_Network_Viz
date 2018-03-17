@@ -179,6 +179,7 @@ function buildBlock(ID, isNew) {
         // Build Between Arrows and Number Display
         for (var i = 0; i < selections.length; i++) {
             if (i === selection.id) continue;
+            if(!selections[i]) continue;
 
             // Update self-loop arrow width
             d3.select('.within_arrow' + selections[i].id)

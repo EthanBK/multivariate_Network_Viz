@@ -33,7 +33,9 @@ function low_level(selector, airports) {
     var SelectionComponentObj = new SelectionComponent({
         selections: selections,
         buildSelection: buildSelection,
-        deleteSelection: deleteSelection
+        deleteSelection: deleteSelection,
+        hideSelection: hideSelection,
+        showSelection: showSelection
     });
 
     //var airports = buildData(flight, ap_supplement, all_ap);
@@ -269,6 +271,7 @@ function low_level(selector, airports) {
                     num_be_out: 0,
                     num_be_in: 0
                 };
+                if(!selections[j]) continue;
                 selections[j].between.push(temp)
             }
         }
@@ -280,6 +283,7 @@ function low_level(selector, airports) {
         // 2) reset selection[others].between[ID]'s data
         else {
             selections.forEach(function (selection) {
+                if(!selection) return true;
                 if (selection.id === ID) {
                     selection.x1 = x1;
                     selection.x2 = x2;
@@ -329,6 +333,7 @@ function low_level(selector, airports) {
 
         // Update num of background edges
         selections.forEach(function (selection) {
+            if(!selection) return true;
             selection.num_bg_in = selection.num_edge_in;
             selection.num_bg_out = selection.num_edge_out;
             selection.between.forEach(function (be) {
@@ -376,6 +381,7 @@ function low_level(selector, airports) {
                 for (var i = 0; i < num_window; i++) {
                     if (i === +ID) continue;
 
+                    if(!selections[i]) continue;
                     var window = selections[i];
 
                     if (window.x1 < out_edge.des_x &&
@@ -410,6 +416,7 @@ function low_level(selector, airports) {
                 for (var i = 0; i < num_window; i++) {
                     if (i === +ID) continue;
                     var window = selections[i];
+                    if(!selections[i]) continue;
                     if (window.x1 < in_edge.src_x &&
                         in_edge.src_x < window.x2 &&
                         window.y1 < in_edge.src_y &&
@@ -506,6 +513,22 @@ function low_level(selector, airports) {
         d3.selectAll('.selected'+ID).remove();
         d3.selectAll("*[id*=btg"+ID+"]").remove();
         d3.select('.selection'+ID).remove();
-        selections.splice(ID, 1)
+        //selections.splice(ID, 1)
+        selections[ID] = null;
+    }
+
+    function hideSelection(ID) {
+        debugger
+        $("*[class*=link"+ID+"]").css('display', 'none');
+        $('.selected'+ID).css('display', 'none');
+        $("*[id*=btg"+ID+"]").css('display', 'none');
+        $('.selection'+ID).css('display', 'none');
+    }
+
+    function showSelection(ID) {
+        $("*[class*=link"+ID+"]").css('display', 'block');
+        $('.selected'+ID).css('display', 'block');
+        $("*[id*=btg"+ID+"]").css('display', 'block');
+        $('.selection'+ID).css('display', 'block');
     }
 }
