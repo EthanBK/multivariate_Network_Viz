@@ -24,18 +24,10 @@ function low_level(selector, airports) {
 
     var yAxisScale = d3.scaleLinear()
         .domain([-90, 90])
-        .range([0, height])
+        .range([0, height]);
 
-    var xAxis = d3.axisBottom(xAxisScale)
-        // .ticks(width / height * 10)
-        // .tickSize(height)
-        // .tickPadding(8 - height);
-
-    var yAxis = d3.axisRight(yAxisScale)
-        // .tick(10)
-        // .tickSize(width)
-        // .tickPadding(8 - width);
-
+    var xAxis = d3.axisBottom(xAxisScale);
+    var yAxis = d3.axisRight(yAxisScale);
 
     // Expose an API to selection component
     var SelectionComponentObj = new SelectionComponent({

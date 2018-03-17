@@ -11,11 +11,28 @@ function high_level() {
     var width = 1500,
         height = 750;
 
+    // var zoom = d3.zoom()
+    //     .scaleExtent([1, 10])
+    //     .on('zoom', zoomed);
+    //
+    // var xAxisScale = d3.scaleLinear()
+    //     .domain([-180, 180])
+    //     .range([0, width]);
+    //
+    // var yAxisScale = d3.scaleLinear()
+    //     .domain([-90, 90])
+    //     .range([0, height]);
+    //
+    // var xAxis = d3.axisBottom(xAxisScale);
+    // var yAxis = d3.axisRight(yAxisScale);
+
     high_level_svg = d3.selectAll('#high_level')
         .append('svg')
         .attr('id', "high_level_svg")
         .attr('width', width)
         .attr('height', height)
+
+
 }
 
 function buildBlock(ID, isNew) {
