@@ -109,7 +109,7 @@ function SelectionComponent(api) {
         // If child is selected, show filter options
         $child.on('click', function() {
             if($toggle.prop('checked'))
-                FilterComponentObj.init(selections[id]);
+                FilterComponentObj.init(api.selections[id]);
         });
     }
 
@@ -121,13 +121,13 @@ function SelectionComponent(api) {
 
     // todo
     this.hide = function(id) {
-        this.HiddenSelections[id] = $.extend({}, selections[id]);
+        this.HiddenSelections[id] = $.extend({}, api.selections[id]);
         api.deleteSelection(id);
     }
 
     this.show = function(id) {
         var s = this.HiddenSelections[id];
-        selections.splice(id, 0 , s);
+        api.selections.splice(id, 0 , s);
         api.buildSelection(s.x1, s.y1, s.x2, s.y2, s.color, s.id);
         // todo control the visualibility
 
