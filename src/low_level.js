@@ -46,20 +46,26 @@ function low_level(selector, airports) {
         .attr('height', height)
         .style('background', '#141411');
 
+    var bg_rec = svg.append("rect")
+        .classed('background', true)
+        .attr("width", width)
+        .attr("height", height)
+        .on('click', resetClickSel);
+
     // svg.append("rect")
     //     .classed('background', true)
     //     .attr("width", width)
     //     .attr("height", height)
 
-    var gX = svg.append('g')
-        .attr('class', 'axis axis--x')
-        .attr('stroke', 'white')
-        .call(xAxis);
-
-    var gY = svg.append('g')
-        .attr('class', 'axis axis--y')
-        .attr('stroke', 'white')
-        .call(yAxis);
+    // var gX = svg.append('g')
+    //     .attr('class', 'axis axis--x')
+    //     .attr('stroke', 'white')
+    //     .call(xAxis);
+    //
+    // var gY = svg.append('g')
+    //     .attr('class', 'axis axis--y')
+    //     .attr('stroke', 'white')
+    //     .call(yAxis);
 
     // var container_zoom = svg.append('g')
     //     .attr('id', 'container_zoom');
@@ -95,7 +101,7 @@ function low_level(selector, airports) {
     var selection = null,
         selection_color = null,
         randomColor = null,
-        sel_group = null
+        sel_group = null;
 
 
     // a random color generator to get get color for selection win.
@@ -109,7 +115,6 @@ function low_level(selector, airports) {
         // Set window and node color of this selection.
         selection_color = getColor(Math.random());
         randomColor = "hsl(" + Math.random() * 360 + ",100%,50%)";
-
 
         sel_group = svg.append('g')
             .classed('sel_group', true)
@@ -144,8 +149,11 @@ function low_level(selector, airports) {
     };
 
     var endSelection = function(start, end) {
+        if (end[0] <= start[0] || end[1] <= start[1]) {
+            // if click on svg, or invalid selection creation
+            d3.select('#sel_group'+num_window).remove()
+        }
         sel_group.on('click', clickRect)
-        // selection.attr("visibility", "hidden");
     };
 
     svg.on("mousedown", function() {
@@ -165,7 +173,7 @@ function low_level(selector, airports) {
                     .on("mousemove.selection", null)
                     .on("mouseup.selection", null);
 
-                endSelection(selection_color, start, d3.mouse(parent));
+                endSelection(start, d3.mouse(parent));
             });
     });
 
@@ -173,7 +181,6 @@ function low_level(selector, airports) {
     function dragstarted() {
         d3.select(this).raise().classed("active", true);
     }
-
     function dragged() {
         this.x = this.x || 0;
         this.y = this.y || 0;
@@ -181,7 +188,6 @@ function low_level(selector, airports) {
         this.y += d3.event.dy;
         d3.select(this).attr("transform", "translate(" + this.x + "," + this.y + ")");
     }
-
     function dragended() {
         d3.select(this).classed("active", false);
 
@@ -191,15 +197,15 @@ function low_level(selector, airports) {
             var transform = this.getAttribute('transform'),
                 regExp_x = /\(([^)]+),/,
                 regExp_y = /,([^)]+)\)/;
-                trans_x = regExp_x.exec(transform)[1];
-                trans_y = regExp_y.exec(transform)[1];
+                trans_x = +regExp_x.exec(transform)[1];
+                trans_y = +regExp_y.exec(transform)[1];
         }
 
         var id = +this.getAttribute('id').substring(9),
             sel_dom = document.getElementById('selection' + id);
 
-        var x1 = +sel_dom.getAttribute('x') + parseInt(trans_x),
-            y1 = +sel_dom.getAttribute('y') + parseInt(trans_y),
+        var x1 = +sel_dom.getAttribute('x') + trans_x,
+            y1 = +sel_dom.getAttribute('y') + trans_y,
             x2 = x1 + +sel_dom.getAttribute('width'),
             y2 = y1 + +sel_dom.getAttribute('height');
 
@@ -533,10 +539,11 @@ function low_level(selector, airports) {
         d3.selectAll('.selected'+ID).remove();
         d3.selectAll("*[id*=btg"+ID+"]").remove();
         d3.select('#selection'+ID).remove();
-        selections[ID] = null;
+        d3.select('#handle_group'+ID).remove();
         d3.selectAll('#high_group'+ID).remove();
         d3.selectAll("*[id*=be_arrow"+ID+"]").remove();
         d3.selectAll("*[id*=be_arrow_num"+ID+"]").remove();
+        selections[ID] = null;
     }
 
     function hideSelection(ID) {
@@ -553,50 +560,87 @@ function low_level(selector, airports) {
         $('.selection'+ID).css('display', 'block');
     }
 
+    function resetClickSel() {
+
+        console.log('reset clicked sel');
+
+        d3.selectAll('.handle').remove();
+
+        d3.selectAll(".clicked")
+            .classed('clicked', false)
+            .attr('stroke-width', 3)
+    }
+
     function clickRect() {
 
-
+        resetClickSel()
 
         // console.log(selections)
-        var group = this,
-            id = +this.getAttribute('selection_id'),
-            selection = selections.find(function (sel) {
-                // console.log('sel',sel)
-                return sel.id === id;
+        var group = d3.select(this);
+        var id = +this.getAttribute('id').substring(9);
+
+        var sel_dom = d3.select('#selection'+id);
+        var sel_obj = selections.find(function (sel) {
+                if (sel !== null)
+                    return sel.id === id;
+                else return false
             });
 
-        console.log(id)
+        if (sel_dom.attr('class').indexOf('clicked') > 0)
+            return;
 
         // Increase stroke width
-        var sel_dom = d3.select('#selection'+id)
-            .attr('stroke-width', 6)
-
-        // console.log('click', sel_dom)
-
-        // console.log(selection)
+        sel_dom
+            .classed('clicked', true)
+            .attr('stroke-width', 6);
 
         var sq_width = 12;
 
-        var x = selection.x1,
-            y = selection.y1,
-            sel_width = selection.width,
-            sel_height = selection.height,
-            color = selection.color;
+        var x = +sel_obj.x1,
+            y = +sel_obj.y1,
+            sel_width = +sel_obj.x2 - +sel_obj.x1,
+            sel_height = +sel_obj.y2 - +sel_obj.y1,
+            color = sel_obj.color,
+            trans_x = 0,
+            trans_y = 0;
 
-        d3.select(this).append('rect')
-            .classed('handle'+id, true)
-            .attr('x', x - sq_width / 2)
-            .attr('y', y - sq_width / 2)
-            .attr('width', sq_width)
-            .attr('height', sq_width)
-            .attr('stroke', color)
-            .attr('fill', color)
+        if (this.getAttribute('transform') !== null) {
+            var transform = this.getAttribute('transform'),
+                regExp_x = /\(([^)]+),/,
+                regExp_y = /,([^)]+)\)/;
+            trans_x = +regExp_x.exec(transform)[1];
+            trans_y = +regExp_y.exec(transform)[1];
+        }
 
+        var x_handle = x - sq_width / 2 - trans_x,
+            y_handle = y - sq_width / 2 - trans_y;
 
+        var pos = [
+            {x: x_handle, y: y_handle},
+            {x: x_handle + sel_width / 2, y: y_handle},
+            {x: x_handle + sel_width, y: y_handle},
+            {x: x_handle, y: y_handle + sel_height / 2},
+            {x: x_handle + sel_width, y: y_handle + sel_height / 2},
+            {x: x_handle, y: y_handle + sel_height},
+            {x: x_handle + sel_width / 2, y: y_handle + sel_height},
+            {x: x_handle + sel_width, y: y_handle + sel_height}
+            ];
 
+        // Add 8 handles, keep them in a group
+       var handles = group.append('g')
+           .attr('id', 'handle_group'+id);
 
-
-
+           handles.selectAll('rect')
+               .data(pos).enter()
+               .append('rect')
+               .classed('handle', true)
+               .attr('id', function (d, i) { return 'handle_' + i; })
+               .attr('x', function (d) { return d.x; })
+               .attr('y', function (d) { return d.y; })
+               .attr('width', sq_width)
+               .attr('height', sq_width)
+               .attr('fill', color)
+               .attr('stroke', color)
     }
 
 
