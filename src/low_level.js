@@ -33,7 +33,9 @@ function low_level(selector, airports) {
     var SelectionComponentObj = new SelectionComponent({
         selections: selections,
         buildSelection: buildSelection,
-        deleteSelection: deleteSelection
+        deleteSelection: deleteSelection,
+        hideSelection: hideSelection,
+        showSelection: showSelection
     });
 
     //var airports = buildData(flight, ap_supplement, all_ap);
@@ -281,6 +283,7 @@ function low_level(selector, airports) {
         // 2) reset selection[others].between[ID]'s data
         else {
             selections.forEach(function (selection) {
+                if(!selection) return true;
                 if (selection.id === ID) {
                     selection.x1 = x1;
                     selection.x2 = x2;
@@ -512,5 +515,20 @@ function low_level(selector, airports) {
         d3.select('.selection'+ID).remove();
         //selections.splice(ID, 1)
         selections[ID] = null;
+    }
+
+    function hideSelection(ID) {
+        debugger
+        $("*[class*=link"+ID+"]").css('display', 'none');
+        $('.selected'+ID).css('display', 'none');
+        $("*[id*=btg"+ID+"]").css('display', 'none');
+        $('.selection'+ID).css('display', 'none');
+    }
+
+    function showSelection(ID) {
+        $("*[class*=link"+ID+"]").css('display', 'block');
+        $('.selected'+ID).css('display', 'block');
+        $("*[id*=btg"+ID+"]").css('display', 'block');
+        $('.selection'+ID).css('display', 'block');
     }
 }

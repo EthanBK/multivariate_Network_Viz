@@ -122,17 +122,11 @@ function SelectionComponent(api) {
 
     // todo
     this.hide = function(id) {
-        var selection = find_selection(id);
-        this.HiddenSelections[id] = $.extend({}, selection);
-        api.deleteSelection(id);
+        api.hideSelection(id);
     }
 
     this.show = function(id) {
-        var s = this.HiddenSelections[id];
-        api.selections.splice(find_selection_index(id), 0 , s);
-        api.buildSelection(s.x1, s.y1, s.x2, s.y2, s.color, s.id);
-        // todo control the visualibility
-
+        api.showSelection(id);
     }
 
     var find_selection = function(id) {
@@ -143,15 +137,6 @@ function SelectionComponent(api) {
             if(selection && selection.id == id)
                 return selection;
         }
-    }
-
-    var find_selection_index = function(id) {
-        var len = api.selections.length;
-
-        for(var i = 0; i < len; ++i)
-            var selection = api.selections[i];
-            if(selection && selection.id == id)
-                return i;
     }
 
     var id_to_remove = function(id) {
