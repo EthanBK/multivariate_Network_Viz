@@ -343,7 +343,8 @@ function low_level(selector, airports) {
         });
 
 
-        buildBlock(ID, isNew)
+
+        high_level.buildBlock(ID, isNew)
     }
 
     function buildLinks (ID) {
