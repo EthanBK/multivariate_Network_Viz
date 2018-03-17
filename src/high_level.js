@@ -1,7 +1,3 @@
-
-
-
-
 function high_level() {
 
     var high_level_svg,
@@ -10,7 +6,6 @@ function high_level() {
         active = d3.select('null');
 
     var block_width = 300,
-        block_height = 300,
         square_width = block_width / 2;
 
     var width = 1500,
@@ -31,6 +26,7 @@ function high_level() {
         .classed('background', true)
         .attr("width", width)
         .attr("height", height)
+        .attr('fill-opacity', 0)
         .on('click', reset);
 
     container_zoom = high_level_svg.append('g')
@@ -199,15 +195,15 @@ function high_level() {
                 nodes.append('text')
                     .attr('x', (xs + xe) / 2 - xm)
                     .attr('y', (ys + ye) / 2 + ym)
-                    .attr('id', 'from' + selection.id + 'to' + selections[i].id + '_num')
+                    .attr('id', 'be_arrow_num' + selection.id + 'be_arrow_num' + selections[i].id)
                     .attr('font-size', 30)
                     .attr('fill', 'white')
                     .text(num_be_out);
 
                 // Between in
                 container_zoom.append('path')
-                    .classed('be_arrow' + selection.id +
-                        'be_arrow' + selections[i].id, true)
+                    .attr('id', 'be_arrow_num' + selection.id +
+                        'be_arrow_num' + selections[i].id)
                     .attr('stroke', 'url(#bag' + selection.id +
                         'bag' + selections[i].id + ")")
                     .attr('stroke-width', 5)
@@ -221,7 +217,7 @@ function high_level() {
                 nodes.append('text')
                     .attr('x', (xs + xe) / 2 + xm)
                     .attr('y', (ys + ye) / 2 - ym)
-                    .attr('id', 'from' + selections[i].id + 'to' + selection.id + '_num')
+                    .attr('id', 'arrow_be_num' + selections[i].id + 'arrow_be_num' + selection.id)
                     .attr('font-size', 30)
                     .attr('fill', 'white')
                     .text(num_be_in);
@@ -301,7 +297,7 @@ function high_level() {
         }
         // Update number display for all boxes
         else {
-            var group_update = d3.selectAll('#group' + ID);
+            d3.selectAll('#group' + ID);
             var num_within = selections[ID].num_edge_within,
                 num_bg_out = selections[ID].num_bg_out,
                 num_bg_in = selections[ID].num_bg_in;
@@ -328,60 +324,65 @@ function high_level() {
             }
         }
 
-        function dragstarted(d) {
-            d.fx = d.x;
-            d.fy = d.y;
+
+        // Drag helper Functions
+        {
+            function dragstarted(d) {
+                d.fx = d.x;
+                d.fy = d.y;
+            }
+
+            function dragged(d) {
+                d.fx = d3.event.x;
+                d.fy = d3.event.y;
+            }
+
+            function dragended(d) {
+                d.fx = null;
+                d.fy = null;
+            }
         }
 
-        function dragged(d) {
-            d.fx = d3.event.x;
-            d.fy = d3.event.y;
+    }
+
+    // Zooming and Drag helper function
+    {
+        function zoomed() {
+            container_zoom.attr("transform", d3.event.transform);
         }
 
-        function dragended(d) {
-            d.fx = null;
-            d.fy = null;
+        function stopped() {
+            if (d3.event.defaultPrevented)
+                d3.event.stopPropagation();
         }
 
+        function reset() {
+            active.classed("active", false);
+            active = d3.select(null);
+
+            high_level_svg.transition()
+                .duration(750)
+                .call(zoom.transform, d3.zoomIdentity);
+        }
+
+        function clicked() {
+
+            if (active.node === this) return reset();
+            active.classed('active', true);
+
+            var x1 = +this.getAttribute('x'),
+                y1 = +this.getAttribute('y');
+
+            var x = x1 + square_width / 2,
+                y = y1 + square_width / 2;
+            var scale = Math.max(1, Math.min(8, 0.9 * height / square_width));
+            var translate = [width / 2 - x * scale, height / 2 - y * scale];
+
+            high_level_svg.transition()
+                .duration(750)
+                .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale))
+        }
     }
-
-
-    function zoomed() {
-        container_zoom.attr("transform", d3.event.transform);
-    }
-
-    function stopped() {
-        if (d3.event.defaultPrevented)
-            d3.event.stopPropagation();
-    }
-
-    function reset() {
-        active.classed("active", false);
-        active = d3.select(null);
-
-        high_level_svg.transition()
-            .duration(750)
-            .call(zoom.transform, d3.zoomIdentity);
-    }
-
-    function clicked() {
-
-        if (active.node === this) return reset();
-        active.classed('active', true);
-
-        var x1 = +this.getAttribute('x'),
-            y1 = +this.getAttribute('y');
-
-        var x = x1 + square_width / 2,
-            y = y1 + square_width / 2;
-        var scale = Math.max(1, Math.min(8, 0.9 * height/ square_width));
-        var translate = [width / 2 - x * scale, height / 2 - y * scale];
-
-        high_level_svg.transition()
-            .duration(750)
-            .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale))
-    }
-
 
     high_level.buildBlock = buildBlock;
 }

@@ -120,7 +120,6 @@ function SelectionComponent(api) {
         $selection.remove();
     }
 
-    // todo
     this.hide = function(id) {
         api.hideSelection(id);
     }

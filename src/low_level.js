@@ -44,7 +44,7 @@ function low_level(selector, airports) {
         .attr('id', 'low_svg')
         .attr('width', width)
         .attr('height', height)
-        .style('background', '#131410');
+        .style('background', '#141411');
 
     // svg.append("rect")
     //     .classed('background', true)
@@ -514,12 +514,13 @@ function low_level(selector, airports) {
         d3.selectAll('.selected'+ID).remove();
         d3.selectAll("*[id*=btg"+ID+"]").remove();
         d3.select('.selection'+ID).remove();
-        //selections.splice(ID, 1)
         selections[ID] = null;
+        d3.selectAll('#group'+ID).remove();
+        d3.selectAll("*[id*=be_arrow"+ID+"]").remove();
+        d3.selectAll("*[id*=be_arrow_num"+ID+"]").remove();
     }
 
     function hideSelection(ID) {
-        debugger
         $("*[class*=link"+ID+"]").css('display', 'none');
         $('.selected'+ID).css('display', 'none');
         $("*[id*=btg"+ID+"]").css('display', 'none');
