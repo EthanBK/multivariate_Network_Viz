@@ -64,7 +64,7 @@ function bubbleChart(svg_bg, data_to_show, ID) {
 
     var selection = selections[ID];
     var data = selection.airport;
-    var tooltip = floatingTooltip('Movie_tooltip', 240);
+    var tooltip_agg = floatingTooltip('Movie_tooltip', 240);
 
     var width = +svg_bg.getAttribute('width'),
         height = +svg_bg.getAttribute('height');
@@ -175,7 +175,7 @@ function bubbleChart(svg_bg, data_to_show, ID) {
             '<span>)</span>' +
             '</span>';
 
-        tooltip.showTooltip(message, d3.event);
+        tooltip_agg.showTooltip(message, d3.event);
     }
 
     function mouseout(d) {
@@ -185,7 +185,7 @@ function bubbleChart(svg_bg, data_to_show, ID) {
 
         simulation.nodes(data_to_show);
 
-        tooltip.hideTooltip();
+        tooltip_agg.hideTooltip();
     }
 }
 
@@ -197,7 +197,7 @@ function barChart(svg_bg, data_to_show, ID) {
 
     var selection = selections[ID];
     var data = selection.airport;
-    var tooltip = floatingTooltip('Movie_tooltip', 240);
+    var tooltip_agg = floatingTooltip('Movie_tooltip', 240);
 
     var width = +svg_bg.getAttribute('width'),
         height = +svg_bg.getAttribute('height'),
@@ -297,7 +297,7 @@ function barChart(svg_bg, data_to_show, ID) {
             '<span>)</span>' +
             '</span>';
 
-        tooltip.showTooltip(message, d3.event);
+        tooltip_agg.showTooltip(message, d3.event);
     }
 
     function mouseout(d) {
@@ -306,7 +306,7 @@ function barChart(svg_bg, data_to_show, ID) {
             .attr('r', (d.value))
             .attr('fill', this.getAttribute('pre_color'));
 
-        tooltip.hideTooltip();
+        tooltip_agg.hideTooltip();
     }
 
 }
