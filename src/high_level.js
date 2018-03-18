@@ -33,6 +33,26 @@ function high_level() {
     container_zoom = high_level_svg.append('g')
         .attr('id', 'container_zoom');
 
+    // background grids
+    container_zoom.append("g")
+        .attr("class", "x axis")
+        .selectAll("line")
+        .data(d3.range(0, width, 50))
+        .enter().append("line")
+        .attr("x1", function(d) { return d; })
+        .attr("y1", 0)
+        .attr("x2", function(d) { return d; })
+        .attr("y2", height);
+    container_zoom.append("g")
+        .attr("class", "y axis")
+        .selectAll("line")
+        .data(d3.range(0, height, 50))
+        .enter().append("line")
+        .attr("x1", 0)
+        .attr("y1", function(d) { return d; })
+        .attr("x2", width)
+        .attr("y2", function(d) { return d; });
+
     high_level_svg.call(zoom);
 
     function buildBlock(ID, isNew) {
