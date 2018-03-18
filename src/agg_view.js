@@ -64,7 +64,7 @@ function bubbleChart(svg_bg, data_to_show, ID) {
 
     var selection = selections[ID];
     var data = selection.airport;
-    var tooltip_agg = floatingTooltip('Movie_tooltip', 240);
+    var tooltip_agg = floatingTooltip('bubble_tooltip', 240);
 
     var width = +svg_bg.getAttribute('width'),
         height = +svg_bg.getAttribute('height');
@@ -135,9 +135,26 @@ function bubbleChart(svg_bg, data_to_show, ID) {
         .text(function (d) {
             return d.keyName
         })
+        .on('mouseover', mouseover)
+        .on('mouseout', mouseout)
         .on('click', function () {
             high_level.clicked(document.getElementById('high_level_rect' + ID))
         });
+    // var cover = nodes.append('circle')
+    //     .classed('bubble_cover' + ID, true)
+    //     .attr('cx', 0)
+    //     .attr('cy', 0)
+    //     .attr('r', function (d) {
+    //         return radius_scale(d.value)
+    //     })
+    //     .attr('fill', function (d) {
+    //         return color_scale(d.value)
+    //     })
+    //     .on('mouseover', mouseover)
+    //     .on('mouseout', mouseout)
+    //     .on('click', function () {
+    //         high_level.clicked(document.getElementById('high_level_rect' + ID))
+    //     });
 
     simulation.nodes(data_to_show);
 
@@ -197,7 +214,7 @@ function barChart(svg_bg, data_to_show, ID) {
 
     var selection = selections[ID];
     var data = selection.airport;
-    var tooltip_agg = floatingTooltip('Movie_tooltip', 240);
+    var tooltip_agg = floatingTooltip('bar_tooltip', 240);
 
     var width = +svg_bg.getAttribute('width'),
         height = +svg_bg.getAttribute('height'),

@@ -49,6 +49,7 @@ function low_level(selector, airports) {
             var coords = d3.mouse(this);
             var isBackground = true;
             selections.forEach(function (sel) {
+                if (sel === null) return;
                 if (coords[0] > sel.x1 && coords[0] < sel.x2 &&
                 coords[1] > sel.y1 && coords[1] < sel.y2)
                     isBackground = false;

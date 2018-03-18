@@ -9,7 +9,7 @@ function floatingTooltip(tooltipId, width) {
   // manipulation in other functions.
   var tt = d3.select('body')
     .append('div')
-    .attr('class', 'tooltip')
+    .attr('class', 'tooltip_agg')
     .attr('id', tooltipId)
     .style('pointer-events', 'none');
 
