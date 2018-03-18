@@ -10,16 +10,36 @@ function aggregationView(ID, ChartType, DataType) {
 
     var data_to_show = [];
 
+    switch(DataType) {
+        case 0:
+            data_to_show = buildData(data, 'code', 'num_in_airline');
+            break;
+        case 1:
+            data_to_show = buildData(data, 'code', 'num_out_airline');
+            break;
+        case 2:
 
+            break;
+        case 3:
 
-    if (DataType === 0) {
-        data_to_show = buildData(data, 'code', 'num_in_airline');
+            break;
+
+        default:
+            data_to_show = buildData(data, 'code', 'num_in_airline');
     }
 
-    // Create Default display
-    if (ChartType === 0) {
-        bubbleChart(svg_bg, data_to_show, ID)
+    switch(ChartType) {
+        case 0:
+            bubbleChart(svg_bg, data_to_show, ID);
+            break;
+        case 1:
+            barChart(svg_bg, data_to_show, ID);
+            break;
+
+        default:
+            bubbleChart(svg_bg, data_to_show, ID);
     }
+
 }
 
 function buildData(data, keyName, valueName) {
@@ -55,7 +75,11 @@ function bubbleChart(svg_bg, data_to_show, ID) {
 
 
     var radius_scale = d3.scaleLinear()
-        .domain([val_min, val_max])
+        .domain([d3.min(data_to_show, function (d) {
+            return d.value
+        }), d3.max(data_to_show, function (d) {
+            return d.value
+        })])
         .range([6, 18]);
 
     var color_scale = d3.scaleLinear()
@@ -78,12 +102,12 @@ function bubbleChart(svg_bg, data_to_show, ID) {
     var svg = d3.select('#agg_svg'+ID)
         .append('svg')
         .classed('inner_svg', true)
-        .attr('id', 'inner_svg'+ID)
+        .attr('id', 'inner_svg'+ID);
 
     var nodes = svg.selectAll('g')
         .data(data_to_show)
         .classed('nodes', true)
-        .enter().append('g')
+        .enter().append('g');
 
     var circle = nodes.append('circle')
         .classed('bubble_circle'+ID, true)
@@ -94,6 +118,11 @@ function bubbleChart(svg_bg, data_to_show, ID) {
         })
         .attr('fill', function (d) {
             return color_scale(d.value)
+        })
+        .on('click', function (d) {
+
+            console.log('sdfsf')
+
         });
     var text = nodes.append('text')
         .classed('bubble_text'+ID, true)
@@ -106,10 +135,7 @@ function bubbleChart(svg_bg, data_to_show, ID) {
             return d.keyName
         });
 
-
-
     simulation.nodes(data_to_show);
-
 
     function ticked() {
         circle
@@ -121,6 +147,30 @@ function bubbleChart(svg_bg, data_to_show, ID) {
     }
 }
 
-function barChart() {
+function barChart(svg_bg, data_to_show, ID) {
+
+    d3.select(svg_bg).selectAll('*').remove();
+
+    // if (d3.select(svg_bg).selectAll('*') !== null) return;
+
+    var selection = selections[ID];
+
+    var width = svg_bg.getAttribute('width'),
+        height = svg_bg.getAttribute('height'),
+        margin = {top: 20, bottom: 20, left: 20, right: 20 };
+
+    var val_min = Number.MAX_VALUE,
+        val_max = Number.MIN_VALUE;
+
+    data_to_show.forEach(function (d) {
+        val_min = Math.min(val_min, d.value);
+        val_max = Math.max(val_max, d.value);
+    });
+
+    var xScale = d3.scaleBand()
+        .domain(data_to_show.map(function (d) {
+            return d.keyName;
+        }))
+        .range()
 
 }

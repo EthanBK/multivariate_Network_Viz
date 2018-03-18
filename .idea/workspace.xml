@@ -5,6 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="59fca950-d5f7-42bd-907e-c28fd8acc72d" name="Default" comment="">
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/tooltip.js" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/src/agg_view.js" afterPath="$PROJECT_DIR$/src/agg_view.js" />
       <change beforePath="$PROJECT_DIR$/src/high_level.js" afterPath="$PROJECT_DIR$/src/high_level.js" />
       <change beforePath="$PROJECT_DIR$/src/low_level.js" afterPath="$PROJECT_DIR$/src/low_level.js" />
@@ -28,8 +30,8 @@
             <file leaf-file-name="low_level.js" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/src/low_level.js">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="453">
-                    <caret line="381" column="8" lean-forward="false" selection-start-line="381" selection-start-column="8" selection-end-line="381" selection-end-column="8" />
+                  <state relative-caret-position="-13">
+                    <caret line="581" column="8" lean-forward="false" selection-start-line="581" selection-start-column="8" selection-end-line="581" selection-end-column="8" />
                     <folding>
                       <element signature="e#769#965#0" expanded="false" />
                       <element signature="n#!!block;n#dragged#0;n#!!block;n#low_level#0" expanded="false" />
@@ -42,6 +44,7 @@
                       <element signature="n#!!block;n#deleteSelection#0;n#!!block;n#low_level#0" expanded="false" />
                       <element signature="n#!!block;n#hideSelection#0;n#!!block;n#low_level#0" expanded="false" />
                       <element signature="n#!!block;n#showSelection#0;n#!!block;n#low_level#0" expanded="false" />
+                      <element signature="n#!!block;n#resetClickSel#0;n#!!block;n#low_level#0" expanded="false" />
                     </folding>
                   </state>
                 </provider>
@@ -57,8 +60,8 @@
       <file leaf-file-name="high_level.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/high_level.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="36">
-              <caret line="398" column="55" lean-forward="true" selection-start-line="398" selection-start-column="55" selection-end-line="398" selection-end-column="55" />
+            <state relative-caret-position="-51">
+              <caret line="398" column="0" lean-forward="false" selection-start-line="398" selection-start-column="0" selection-end-line="398" selection-end-column="0" />
               <folding>
                 <element signature="e#2899#5413#0" expanded="false" />
                 <element signature="e#5499#6703#0" expanded="false" />
@@ -79,8 +82,8 @@
       <file leaf-file-name="agg_view.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/agg_view.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="77">
-              <caret line="58" column="21" lean-forward="false" selection-start-line="58" selection-start-column="21" selection-end-line="58" selection-end-column="21" />
+            <state relative-caret-position="274">
+              <caret line="159" column="61" lean-forward="false" selection-start-line="159" selection-start-column="61" selection-end-line="159" selection-end-column="61" />
               <folding />
             </state>
           </provider>
@@ -115,7 +118,6 @@
       <find>zoomed</find>
       <find>cliked</find>
       <find>selections[i]</find>
-      <find>high</find>
       <find>attri</find>
       <find>buildBloc</find>
       <find>stop</find>
@@ -136,6 +138,7 @@
       <find>substring</find>
       <find>clicked</find>
       <find>con</find>
+      <find>high</find>
       <find>conso</find>
     </findStrings>
     <replaceStrings>
@@ -167,8 +170,8 @@
         <option value="$PROJECT_DIR$/src/high_level_backup.js" />
         <option value="$PROJECT_DIR$/src/low_level_backup.js" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/src/low_level.js" />
         <option value="$PROJECT_DIR$/src/high_level.js" />
+        <option value="$PROJECT_DIR$/src/low_level.js" />
         <option value="$PROJECT_DIR$/src/agg_view.js" />
       </list>
     </option>
@@ -255,11 +258,11 @@
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1.Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/src/low_level_backup.js&#10;low&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1.Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/src/low_level.js&#10;ind&#9;RUN_CONFIGURATION&#9;index.html&#10;hig&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1. Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/src/high_level.js&#10;lo&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1. Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/src/low_level.js&#10;hi&#9;null&#9;null&#10;glo&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1. Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/css/global.css&#10;inde&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1. Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/index.html" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -326,7 +329,7 @@
       <workItem from="1520972082348" duration="22264000" />
       <workItem from="1521019776742" duration="1443000" />
       <workItem from="1521144744477" duration="12338000" />
-      <workItem from="1521233649042" duration="48837000" />
+      <workItem from="1521233649042" duration="51072000" />
     </task>
     <task id="LOCAL-00001" summary="Creation outline of the project">
       <created>1519702338392</created>
@@ -514,7 +517,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="225298000" />
+    <option name="totallyTimeSpent" value="227533000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -529,7 +532,7 @@
     <frame x="337" y="1103" width="1280" height="777" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17228739" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17156473" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26482213" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32776934" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -658,13 +661,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/high_level.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/low_level.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="11571">
@@ -961,10 +957,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="523">
+          <caret line="93" column="30" lean-forward="false" selection-start-line="93" selection-start-column="30" selection-end-line="93" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tooltip.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="40">
+          <caret line="7" column="14" lean-forward="false" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/low_level.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="453">
-          <caret line="381" column="8" lean-forward="false" selection-start-line="381" selection-start-column="8" selection-end-line="381" selection-end-column="8" />
+        <state relative-caret-position="-13">
+          <caret line="581" column="8" lean-forward="false" selection-start-line="581" selection-start-column="8" selection-end-line="581" selection-end-column="8" />
           <folding>
             <element signature="e#769#965#0" expanded="false" />
             <element signature="n#!!block;n#dragged#0;n#!!block;n#low_level#0" expanded="false" />
@@ -977,22 +989,15 @@
             <element signature="n#!!block;n#deleteSelection#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#hideSelection#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#showSelection#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#resetClickSel#0;n#!!block;n#low_level#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="523">
-          <caret line="93" column="30" lean-forward="false" selection-start-line="93" selection-start-column="30" selection-end-line="93" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/high_level.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="398" column="55" lean-forward="true" selection-start-line="398" selection-start-column="55" selection-end-line="398" selection-end-column="55" />
+        <state relative-caret-position="-51">
+          <caret line="398" column="0" lean-forward="false" selection-start-line="398" selection-start-column="0" selection-end-line="398" selection-end-column="0" />
           <folding>
             <element signature="e#2899#5413#0" expanded="false" />
             <element signature="e#5499#6703#0" expanded="false" />
@@ -1011,8 +1016,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/agg_view.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="77">
-          <caret line="58" column="21" lean-forward="false" selection-start-line="58" selection-start-column="21" selection-end-line="58" selection-end-column="21" />
+        <state relative-caret-position="274">
+          <caret line="159" column="61" lean-forward="false" selection-start-line="159" selection-start-column="61" selection-end-line="159" selection-end-column="61" />
           <folding />
         </state>
       </provider>

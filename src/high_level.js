@@ -391,12 +391,16 @@ function high_level() {
             .call(zoom.transform, d3.zoomIdentity);
     }
 
-    function clicked() {
+    function clicked(input) {
 
-        if (active.node === this) return reset();
-        active.classed('active', true);
+        var rect_dom = this;
+        if (input)
+            rect_dom = input;
 
-        var id = this.getAttribute('id').substring(16);
+        if (active.node === rect_dom) return reset();
+        active.classed('active', rect_dom);
+
+        var id = rect_dom.getAttribute('id').substring(16);
         var parentGroup = document.getElementById('high_group' + id)
 
 
@@ -411,8 +415,8 @@ function high_level() {
             trans_y = +regExp_y.exec(transform)[1];
         }
 
-        var x1 = +this.getAttribute('x') + trans_x,
-            y1 = +this.getAttribute('y') + trans_y;
+        var x1 = +rect_dom.getAttribute('x') + trans_x,
+            y1 = +rect_dom.getAttribute('y') + trans_y;
 
         var x = x1 + square_width / 2,
             y = y1 + square_width / 2;
@@ -423,6 +427,8 @@ function high_level() {
             .duration(750)
             .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale))
     }
+
+    high_level.clicked = clicked;
 }
 
 

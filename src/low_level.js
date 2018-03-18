@@ -571,10 +571,6 @@ function low_level(selector, airports) {
 
     function resetClickSel() {
 
-
-
-        console.log('reset clicked sel');
-
         d3.selectAll('.handle').remove();
 
         d3.selectAll(".clicked")
@@ -583,8 +579,6 @@ function low_level(selector, airports) {
     }
 
     function clickRect() {
-
-        console.log('dd')
         resetClickSel()
 
         // console.log(selections)
@@ -652,6 +646,8 @@ function low_level(selector, airports) {
                .attr('width', sq_width)
                .attr('height', sq_width)
                .attr('fill', color)
-               .attr('stroke', color)
+               .attr('stroke', color);
+
+        high_level.clicked(document.getElementById('high_level_cover'+id))
     }
 }
