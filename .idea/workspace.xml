@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="59fca950-d5f7-42bd-907e-c28fd8acc72d" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/css/global.css" afterPath="$PROJECT_DIR$/css/global.css" />
       <change beforePath="$PROJECT_DIR$/src/agg_view.js" afterPath="$PROJECT_DIR$/src/agg_view.js" />
       <change beforePath="$PROJECT_DIR$/src/high_level.js" afterPath="$PROJECT_DIR$/src/high_level.js" />
       <change beforePath="$PROJECT_DIR$/src/low_level.js" afterPath="$PROJECT_DIR$/src/low_level.js" />
@@ -30,15 +29,15 @@
             <file leaf-file-name="low_level.js" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/src/low_level.js">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="382">
-                    <caret line="650" column="67" lean-forward="false" selection-start-line="650" selection-start-column="67" selection-end-line="650" selection-end-column="67" />
+                  <state relative-caret-position="386">
+                    <caret line="57" column="35" lean-forward="false" selection-start-line="57" selection-start-column="35" selection-end-line="57" selection-end-column="35" />
                     <folding>
                       <element signature="e#769#965#0" expanded="false" />
                       <element signature="n#!!block;n#dragged#0;n#!!block;n#low_level#0" expanded="false" />
                       <element signature="n#!!block;n#deleteDot#0;n#!!block;n#low_level#0" expanded="false" />
-                      <element signature="e#13387#14258#0" expanded="false" />
-                      <element signature="e#14490#14692#0" expanded="false" />
-                      <element signature="e#14790#15657#0" expanded="false" />
+                      <element signature="e#13908#14779#0" expanded="false" />
+                      <element signature="e#15011#15213#0" expanded="false" />
+                      <element signature="e#15311#16178#0" expanded="false" />
                       <element signature="n#!!block;n#deleteSelection#0;n#!!block;n#low_level#0" expanded="false" />
                       <element signature="n#!!block;n#hideSelection#0;n#!!block;n#low_level#0" expanded="false" />
                       <element signature="n#!!block;n#showSelection#0;n#!!block;n#low_level#0" expanded="false" />
@@ -55,33 +54,33 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="high_level.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="high_level.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/high_level.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="121">
-              <caret line="397" column="28" lean-forward="false" selection-start-line="397" selection-start-column="23" selection-end-line="397" selection-end-column="28" />
+            <state relative-caret-position="201">
+              <caret line="96" column="49" lean-forward="false" selection-start-line="96" selection-start-column="49" selection-end-line="96" selection-end-column="49" />
               <folding>
-                <element signature="e#2930#5444#0" expanded="false" />
                 <element signature="e#5530#6734#0" expanded="false" />
                 <element signature="e#6847#11584#0" expanded="false" />
-                <element signature="e#11633#12956#0" expanded="false" />
                 <element signature="e#13011#13713#0" expanded="false" />
                 <element signature="e#13784#14723#0" expanded="false" />
                 <element signature="n#!!block;n#dragstarted_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
+                <element signature="n#!!block;n#dragged_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
                 <element signature="n#!!block;n#dragended_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
                 <element signature="n#!!block;n#zoomed#0;n#!!block;n#high_level#0" expanded="false" />
                 <element signature="n#!!block;n#stopped#0;n#!!block;n#high_level#0" expanded="false" />
                 <element signature="n#!!block;n#reset#0;n#!!block;n#high_level#0" expanded="false" />
+                <element signature="n#!!block;n#clicked#0;n#!!block;n#high_level#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="agg_view.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="agg_view.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/agg_view.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="237">
-              <caret line="180" column="50" lean-forward="false" selection-start-line="180" selection-start-column="50" selection-end-line="180" selection-end-column="50" />
+            <state relative-caret-position="49">
+              <caret line="200" column="34" lean-forward="true" selection-start-line="200" selection-start-column="34" selection-end-line="200" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -118,7 +117,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>SelectionComponentObj</find>
       <find>rect</find>
       <find>zoomed</find>
       <find>cliked</find>
@@ -147,6 +145,7 @@
       <find>defs</find>
       <find>cover</find>
       <find>aggre</find>
+      <find>aggr</find>
       <find>substring</find>
     </findStrings>
     <replaceStrings>
@@ -178,9 +177,9 @@
         <option value="$PROJECT_DIR$/src/low_level_backup.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/css/global.css" />
-        <option value="$PROJECT_DIR$/src/high_level.js" />
-        <option value="$PROJECT_DIR$/src/low_level.js" />
         <option value="$PROJECT_DIR$/src/agg_view.js" />
+        <option value="$PROJECT_DIR$/src/low_level.js" />
+        <option value="$PROJECT_DIR$/src/high_level.js" />
       </list>
     </option>
   </component>
@@ -337,7 +336,7 @@
       <workItem from="1520972082348" duration="22264000" />
       <workItem from="1521019776742" duration="1443000" />
       <workItem from="1521144744477" duration="12338000" />
-      <workItem from="1521233649042" duration="56662000" />
+      <workItem from="1521233649042" duration="57965000" />
     </task>
     <task id="LOCAL-00001" summary="Creation outline of the project">
       <created>1519702338392</created>
@@ -525,7 +524,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="233123000" />
+    <option name="totallyTimeSpent" value="234426000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -981,37 +980,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/high_level.js">
+    <entry file="file://$PROJECT_DIR$/src/agg_view.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="397" column="28" lean-forward="false" selection-start-line="397" selection-start-column="23" selection-end-line="397" selection-end-column="28" />
-          <folding>
-            <element signature="e#2930#5444#0" expanded="false" />
-            <element signature="e#5530#6734#0" expanded="false" />
-            <element signature="e#6847#11584#0" expanded="false" />
-            <element signature="e#11633#12956#0" expanded="false" />
-            <element signature="e#13011#13713#0" expanded="false" />
-            <element signature="e#13784#14723#0" expanded="false" />
-            <element signature="n#!!block;n#dragstarted_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
-            <element signature="n#!!block;n#dragended_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
-            <element signature="n#!!block;n#zoomed#0;n#!!block;n#high_level#0" expanded="false" />
-            <element signature="n#!!block;n#stopped#0;n#!!block;n#high_level#0" expanded="false" />
-            <element signature="n#!!block;n#reset#0;n#!!block;n#high_level#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="49">
+          <caret line="200" column="34" lean-forward="true" selection-start-line="200" selection-start-column="34" selection-end-line="200" selection-end-column="34" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/low_level.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="382">
-          <caret line="650" column="67" lean-forward="false" selection-start-line="650" selection-start-column="67" selection-end-line="650" selection-end-column="67" />
+        <state relative-caret-position="386">
+          <caret line="57" column="35" lean-forward="false" selection-start-line="57" selection-start-column="35" selection-end-line="57" selection-end-column="35" />
           <folding>
             <element signature="e#769#965#0" expanded="false" />
             <element signature="n#!!block;n#dragged#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#deleteDot#0;n#!!block;n#low_level#0" expanded="false" />
-            <element signature="e#13387#14258#0" expanded="false" />
-            <element signature="e#14490#14692#0" expanded="false" />
-            <element signature="e#14790#15657#0" expanded="false" />
+            <element signature="e#13908#14779#0" expanded="false" />
+            <element signature="e#15011#15213#0" expanded="false" />
+            <element signature="e#15311#16178#0" expanded="false" />
             <element signature="n#!!block;n#deleteSelection#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#hideSelection#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#showSelection#0;n#!!block;n#low_level#0" expanded="false" />
@@ -1020,11 +1007,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/agg_view.js">
+    <entry file="file://$PROJECT_DIR$/src/high_level.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="180" column="50" lean-forward="false" selection-start-line="180" selection-start-column="50" selection-end-line="180" selection-end-column="50" />
-          <folding />
+        <state relative-caret-position="201">
+          <caret line="96" column="49" lean-forward="false" selection-start-line="96" selection-start-column="49" selection-end-line="96" selection-end-column="49" />
+          <folding>
+            <element signature="e#5530#6734#0" expanded="false" />
+            <element signature="e#6847#11584#0" expanded="false" />
+            <element signature="e#13011#13713#0" expanded="false" />
+            <element signature="e#13784#14723#0" expanded="false" />
+            <element signature="n#!!block;n#dragstarted_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
+            <element signature="n#!!block;n#dragged_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
+            <element signature="n#!!block;n#dragended_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
+            <element signature="n#!!block;n#zoomed#0;n#!!block;n#high_level#0" expanded="false" />
+            <element signature="n#!!block;n#stopped#0;n#!!block;n#high_level#0" expanded="false" />
+            <element signature="n#!!block;n#reset#0;n#!!block;n#high_level#0" expanded="false" />
+            <element signature="n#!!block;n#clicked#0;n#!!block;n#high_level#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

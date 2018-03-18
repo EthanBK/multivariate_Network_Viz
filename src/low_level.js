@@ -45,14 +45,26 @@ function low_level(selector, airports) {
         .attr('width', width)
         .attr('height', height)
         .style('background', '#141411')
-        ;
+        .on('click', function() {
+            var coords = d3.mouse(this);
+            var isBackground = true;
+            selections.forEach(function (sel) {
+                if (coords[0] > sel.x1 && coords[0] < sel.x2 &&
+                coords[1] > sel.y1 && coords[1] < sel.y2)
+                    isBackground = false;
+            });
+            if (isBackground) {
+                resetClickSel();
+                high_level.reset();
+            }
+        });
 
-    var bg_rec = svg.append("rect")
-        .classed('background', true)
-        .attr("width", width)
-        .attr("height", height)
-        .attr('fill-opacity', 0)
-        .on('click', resetClickSel);
+    // var bg_rec = svg.append("rect")
+    //     .classed('background', true)
+    //     .attr("width", width)
+    //     .attr("height", height)
+    //     .attr('fill-opacity', 0)
+    //     .on('click', resetClickSel);
 
     // svg.append("rect")
     //     .classed('background', true)
@@ -379,7 +391,8 @@ function low_level(selector, airports) {
 
         // build detailed view in agg_svg
         // Build default view (bubble chart + num_total_edge)
-        aggregationView(ID, 0, 1)
+        var ran = Math.round(Math.random())
+        aggregationView(ID, 0, ran)
     }
 
     function buildLinks (ID) {

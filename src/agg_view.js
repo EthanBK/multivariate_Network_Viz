@@ -114,15 +114,11 @@ function bubbleChart(svg_bg, data_to_show, ID) {
         .attr('cx', 0)
         .attr('cy', 0)
         .attr('r', function (d) {
-            return radius_scale(d.value)
-        })
+            return radius_scale(d.value) })
         .attr('fill', function (d) {
-            return color_scale(d.value)
-        })
+            return color_scale(d.value) })
         .on('click', function (d) {
-
-            console.log('sdfsf')
-
+            high_level.clicked(document.getElementById('high_level_rect'+ID))
         });
     var text = nodes.append('text')
         .classed('bubble_text'+ID, true)
@@ -221,6 +217,9 @@ function barChart(svg_bg, data_to_show, ID) {
         .attr('y', height - margin.bottom)
         .attr('width', xScale.bandwidth())
         .attr('height', 0)
+        .on('click', function (d) {
+            high_level.clicked(document.getElementById('high_level_rect'+ID))
+        })
 
     bar_holder.transition()
         .duration(2500)

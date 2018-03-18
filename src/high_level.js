@@ -94,7 +94,7 @@ function high_level() {
                 var path_start_within = (selection.x1 + square_width) +
                     ' ' + (selection.y1 + square_width / 2),
                     path_end_within = (selection.x1 + square_width / 2) +
-                        ' ' + (+selection.y1 - 10);
+                        ' ' + (+selection.y1 - 20);
                 nodes.append('path')
                     .classed('within_arrow' + selection.id, true)
                     .attr('stroke', selection.color)
@@ -371,8 +371,6 @@ function high_level() {
         }
     }
 
-    high_level.buildBlock = buildBlock;
-
     function zoomed() {
         container_zoom.attr("transform", d3.event.transform);
     }
@@ -428,6 +426,8 @@ function high_level() {
             .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale))
     }
 
+    high_level.buildBlock = buildBlock;
+    high_level.reset = reset;
     high_level.clicked = clicked;
 }
 
