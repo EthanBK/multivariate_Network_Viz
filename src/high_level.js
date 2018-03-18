@@ -66,7 +66,7 @@ function high_level() {
                 .attr('fill', '#1f201c')
                 .attr('x', selection.x1)
                 .attr('y', selection.y1)
-                .on('click', clicked);
+                //.on('click', clicked);
 
             var aggr_svg = nodes.append('svg')
                 .classed('agg_svg', true)
@@ -74,7 +74,19 @@ function high_level() {
                 .attr('x', selection.x1)
                 .attr('y', selection.y1)
                 .attr('width', square_width)
+                .attr('height', square_width);
+
+            var cover = nodes.append('rect')
+                .classed('high_level_cover', true)
+                .attr('id', 'high_level_cover'+ID)
+                .attr('width', square_width)
                 .attr('height', square_width)
+                .attr('stroke', 'none')
+                .attr('fill', 'black')
+                .attr('fill-opacity', 0)
+                .attr('x', selection.x1)
+                .attr('y', selection.y1)
+                .on('click', clicked);
 
             // Build Within, background_in, background_out arrows
             {
@@ -384,8 +396,9 @@ function high_level() {
         if (active.node === this) return reset();
         active.classed('active', true);
 
-        var id = this.getAttribute('id').substring(15),
-            parentGroup = document.getElementById('high_group' + id)
+        var id = this.getAttribute('id').substring(16);
+        var parentGroup = document.getElementById('high_group' + id)
+
 
         var trans_x = 0,
             trans_y = 0;
@@ -409,9 +422,6 @@ function high_level() {
         high_level_svg.transition()
             .duration(750)
             .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale))
-
-        // Build aggregation view in after zoom in.
-        aggregationView(id)
     }
 }
 

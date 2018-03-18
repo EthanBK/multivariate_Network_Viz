@@ -376,6 +376,10 @@ function low_level(selector, airports) {
         });
 
         high_level.buildBlock(ID, isNew)
+
+        // build detailed view in agg_svg
+        // Build default view (bubble chart + num_total_edge)
+        aggregationView(ID, 0, 0)
     }
 
     function buildLinks (ID) {
