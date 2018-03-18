@@ -1,4 +1,4 @@
-function aggregationView(ID, ChartType, DataType) {
+function aggregationView(ID, DataType, ChartType) {
 
     // console.log('selections[ID]', selections[ID])
 
@@ -62,8 +62,8 @@ function bubbleChart(svg_bg, data_to_show, ID) {
 
     var selection = selections[ID];
 
-    var width = svg_bg.getAttribute('width'),
-        height = svg_bg.getAttribute('height');
+    var width = +svg_bg.getAttribute('width'),
+        height = +svg_bg.getAttribute('height');
 
     var val_min = Number.MAX_VALUE,
         val_max = Number.MIN_VALUE;
@@ -155,9 +155,9 @@ function barChart(svg_bg, data_to_show, ID) {
 
     var selection = selections[ID];
 
-    var width = svg_bg.getAttribute('width'),
-        height = svg_bg.getAttribute('height'),
-        margin = {top: 20, bottom: 20, left: 20, right: 20 };
+    var width = +svg_bg.getAttribute('width'),
+        height = +svg_bg.getAttribute('height'),
+        margin = {top: 30, bottom: 20, left: 20, right: 10 };
 
     var val_min = Number.MAX_VALUE,
         val_max = Number.MIN_VALUE;
@@ -171,6 +171,64 @@ function barChart(svg_bg, data_to_show, ID) {
         .domain(data_to_show.map(function (d) {
             return d.keyName;
         }))
-        .range()
+        .range([0, width - margin.right - margin.left])
+        //.paddingInner(1);
+
+    var yScale = d3.scaleLinear()
+        .domain([d3.max(data_to_show, function (d) {
+            return d.value
+        }), 0])
+        .range([margin.top, height - margin.bottom]);
+
+    var xAxis = d3.axisBottom(xScale);
+    var yAxis = d3.axisLeft(yScale)
+        .tickFormat(d3.format("d"));
+
+    var svg = d3.select('#agg_svg'+ID)
+        .append('svg')
+        .classed('inner_svg', true)
+        .attr('id', 'inner_svg'+ID)
+        .attr('width', width)
+        .attr('height', height);
+
+    var xAxis_group =  svg.append('g')
+        .classed('xAxis'+ID, true)
+        .attr('transform', 'translate(' + margin.left +
+            ',' + (height - margin.bottom) + ')')
+        .call(xAxis)
+        .selectAll('text')
+        .attr('fill', 'white')
+        .attr('transform', 'rotate(-90) translate(' + (-10) + ',' + (-10) + ')')
+        .attr('font-size', 3);
+
+    var yAxis_group = svg.append('g')
+        .classed('yAxis'+ID, true)
+        .attr('transform', 'translate(' + margin.left +
+            ',' + 0 +')')
+        .call(yAxis)
+        .selectAll('text')
+        .attr('fill', 'white')
+        .attr('font-size', 4);
+
+    var bar_holder = svg.selectAll('rect.bar')
+        .data(data_to_show)
+        .enter().append('rect')
+        .classed('bar', true)
+        .attr('fill', d3.rgb(selection.color).brighter(2))
+        .attr('x', function (d) {
+            return xScale(d.keyName) + margin.left;
+        })
+        .attr('y', height - margin.bottom)
+        .attr('width', xScale.bandwidth())
+        .attr('height', 0)
+
+    bar_holder.transition()
+        .duration(2500)
+        .attr('y', function (d) {
+            return yScale(d.value)
+        })
+        .attr('height', function (d) {
+            return height - yScale(d.value) - margin.bottom;
+        });
 
 }

@@ -57,5 +57,14 @@
     background: #141411;
     position: relative;
     float: left;
+}
 
+.inner_svg line {
+    stroke: #858585;
+    stroke-width: 0.5px;
+}
+
+.inner_svg path {
+    stroke: white;
+    stroke-width: 0.5px;
 }

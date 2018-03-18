@@ -379,7 +379,7 @@ function low_level(selector, airports) {
 
         // build detailed view in agg_svg
         // Build default view (bubble chart + num_total_edge)
-        aggregationView(ID, 0, 0)
+        aggregationView(ID, 0, 1)
     }
 
     function buildLinks (ID) {
@@ -579,7 +579,7 @@ function low_level(selector, airports) {
     }
 
     function clickRect() {
-        resetClickSel()
+        resetClickSel();
 
         // console.log(selections)
         var group = d3.select(this);
@@ -648,6 +648,6 @@ function low_level(selector, airports) {
                .attr('fill', color)
                .attr('stroke', color);
 
-        high_level.clicked(document.getElementById('high_level_cover'+id))
+        high_level.clicked(document.getElementById('high_level_rect'+id))
     }
 }

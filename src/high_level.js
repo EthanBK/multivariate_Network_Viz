@@ -66,7 +66,7 @@ function high_level() {
                 .attr('fill', '#1f201c')
                 .attr('x', selection.x1)
                 .attr('y', selection.y1)
-                //.on('click', clicked);
+                .on('click', clicked);
 
             var aggr_svg = nodes.append('svg')
                 .classed('agg_svg', true)
@@ -76,17 +76,17 @@ function high_level() {
                 .attr('width', square_width)
                 .attr('height', square_width);
 
-            var cover = nodes.append('rect')
-                .classed('high_level_cover', true)
-                .attr('id', 'high_level_cover'+ID)
-                .attr('width', square_width)
-                .attr('height', square_width)
-                .attr('stroke', 'none')
-                .attr('fill', 'black')
-                .attr('fill-opacity', 0)
-                .attr('x', selection.x1)
-                .attr('y', selection.y1)
-                .on('click', clicked);
+            // var cover = nodes.append('rect')
+            //     .classed('high_level_cover', true)
+            //     .attr('id', 'high_level_cover'+ID)
+            //     .attr('width', square_width)
+            //     .attr('height', square_width)
+            //     .attr('stroke', 'none')
+            //     .attr('fill', 'black')
+            //     .attr('fill-opacity', 0)
+            //     .attr('x', selection.x1)
+            //     .attr('y', selection.y1)
+            //     .on('click', clicked);
 
             // Build Within, background_in, background_out arrows
             {
@@ -400,7 +400,7 @@ function high_level() {
         if (active.node === rect_dom) return reset();
         active.classed('active', rect_dom);
 
-        var id = rect_dom.getAttribute('id').substring(16);
+        var id = rect_dom.getAttribute('id').substring(15);
         var parentGroup = document.getElementById('high_group' + id)
 
 
