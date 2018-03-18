@@ -44,12 +44,14 @@ function low_level(selector, airports) {
         .attr('id', 'low_svg')
         .attr('width', width)
         .attr('height', height)
-        .style('background', '#141411');
+        .style('background', '#141411')
+        ;
 
     var bg_rec = svg.append("rect")
         .classed('background', true)
         .attr("width", width)
         .attr("height", height)
+        .attr('fill-opacity', 0)
         .on('click', resetClickSel);
 
     // svg.append("rect")
@@ -118,7 +120,8 @@ function low_level(selector, airports) {
 
         sel_group = svg.append('g')
             .classed('sel_group', true)
-            .attr('id', 'sel_group' + num_window)
+            .attr('id', 'sel_group' + num_window).on('click', clickRect)
+
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
@@ -138,6 +141,7 @@ function low_level(selector, airports) {
             .attr('stroke', selection_color)
             //.attr('stroke', randomColor)
             .attr('stroke-width', 3)
+
             ;
         num_window += 1;
     };
@@ -153,7 +157,7 @@ function low_level(selector, airports) {
             // if click on svg, or invalid selection creation
             d3.select('#sel_group'+num_window).remove()
         }
-        sel_group.on('click', clickRect)
+        // sel_group.on('click', clickRect)
     };
 
     svg.on("mousedown", function() {
@@ -541,7 +545,8 @@ function low_level(selector, airports) {
         d3.select('#selection'+ID).remove();
         d3.select('#handle_group'+ID).remove();
         d3.selectAll('#high_group'+ID).remove();
-        d3.selectAll("*[id*=be_arrow"+ID+"]").remove();
+        d3.selectAll("*[id*=be_arrow_from"+ID+"]").remove();
+        d3.selectAll("*[id*=be_arrow_to"+ID+"]").remove();
         d3.selectAll("*[id*=be_arrow_num"+ID+"]").remove();
         selections[ID] = null;
     }
@@ -562,6 +567,8 @@ function low_level(selector, airports) {
 
     function resetClickSel() {
 
+
+
         console.log('reset clicked sel');
 
         d3.selectAll('.handle').remove();
@@ -573,6 +580,7 @@ function low_level(selector, airports) {
 
     function clickRect() {
 
+        console.log('dd')
         resetClickSel()
 
         // console.log(selections)
@@ -642,6 +650,4 @@ function low_level(selector, airports) {
                .attr('fill', color)
                .attr('stroke', color)
     }
-
-
 }

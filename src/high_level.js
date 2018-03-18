@@ -26,6 +26,8 @@ function high_level() {
         .classed('background', true)
         .attr("width", width)
         .attr("height", height)
+        .style("fill", "none")
+        .style("pointer-events", "all")
         .on('click', reset);
 
     container_zoom = high_level_svg.append('g')
@@ -55,6 +57,8 @@ function high_level() {
                     .on("end", dragended_hi));
 
             var rect = nodes.append('rect')
+                .classed('high_level_rect', true)
+                .attr('id', 'high_level_rect'+ID)
                 .attr('width', square_width)
                 .attr('height', square_width)
                 .attr('stroke', selection.color)
@@ -63,6 +67,14 @@ function high_level() {
                 .attr('x', selection.x1)
                 .attr('y', selection.y1)
                 .on('click', clicked);
+
+            var aggr_svg = nodes.append('svg')
+                .classed('agg_svg', true)
+                .attr('id', 'agg_svg'+ID)
+                .attr('x', selection.x1)
+                .attr('y', selection.y1)
+                .attr('width', square_width)
+                .attr('height', square_width)
 
             // Build Within, background_in, background_out arrows
             {
@@ -180,8 +192,8 @@ function high_level() {
 
                 // Between out
                 container_zoom.append('path')
-                    .attr('id', 'be_arrow' + selection.id +
-                        'be_arrow' + selections[i].id)
+                    .attr('id', 'be_arrow_from' + selection.id +
+                        'be_arrow_to' + selections[i].id)
                     .attr('stroke', 'url(#bag' + selection.id +
                         'bag' + selections[i].id + ")")
                     .attr('stroke-width', 5)
@@ -192,7 +204,7 @@ function high_level() {
                     .attr('marker-end', 'url(#arrow' + selections[i].id + ')');
 
                 // between out num
-                nodes.append('text')
+                container_zoom.append('text')
                     .attr('x', (xs + xe) / 2 - xm)
                     .attr('y', (ys + ye) / 2 + ym)
                     .attr('id', 'be_arrow_num' + selection.id + 'be_arrow_num' + selections[i].id)
@@ -202,8 +214,8 @@ function high_level() {
 
                 // Between in
                 container_zoom.append('path')
-                    .attr('id', 'be_arrow' + selection.id +
-                        'be_arrow' + selections[i].id)
+                    .attr('id', 'be_arrow_to' + selection.id +
+                        'be_arrow_from' + selections[i].id)
                     .attr('stroke', 'url(#bag' + selection.id +
                         'bag' + selections[i].id + ")")
                     .attr('stroke-width', 5)
@@ -214,7 +226,7 @@ function high_level() {
                     .attr('marker-end', 'url(#arrow' + selection.id + ')');
 
                 // Between in num
-                nodes.append('text')
+                container_zoom.append('text')
                     .attr('x', (xs + xe) / 2 + xm)
                     .attr('y', (ys + ye) / 2 - ym)
                     .attr('id', 'be_arrow_num' + selections[i].id + 'be_arrow_num' + selection.id)
@@ -325,28 +337,29 @@ function high_level() {
             }
         }
 
-
         // Drag helper Functions
-        {
-            function dragstarted_hi(d) {
-                d.fx = d.x;
-                d.fy = d.y;
-            }
-
-            function dragged_hi(d) {
-
-                console.log('something', this)
-                d.fx = d3.event.x;
-                d.fy = d3.event.y;
-            }
-
-            function dragended_hi(d) {
-                d.fx = null;
-                d.fy = null;
-            }
+        function dragstarted_hi() {
+            d3.select(this).raise().classed("active", true);
         }
+        function dragged_hi() {
+            this.x = this.x || 0;
+            this.y = this.y || 0;
+            this.x += d3.event.dx;
+            this.y += d3.event.dy;
+            d3.select(this).attr("transform", "translate(" + this.x + "," + this.y + ")");
 
+            // console.log(this)
+            var id = this.getAttribute('id').substring(10)
+            var path_out = document.getElementById('be_arrow_from' + id)
+            // console.log(path_out)
+            // todo drag effect between path
+        }
+        function dragended_hi() {
+            d3.select(this).classed("active", false);
+        }
     }
+
+    high_level.buildBlock = buildBlock;
 
     function zoomed() {
         container_zoom.attr("transform", d3.event.transform);
@@ -371,8 +384,22 @@ function high_level() {
         if (active.node === this) return reset();
         active.classed('active', true);
 
-        var x1 = +this.getAttribute('x'),
-            y1 = +this.getAttribute('y');
+        var id = this.getAttribute('id').substring(15),
+            parentGroup = document.getElementById('high_group' + id)
+
+        var trans_x = 0,
+            trans_y = 0;
+
+        if (parentGroup.getAttribute('transform') !== null) {
+            var transform = parentGroup.getAttribute('transform'),
+                regExp_x = /\(([^)]+),/,
+                regExp_y = /,([^)]+)\)/;
+            trans_x = +regExp_x.exec(transform)[1];
+            trans_y = +regExp_y.exec(transform)[1];
+        }
+
+        var x1 = +this.getAttribute('x') + trans_x,
+            y1 = +this.getAttribute('y') + trans_y;
 
         var x = x1 + square_width / 2,
             y = y1 + square_width / 2;
@@ -382,11 +409,10 @@ function high_level() {
         high_level_svg.transition()
             .duration(750)
             .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale))
+
+        // Build aggregation view in after zoom in.
+        aggregationView(id)
     }
-
-    high_level.buildBlock = buildBlock;
 }
 
-function update_arrow_width(ID) {
 
-}
