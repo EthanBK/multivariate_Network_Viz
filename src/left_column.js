@@ -100,14 +100,32 @@ function FilterComponent(api) {
         this.clear();
         this.addNav('Nodes', s);
 
+        function redrawSelection(s) {
+            var $selection_box = $('#sel_group' + s.id);
+            api.buildSelection(s.x1, s.y1, s.x2, s.y2, s.color, s.id);
+            $selection_box.attr('x', s.x1);
+            $selection_box.attr('y', s.y1);
+            $selection_box.attr('width', s.x2 - s.x1);
+            $selection_box.attr('height', s.y2 - s.y1);
+            var $rect_box = $selection_box.find('rect');
+            $rect_box.attr('x', s.x1);
+            $rect_box.attr('y', s.y1);
+            $rect_box.attr('width', s.x2 - s.x1);
+            $rect_box.attr('height', s.y2 - s.y1);
+        }
+ 
+        var SlideTimeout;
         this.addSlider({
             title: 'Latitude',
             id: 'attr-latitude',
             value: [s.x1, s.x2]
         }, function(event) {
-            s.x1 = event.value[0];
-            s.x2 = event.value[1];
-            api.buildSelection(s.x1, s.x2, s.y1, s.y2, s.color, s.id);
+            clearTimeout(SlideTimeout);
+            SlideTimeout = setTimeout(function() {
+                s.x1 = event.value[0];
+                s.x2 = event.value[1];
+                redrawSelection(s);
+            }, 250);
         });
 
         this.addSlider({
@@ -115,9 +133,12 @@ function FilterComponent(api) {
             id: 'attr-longitude',
             value: [s.y1, s.y2]
         }, function(event) {
-            s.y1 = event.value[0];
-            s.y2 = event.value[1];
-            api.buildSelection(s.x1, s.x2, s.y1, s.y2, s.color, s.id);
+            clearTimeout(SlideTimeout);
+            SlideTimeout = setTimeout(function() {
+                s.y1 = event.value[0];
+                s.y2 = event.value[1];
+                redrawSelection(s);
+            }, 250);
         });
     }
 }
