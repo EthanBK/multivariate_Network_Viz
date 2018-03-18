@@ -1,4 +1,5 @@
 function FilterComponent(api) {
+    var Obj = this;
     var $filter = $('#filter_component');
     var $latitude = $("#attr-latitude");
     var $longitude = $("#attr-longitude");
@@ -7,13 +8,44 @@ function FilterComponent(api) {
         $filter.empty();
     }
 
-    this.addNav = function() {
+    this.addNav = function(active, s) {
+        var tabs = {
+            'Nodes': {
+                id: 'left-col-nodes'
+            }, 
+            'Edges': {
+                id: 'left-col-edges'
+            }
+        };
+        
+        // For each tab, generate HTML
         var ele = '<ul class="nav nav-tabs">';
-        ele += '<li role="presentation" class="active"><a href="#">Nodes</a></li>';
-        ele += '<li role="presentation"><a href="#">Edges</a></li>';
+        for(var key in tabs) {
+            var tab = tabs[key];
+            ele += '<li id="' + tab.id + '" role="presentation"><a href="#">' + key + '</a></li>';
+        }
         ele += '</ul>';
-
         $filter.append(ele);
+        for(var key in tabs) {
+            var tab = tabs[key];
+            tab.ref = $('#' + tab.id);
+        }
+
+        // Add listener to tab
+        switch(active) {
+            case 'Edges':
+                tabs['Nodes'].ref.on('click', function() {
+                    Obj.init_nodes(s);
+                });
+                tabs[active].ref.addClass('active');
+                break; 
+            case 'Nodes':
+                tabs['Edges'].ref.on('click', function() {
+                    Obj.init_edges(s);
+                });
+                tabs[active].ref.addClass('active');
+                break;
+        }
     }
 
     this.addSlider = function(config, callback) {
@@ -27,9 +59,46 @@ function FilterComponent(api) {
         $('#' + config.id).slider().on('slide', callback);
     }
 
-    this.init = function(s) {
+    this.addToggle = function(config, on_callback, off_callback) {
+        var ele = '<div class="row-fluid top-10">';
+        ele += '<h5>' + config.title + '</h5>';
+        ele += '<div class="checkbox"><label><input id="' + config.id + '" type="checkbox" data-toggle="toggle"></label></div>';
+        ele += '</div>';
+        $filter.append(ele);
+
+        var $toggle = $('#' + config.id);
+        $toggle.bootstrapToggle('on').change(function() {
+            if($toggle.prop('checked'))
+                on_callback();
+            else
+                off_callback();
+        });
+    }
+
+    this.init_edges = function(s) {
         this.clear();
-        this.addNav();
+        this.addNav('Edges', s);
+        this.addToggle({
+            title: 'Between In',
+            id: 'attr-between-in'
+        });
+        this.addToggle({
+            title: 'Between Out',
+            id: 'attr-between-out'
+        })
+        this.addToggle({
+            title: 'Background In',
+            id: 'attr-background-in'
+        })
+        this.addToggle({
+            title: 'Background Out',
+            id: 'attr-background-out'
+        })
+    }
+
+    this.init_nodes = function(s) {
+        this.clear();
+        this.addNav('Nodes', s);
 
         this.addSlider({
             title: 'Latitude',
@@ -105,12 +174,12 @@ function SelectionComponent(api) {
         });
 
         var selection = find_selection(id);
-        FilterComponentObj.init(selection);
+        FilterComponentObj.init_nodes(selection);
 
         // If child is selected, show filter options
         $child.on('click', function() {
             if($toggle.prop('checked'))
-                FilterComponentObj.init(selection);
+                FilterComponentObj.init_nodes(selection);
         });
     }
 
