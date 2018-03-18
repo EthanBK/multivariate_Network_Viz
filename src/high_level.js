@@ -186,17 +186,18 @@ function high_level() {
                     yo1 = selection.y1 + square_width / 2,
                     xo2 = selections[i].x1 + square_width / 2,
                     yo2 = selections[i].y1 + square_width / 2,
-                    radian = Math.abs(selection.x1 - selections[i].x1);
+                    dis = Math.sqrt(Math.pow(xo1 - xo2, 2) + Math.pow(yo1 - yo2, 2)),
+                    radius = dis
 
                 var p = 0.3,
                     tana = (xo1 - xo2) / (yo1 - yo2);
-                if (Math.abs(yo1 - yo2) < Math.abs(xo1 - xo2)) {
+                // if (Math.abs(yo1 - yo2) < Math.abs(xo1 - xo2)) {
                     var ym = 10,
                         xm = ym / tana;
-                } else {
-                    xm = 10;
-                    ym = xm * tana;
-                }
+                // } else {
+                //     xm = 10;
+                //     ym = xm * tana;
+                // }
                 var xs = xo1 + p * (xo2 - xo1),
                     xe = xo2 + p * (xo1 - xo2),
                     ys = yo1 + p * (yo2 - yo1),
@@ -211,7 +212,7 @@ function high_level() {
                     .attr('stroke-width', 5)
                     .attr('fill-opacity', 0)
                     .attr('d', 'M ' + (xs - xm) + ' ' + (ys + ym) +
-                        ' A ' + radian + ' ' + radian +
+                        ' A ' + radius + ' ' + radius +
                         ', 1, 0, 0, ' + (xe - xm) + ' ' + (ye + ym))
                     .attr('marker-end', 'url(#arrow' + selections[i].id + ')');
 
@@ -219,21 +220,22 @@ function high_level() {
                 container_zoom.append('text')
                     .attr('x', (xs + xe) / 2 - xm)
                     .attr('y', (ys + ye) / 2 + ym)
-                    .attr('id', 'be_arrow_num' + selection.id + 'be_arrow_num' + selections[i].id)
+                    .attr('id', 'be_arrow_from_num' + selection.id +
+                        'be_arrow_to_num' + selections[i].id)
                     .attr('font-size', 30)
                     .attr('fill', 'white')
                     .text(num_be_out);
 
                 // Between in
                 container_zoom.append('path')
-                    .attr('id', 'be_arrow_to' + selection.id +
-                        'be_arrow_from' + selections[i].id)
+                    .attr('id', 'be_arrow_from' + selections[i].id +
+                        'be_arrow_to' + selection.id)
                     .attr('stroke', 'url(#bag' + selection.id +
                         'bag' + selections[i].id + ")")
                     .attr('stroke-width', 5)
                     .attr('fill-opacity', 0)
                     .attr('d', 'M ' + (xe + xm) + ' ' + (ye - ym) +
-                        ' A ' + radian + ' ' + radian +
+                        ' A ' + radius + ' ' + radius +
                         ', 0, 0, 0, ' + (xs + xm) + ' ' + (ys - ym))
                     .attr('marker-end', 'url(#arrow' + selection.id + ')');
 
@@ -241,7 +243,8 @@ function high_level() {
                 container_zoom.append('text')
                     .attr('x', (xs + xe) / 2 + xm)
                     .attr('y', (ys + ye) / 2 - ym)
-                    .attr('id', 'be_arrow_num' + selections[i].id + 'be_arrow_num' + selection.id)
+                    .attr('id', 'be_arrow_from_num' + selections[i].id +
+                        'be_arrow_to_num' + selection.id)
                     .attr('font-size', 30)
                     .attr('fill', 'white')
                     .text(num_be_in);
@@ -360,14 +363,87 @@ function high_level() {
             this.y += d3.event.dy;
             d3.select(this).attr("transform", "translate(" + this.x + "," + this.y + ")");
 
-            // console.log(this)
-            var id = this.getAttribute('id').substring(10)
-            var path_out = document.getElementById('be_arrow_from' + id)
-            // console.log(path_out)
-            // todo drag effect between path
+            var id = +this.getAttribute('id').substring(10);
+            updateBetweenArrow(id, this.x, this.y);
         }
         function dragended_hi() {
             d3.select(this).classed("active", false);
+        }
+
+        function updateBetweenArrow(ID, trans_x, trans_y) {
+
+            var rect_dom_this = document.getElementById('high_level_rect'+ID);
+
+            var x1_now_this = +rect_dom_this.getAttribute('x') + trans_x,
+                y1_now_this = +rect_dom_this.getAttribute('y') + trans_y;
+
+            for (var i = 0; i < selections.length; i++) {
+                if (i === ID) continue;
+                if (!selections[i]) continue;
+
+                var rect_dom_that = document.getElementById('high_level_rect'+i),
+                    Group_that = document.getElementById('high_group'+i)
+
+                var trans_x_that = 0,
+                    trans_y_that = 0;
+
+                if (Group_that.getAttribute('transform') !== null) {
+                    var transform = Group_that.getAttribute('transform'),
+                        regExp_x = /\(([^)]+),/,
+                        regExp_y = /,([^)]+)\)/;
+                    trans_x_that = +regExp_x.exec(transform)[1];
+                    trans_y_that = +regExp_y.exec(transform)[1];
+                }
+
+                var x1_now_that = +rect_dom_that.getAttribute('x') + trans_x_that,
+                    y1_now_that = +rect_dom_that.getAttribute('y') + trans_y_that;
+
+                var xo1 = x1_now_this + square_width / 2,
+                    yo1 = y1_now_this + square_width / 2,
+                    xo2 = x1_now_that + square_width / 2,
+                    yo2 = y1_now_that + square_width / 2,
+                    dis = Math.sqrt(Math.pow(xo1 - xo2, 2) + Math.pow(yo1 - yo2, 2)),
+                    radius = dis;
+
+                var p = 0.3,
+                    tana = (xo1 - xo2) / (yo1 - yo2);
+                if (Math.abs(yo1 - yo2) < Math.abs(xo1 - xo2)) {
+                    var ym = 10,
+                        xm = ym / tana;
+                } else {
+                    xm = 10;
+                    ym = xm * tana;
+                }
+                var xs = xo1 + p * (xo2 - xo1),
+                    xe = xo2 + p * (xo1 - xo2),
+                    ys = yo1 + p * (yo2 - yo1),
+                    ye = yo2 + p * (yo1 - yo2);
+
+                // Between out
+                d3.select('#be_arrow_from' + ID +
+                    'be_arrow_to' + i)
+                    .attr('d', 'M ' + (xs - xm) + ' ' + (ys + ym) +
+                        ' A ' + radius + ' ' + radius +
+                        ', 1, 0, 0, ' + (xe - xm) + ' ' + (ye + ym));
+
+                // between out num
+                d3.select('#be_arrow_from_num' + ID +
+                    'be_arrow_to_num' + i)
+                    .attr('x', (xs + xe) / 2 - xm)
+                    .attr('y', (ys + ye) / 2 + ym);
+
+                // Between in
+                d3.select('#be_arrow_from' + i + 'be_arrow_to' + ID)
+                    .attr('d', 'M ' + (xe + xm) + ' ' + (ye - ym) +
+                        ' A ' + radius + ' ' + radius +
+                        ', 0, 0, 0, ' + (xs + xm) + ' ' + (ys - ym));
+
+                // Between in num
+                d3.select('#be_arrow_from_num' + i +
+                    'be_arrow_to_num' + ID)
+                    .attr('x', (xs + xe) / 2 + xm)
+                    .attr('y', (ys + ye) / 2 - ym);
+            }
         }
     }
 

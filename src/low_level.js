@@ -564,7 +564,8 @@ function low_level(selector, airports) {
         d3.selectAll('#high_group'+ID).remove();
         d3.selectAll("*[id*=be_arrow_from"+ID+"]").remove();
         d3.selectAll("*[id*=be_arrow_to"+ID+"]").remove();
-        d3.selectAll("*[id*=be_arrow_num"+ID+"]").remove();
+        d3.selectAll("*[id*=be_arrow_from_num"+ID+"]").remove();
+        d3.selectAll("*[id*=be_arrow_to_num"+ID+"]").remove();
         selections[ID] = null;
     }
 
