@@ -104,3 +104,9 @@
     vector-effect: non-scaling-stroke;
 }
 
+.bg_grid_low line {
+    fill: none;
+    stroke: #343434;
+    shape-rendering: crispEdges;
+    vector-effect: non-scaling-stroke;
+}

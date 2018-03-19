@@ -8,7 +8,7 @@ function contextMenu(selector) {
 
     function menu(x, y) {
 
-        var svg = d3.select(selector)
+        var svg = d3.select(selector);
 
         var menu_entry = svg.append('g')
             .attr('id', 'menu_group')
@@ -23,7 +23,7 @@ function contextMenu(selector) {
                     y1 = y,
                     x2 = x1 + 100,
                     y2 = y1 + 100;
-                low_level.buildSelection(x1, y1, x2, y2)
+                low_level.rightClickCreateSel(x1, y1, x2, y2)
             });
 
         menu_entry

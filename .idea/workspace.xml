@@ -6,7 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="59fca950-d5f7-42bd-907e-c28fd8acc72d" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/css/global.css" afterPath="$PROJECT_DIR$/css/global.css" />
+      <change beforePath="$PROJECT_DIR$/src/high_level.js" afterPath="$PROJECT_DIR$/src/high_level.js" />
       <change beforePath="$PROJECT_DIR$/src/low_level.js" afterPath="$PROJECT_DIR$/src/low_level.js" />
+      <change beforePath="$PROJECT_DIR$/src/right_click_menu.js" afterPath="$PROJECT_DIR$/src/right_click_menu.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -20,27 +23,47 @@
   </component>
   <component name="ChangesViewManager" flattened_view="false" />
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
+    <splitter split-orientation="horizontal" split-proportion="0.84361553">
       <split-first>
         <leaf>
-          <file leaf-file-name="high_level.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/high_level.js">
+          <file leaf-file-name="low_level.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/low_level.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-2909">
-                  <caret line="156" column="13" lean-forward="true" selection-start-line="156" selection-start-column="13" selection-end-line="156" selection-end-column="13" />
+                <state relative-caret-position="207">
+                  <caret line="165" column="47" lean-forward="true" selection-start-line="165" selection-start-column="47" selection-end-line="165" selection-end-column="47" />
                   <folding>
-                    <element signature="e#3573#6087#0" expanded="false" />
-                    <element signature="e#6173#7377#0" expanded="false" />
-                    <element signature="e#13856#14558#0" expanded="false" />
-                    <element signature="e#14629#15568#0" expanded="false" />
-                    <element signature="n#!!block;n#dragstarted_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
-                    <element signature="n#!!block;n#dragged_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
-                    <element signature="n#!!block;n#dragended_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
-                    <element signature="n#!!block;n#updateBetweenArrow#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
-                    <element signature="n#!!block;n#zoomed#0;n#!!block;n#high_level#0" expanded="false" />
-                    <element signature="n#!!block;n#stopped#0;n#!!block;n#high_level#0" expanded="false" />
-                    <element signature="n#!!block;n#reset#0;n#!!block;n#high_level#0" expanded="false" />
-                    <element signature="n#!!block;n#clicked#0;n#!!block;n#high_level#0" expanded="false" />
+                    <element signature="n#!!block;n#dragCreateSel#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="e#6743#6884#0" expanded="false" />
+                    <element signature="n#!!block;n#dragstarted#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="n#!!block;n#dragged#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="n#!!block;n#dragended#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="n#!!block;n#drawDots#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="n#!!block;n#buildSelectedDots#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="e#10853#10907#0" expanded="false" />
+                    <element signature="e#11125#11477#0" expanded="false" />
+                    <element signature="e#11492#11537#0" expanded="false" />
+                    <element signature="e#11615#11861#0" expanded="false" />
+                    <element signature="e#12011#12057#0" expanded="false" />
+                    <element signature="e#12151#12440#0" expanded="false" />
+                    <element signature="e#12750#13772#0" expanded="false" />
+                    <element signature="e#14783#14905#0" expanded="false" />
+                    <element signature="n#!!block;n#buildLinks#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="e#15632#17362#0" expanded="false" />
+                    <element signature="e#17416#18761#0" expanded="false" />
+                    <element signature="e#19435#19577#0" expanded="false" />
+                    <element signature="e#21937#24126#0" expanded="false" />
+                    <element signature="e#24192#25633#0" expanded="false" />
+                    <element signature="n#!!block;n#deleteSelection#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="n#!!block;n#deleteDot#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="n#!!block;n#hideSelection#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="n#!!block;n#deleteLinks#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="n#!!block;n#hideWithinLinks#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="n#!!block;n#showWithinLinks#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="n#!!block;n#showSelection#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="n#!!block;n#resetClickSel#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="n#!!block;n#clickRect#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="e#31487#37819#0" expanded="false" />
+                    <element signature="e#37974#38248#0" expanded="false" />
                   </folding>
                 </state>
               </provider>
@@ -49,8 +72,8 @@
           <file leaf-file-name="agg_view.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/agg_view.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="0">
-                  <caret line="0" column="18" lean-forward="false" selection-start-line="0" selection-start-column="18" selection-end-line="0" selection-end-column="18" />
+                <state relative-caret-position="105">
+                  <caret line="5" column="12" lean-forward="false" selection-start-line="5" selection-start-column="12" selection-end-line="5" selection-end-column="12" />
                   <folding>
                     <element signature="n#!!block;n#buildData#0" expanded="false" />
                     <element signature="n#!!block;n#bubbleChart#0" expanded="false" />
@@ -63,23 +86,52 @@
           <file leaf-file-name="right_click_menu.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/right_click_menu.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="456">
-                  <caret line="27" column="0" lean-forward="false" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+                <state relative-caret-position="517">
+                  <caret line="25" column="45" lean-forward="false" selection-start-line="25" selection-start-column="45" selection-end-line="25" selection-end-column="45" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="low_level.js" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/low_level.js">
+          <file leaf-file-name="global.css" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/css/global.css">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="354">
-                  <caret line="426" column="16" lean-forward="false" selection-start-line="426" selection-start-column="16" selection-end-line="432" selection-end-column="17" />
+                <state relative-caret-position="451">
+                  <caret line="97" column="1" lean-forward="true" selection-start-line="97" selection-start-column="1" selection-end-line="97" selection-end-column="1" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="left_column.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/left_column.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1146">
+                  <caret line="193" column="35" lean-forward="false" selection-start-line="193" selection-start-column="35" selection-end-line="193" selection-end-column="35" />
                   <folding>
-                    <element signature="e#769#1086#0" expanded="false" />
-                    <element signature="n#!!block;n#showSelection#0;n#!!block;n#low_level#0" expanded="false" />
-                    <element signature="n#!!block;n#resetClickSel#0;n#!!block;n#low_level#0" expanded="false" />
-                    <element signature="n#!!block;n#clickRect#0;n#!!block;n#low_level#0" expanded="false" />
+                    <marker date="1521443347768" expanded="true" signature="5903:5914" ph="..." />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="high_level.js" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/high_level.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="3986">
+                  <caret line="266" column="36" lean-forward="true" selection-start-line="266" selection-start-column="36" selection-end-line="266" selection-end-column="36" />
+                  <folding>
+                    <element signature="e#3060#5574#0" expanded="false" />
+                    <element signature="e#5660#6864#0" expanded="false" />
+                    <element signature="e#13506#14208#0" expanded="false" />
+                    <element signature="e#14279#15218#0" expanded="false" />
+                    <element signature="n#!!block;n#dragstarted_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
+                    <element signature="n#!!block;n#dragged_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
+                    <element signature="n#!!block;n#dragended_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
+                    <element signature="n#!!block;n#updateBetweenArrow#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
+                    <element signature="n#!!block;n#zoomed#0;n#!!block;n#high_level#0" expanded="false" />
+                    <element signature="n#!!block;n#stopped#0;n#!!block;n#high_level#0" expanded="false" />
+                    <element signature="n#!!block;n#reset#0;n#!!block;n#high_level#0" expanded="false" />
                   </folding>
                 </state>
               </provider>
@@ -92,13 +144,42 @@
           <file leaf-file-name="low_level.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/low_level.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="765">
-                  <caret line="280" column="0" lean-forward="true" selection-start-line="280" selection-start-column="0" selection-end-line="280" selection-end-column="0" />
+                <state relative-caret-position="783">
+                  <caret line="1018" column="55" lean-forward="false" selection-start-line="1018" selection-start-column="55" selection-end-line="1018" selection-end-column="55" />
                   <folding>
-                    <element signature="e#769#1086#0" expanded="false" />
+                    <element signature="n#!!block;n#dragCreateSel#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="e#6743#6884#0" expanded="false" />
+                    <element signature="n#!!block;n#dragstarted#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="n#!!block;n#dragged#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="n#!!block;n#dragended#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="n#!!block;n#drawDots#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="n#!!block;n#buildSelectedDots#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="e#10853#10907#0" expanded="false" />
+                    <element signature="e#11125#11477#0" expanded="false" />
+                    <element signature="e#11492#11537#0" expanded="false" />
+                    <element signature="e#11615#11861#0" expanded="false" />
+                    <element signature="e#12011#12057#0" expanded="false" />
+                    <element signature="e#12151#12440#0" expanded="false" />
+                    <element signature="e#12750#13772#0" expanded="false" />
+                    <element signature="e#14783#14905#0" expanded="false" />
+                    <element signature="n#!!block;n#buildLinks#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="e#15632#17362#0" expanded="false" />
+                    <element signature="e#17416#18761#0" expanded="false" />
+                    <element signature="e#19435#19577#0" expanded="false" />
+                    <element signature="e#19657#21856#0" expanded="false" />
+                    <element signature="e#21937#24126#0" expanded="false" />
+                    <element signature="e#24192#25633#0" expanded="false" />
+                    <element signature="n#!!block;n#deleteSelection#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="n#!!block;n#deleteDot#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="n#!!block;n#hideSelection#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="n#!!block;n#deleteLinks#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="n#!!block;n#hideWithinLinks#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="n#!!block;n#showWithinLinks#0;n#!!block;n#low_level#0" expanded="false" />
                     <element signature="n#!!block;n#showSelection#0;n#!!block;n#low_level#0" expanded="false" />
                     <element signature="n#!!block;n#resetClickSel#0;n#!!block;n#low_level#0" expanded="false" />
                     <element signature="n#!!block;n#clickRect#0;n#!!block;n#low_level#0" expanded="false" />
+                    <element signature="e#31487#37819#0" expanded="false" />
+                    <element signature="e#37974#38248#0" expanded="false" />
                   </folding>
                 </state>
               </provider>
@@ -117,9 +198,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>color</find>
-      <find>cli</find>
-      <find>clicked</find>
       <find>con</find>
       <find>high</find>
       <find>conso</find>
@@ -142,11 +220,14 @@
       <find>tooltip</find>
       <find>tick</find>
       <find>svg</find>
-      <find>tic</find>
       <find>--&gt;</find>
       <find>gradient_bg_in</find>
       <find>src</find>
       <find>des</find>
+      <find>tic</find>
+      <find>scale</find>
+      <find>color</find>
+      <find>tg</find>
     </findStrings>
     <replaceStrings>
       <replace>ap</replace>
@@ -176,12 +257,12 @@
         <option value="$PROJECT_DIR$/src/tooltip.js" />
         <option value="$PROJECT_DIR$/src/high_level_backup.js" />
         <option value="$PROJECT_DIR$/src/low_level_backup.js" />
-        <option value="$PROJECT_DIR$/src/high_level.js" />
         <option value="$PROJECT_DIR$/src/agg_view.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/css/global.css" />
         <option value="$PROJECT_DIR$/src/right_click_menu.js" />
         <option value="$PROJECT_DIR$/src/low_level.js" />
+        <option value="$PROJECT_DIR$/src/high_level.js" />
       </list>
     </option>
   </component>
@@ -201,7 +282,7 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="988" />
+    <option name="x" value="57" />
     <option name="y" value="23" />
     <option name="width" value="932" />
     <option name="height" value="1057" />
@@ -240,11 +321,6 @@
             <path>
               <item name="multivariate_Network_Viz" type="b2602c69:ProjectViewProjectNode" />
               <item name="multivariate_Network_Viz" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="multivariate_Network_Viz" type="b2602c69:ProjectViewProjectNode" />
-              <item name="multivariate_Network_Viz" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -260,11 +336,11 @@
   </component>
   <component name="PropertiesComponent">
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
-    <property name="settings.editor.selected.configurable" value="settings.nodejs" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1.Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/src/low_level.js&#10;low&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1.Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/src/low_level.js&#10;ind&#9;RUN_CONFIGURATION&#9;index.html&#10;hig&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1. Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/src/high_level.js&#10;lo&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1. Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/src/low_level.js&#10;hi&#9;null&#9;null&#10;glo&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1. Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/css/global.css&#10;inde&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1. Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/index.html" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1.Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/src/high_level.js&#10;low&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1.Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/src/low_level.js&#10;ind&#9;RUN_CONFIGURATION&#9;index.html&#10;hig&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1. Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/src/high_level.js&#10;lo&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1. Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/src/low_level.js&#10;hi&#9;null&#9;null&#10;glo&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1. Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/css/global.css&#10;inde&#9;FILE&#9;file:///Users/ethan/Library/Mobile Documents/com~apple~CloudDocs/1. Courses/ECS 272 Info Visualization/Final Project/multivariate_Network_Viz/index.html" />
     <property name="javascript.nodejs.core.library.configured.version" value="8.9.4" />
   </component>
   <component name="RecentsManager">
@@ -529,7 +605,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="270644000" />
+    <option name="totallyTimeSpent" value="274814000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -544,24 +620,35 @@
     <frame x="57" y="23" width="1863" height="1057" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.12649295" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11563518" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26403642" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25493172" sideWeight="0.5067514" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32800853" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290735" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.814871" sideWeight="0.4932486" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12486428" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.10969116" sideWeight="0.4932486" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.12486428" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3024494" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4552352" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="1132" y="45" width="788" height="1035" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26403642" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32776934" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25493172" sideWeight="0.5067514" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290735" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.814871" sideWeight="0.4932486" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3024494" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.12649295" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32800853" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12486428" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4552352" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="1132" y="45" width="788" height="1035" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -693,10 +780,38 @@
         <state relative-caret-position="10332">
           <caret line="492" column="28" lean-forward="false" selection-start-line="492" selection-start-column="28" selection-end-line="492" selection-end-column="28" />
           <folding>
-            <element signature="e#769#1086#0" expanded="false" />
+            <element signature="n#!!block;n#dragCreateSel#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="e#6743#6884#0" expanded="false" />
+            <element signature="n#!!block;n#dragstarted#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#dragged#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#dragended#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#drawDots#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#buildSelectedDots#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="e#10853#10907#0" expanded="false" />
+            <element signature="e#11125#11477#0" expanded="false" />
+            <element signature="e#11492#11537#0" expanded="false" />
+            <element signature="e#11615#11861#0" expanded="false" />
+            <element signature="e#12011#12057#0" expanded="false" />
+            <element signature="e#12151#12440#0" expanded="false" />
+            <element signature="e#12750#13772#0" expanded="false" />
+            <element signature="e#14783#14905#0" expanded="false" />
+            <element signature="n#!!block;n#buildLinks#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="e#15632#17362#0" expanded="false" />
+            <element signature="e#17416#18761#0" expanded="false" />
+            <element signature="e#19435#19577#0" expanded="false" />
+            <element signature="e#21937#24126#0" expanded="false" />
+            <element signature="e#24192#25633#0" expanded="false" />
+            <element signature="n#!!block;n#deleteSelection#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#deleteDot#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#hideSelection#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#deleteLinks#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#hideWithinLinks#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#showWithinLinks#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#showSelection#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#resetClickSel#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#clickRect#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="e#31487#37819#0" expanded="false" />
+            <element signature="e#37974#38248#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -713,10 +828,38 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#769#1086#0" expanded="false" />
+            <element signature="n#!!block;n#dragCreateSel#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="e#6743#6884#0" expanded="false" />
+            <element signature="n#!!block;n#dragstarted#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#dragged#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#dragended#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#drawDots#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#buildSelectedDots#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="e#10853#10907#0" expanded="false" />
+            <element signature="e#11125#11477#0" expanded="false" />
+            <element signature="e#11492#11537#0" expanded="false" />
+            <element signature="e#11615#11861#0" expanded="false" />
+            <element signature="e#12011#12057#0" expanded="false" />
+            <element signature="e#12151#12440#0" expanded="false" />
+            <element signature="e#12750#13772#0" expanded="false" />
+            <element signature="e#14783#14905#0" expanded="false" />
+            <element signature="n#!!block;n#buildLinks#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="e#15632#17362#0" expanded="false" />
+            <element signature="e#17416#18761#0" expanded="false" />
+            <element signature="e#19435#19577#0" expanded="false" />
+            <element signature="e#21937#24126#0" expanded="false" />
+            <element signature="e#24192#25633#0" expanded="false" />
+            <element signature="n#!!block;n#deleteSelection#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#deleteDot#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#hideSelection#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#deleteLinks#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#hideWithinLinks#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#showWithinLinks#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#showSelection#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#resetClickSel#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#clickRect#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="e#31487#37819#0" expanded="false" />
+            <element signature="e#37974#38248#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -747,10 +890,38 @@
         <state relative-caret-position="1743">
           <caret line="83" column="29" lean-forward="true" selection-start-line="83" selection-start-column="29" selection-end-line="83" selection-end-column="29" />
           <folding>
-            <element signature="e#769#1086#0" expanded="false" />
+            <element signature="n#!!block;n#dragCreateSel#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="e#6743#6884#0" expanded="false" />
+            <element signature="n#!!block;n#dragstarted#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#dragged#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#dragended#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#drawDots#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#buildSelectedDots#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="e#10853#10907#0" expanded="false" />
+            <element signature="e#11125#11477#0" expanded="false" />
+            <element signature="e#11492#11537#0" expanded="false" />
+            <element signature="e#11615#11861#0" expanded="false" />
+            <element signature="e#12011#12057#0" expanded="false" />
+            <element signature="e#12151#12440#0" expanded="false" />
+            <element signature="e#12750#13772#0" expanded="false" />
+            <element signature="e#14783#14905#0" expanded="false" />
+            <element signature="n#!!block;n#buildLinks#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="e#15632#17362#0" expanded="false" />
+            <element signature="e#17416#18761#0" expanded="false" />
+            <element signature="e#19435#19577#0" expanded="false" />
+            <element signature="e#21937#24126#0" expanded="false" />
+            <element signature="e#24192#25633#0" expanded="false" />
+            <element signature="n#!!block;n#deleteSelection#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#deleteDot#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#hideSelection#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#deleteLinks#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#hideWithinLinks#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#showWithinLinks#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#showSelection#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#resetClickSel#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#clickRect#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="e#31487#37819#0" expanded="false" />
+            <element signature="e#37974#38248#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -905,44 +1076,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="850">
           <caret line="530" column="0" lean-forward="false" selection-start-line="530" selection-start-column="0" selection-end-line="530" selection-end-column="0" />
-          <folding>
-            <element signature="e#3573#6087#0" expanded="false" />
-            <element signature="e#6173#7377#0" expanded="false" />
-            <element signature="e#13772#14474#0" expanded="false" />
-            <element signature="e#14545#15484#0" expanded="false" />
-            <element signature="n#!!block;n#dragstarted_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
-            <element signature="n#!!block;n#dragended_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
-            <element signature="n#!!block;n#zoomed#0;n#!!block;n#high_level#0" expanded="false" />
-            <element signature="n#!!block;n#stopped#0;n#!!block;n#high_level#0" expanded="false" />
-            <element signature="n#!!block;n#reset#0;n#!!block;n#high_level#0" expanded="false" />
-            <element signature="n#!!block;n#clicked#0;n#!!block;n#high_level#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/selection_component.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/left_column.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="326">
-          <caret line="160" column="41" lean-forward="true" selection-start-line="160" selection-start-column="41" selection-end-line="160" selection-end-column="41" />
-          <folding>
-            <marker date="1521440810716" expanded="true" signature="5619:5630" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/selection_component.js" />
     <entry file="file://$PROJECT_DIR$/src/arrow.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
           <caret line="7" column="20" lean-forward="true" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -962,60 +1103,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/high_level.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2909">
-          <caret line="156" column="13" lean-forward="true" selection-start-line="156" selection-start-column="13" selection-end-line="156" selection-end-column="13" />
-          <folding>
-            <element signature="e#3573#6087#0" expanded="false" />
-            <element signature="e#6173#7377#0" expanded="false" />
-            <element signature="e#13856#14558#0" expanded="false" />
-            <element signature="e#14629#15568#0" expanded="false" />
-            <element signature="n#!!block;n#dragstarted_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
-            <element signature="n#!!block;n#dragged_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
-            <element signature="n#!!block;n#dragended_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
-            <element signature="n#!!block;n#updateBetweenArrow#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
-            <element signature="n#!!block;n#zoomed#0;n#!!block;n#high_level#0" expanded="false" />
-            <element signature="n#!!block;n#stopped#0;n#!!block;n#high_level#0" expanded="false" />
-            <element signature="n#!!block;n#reset#0;n#!!block;n#high_level#0" expanded="false" />
-            <element signature="n#!!block;n#clicked#0;n#!!block;n#high_level#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/agg_view.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="18" lean-forward="false" selection-start-line="0" selection-start-column="18" selection-end-line="0" selection-end-column="18" />
-          <folding>
-            <element signature="n#!!block;n#buildData#0" expanded="false" />
-            <element signature="n#!!block;n#bubbleChart#0" expanded="false" />
-            <element signature="n#!!block;n#barChart#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/right_click_menu.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="27" column="0" lean-forward="false" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.dom.d.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="15045" column="12" lean-forward="false" selection-start-line="15045" selection-start-column="12" selection-end-line="15045" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/css/global.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="90" column="0" lean-forward="true" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1045,15 +1136,101 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/css/global.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="451">
+          <caret line="97" column="1" lean-forward="true" selection-start-line="97" selection-start-column="1" selection-end-line="97" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/agg_view.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="5" column="12" lean-forward="false" selection-start-line="5" selection-start-column="12" selection-end-line="5" selection-end-column="12" />
+          <folding>
+            <element signature="n#!!block;n#buildData#0" expanded="false" />
+            <element signature="n#!!block;n#bubbleChart#0" expanded="false" />
+            <element signature="n#!!block;n#barChart#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/right_click_menu.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="517">
+          <caret line="25" column="45" lean-forward="false" selection-start-line="25" selection-start-column="45" selection-end-line="25" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/low_level.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="354">
-          <caret line="426" column="16" lean-forward="false" selection-start-line="426" selection-start-column="16" selection-end-line="432" selection-end-column="17" />
+        <state relative-caret-position="207">
+          <caret line="165" column="47" lean-forward="true" selection-start-line="165" selection-start-column="47" selection-end-line="165" selection-end-column="47" />
           <folding>
-            <element signature="e#769#1086#0" expanded="false" />
+            <element signature="n#!!block;n#dragCreateSel#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="e#6743#6884#0" expanded="false" />
+            <element signature="n#!!block;n#dragstarted#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#dragged#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#dragended#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#drawDots#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#buildSelectedDots#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="e#10853#10907#0" expanded="false" />
+            <element signature="e#11125#11477#0" expanded="false" />
+            <element signature="e#11492#11537#0" expanded="false" />
+            <element signature="e#11615#11861#0" expanded="false" />
+            <element signature="e#12011#12057#0" expanded="false" />
+            <element signature="e#12151#12440#0" expanded="false" />
+            <element signature="e#12750#13772#0" expanded="false" />
+            <element signature="e#14783#14905#0" expanded="false" />
+            <element signature="n#!!block;n#buildLinks#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="e#15632#17362#0" expanded="false" />
+            <element signature="e#17416#18761#0" expanded="false" />
+            <element signature="e#19435#19577#0" expanded="false" />
+            <element signature="e#21937#24126#0" expanded="false" />
+            <element signature="e#24192#25633#0" expanded="false" />
+            <element signature="n#!!block;n#deleteSelection#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#deleteDot#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#hideSelection#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#deleteLinks#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#hideWithinLinks#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="n#!!block;n#showWithinLinks#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#showSelection#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#resetClickSel#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#clickRect#0;n#!!block;n#low_level#0" expanded="false" />
+            <element signature="e#31487#37819#0" expanded="false" />
+            <element signature="e#37974#38248#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/left_column.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1146">
+          <caret line="193" column="35" lean-forward="false" selection-start-line="193" selection-start-column="35" selection-end-line="193" selection-end-column="35" />
+          <folding>
+            <marker date="1521443347768" expanded="true" signature="5903:5914" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/high_level.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3986">
+          <caret line="266" column="36" lean-forward="true" selection-start-line="266" selection-start-column="36" selection-end-line="266" selection-end-column="36" />
+          <folding>
+            <element signature="e#3060#5574#0" expanded="false" />
+            <element signature="e#5660#6864#0" expanded="false" />
+            <element signature="e#13506#14208#0" expanded="false" />
+            <element signature="e#14279#15218#0" expanded="false" />
+            <element signature="n#!!block;n#dragstarted_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
+            <element signature="n#!!block;n#dragged_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
+            <element signature="n#!!block;n#dragended_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
+            <element signature="n#!!block;n#updateBetweenArrow#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
+            <element signature="n#!!block;n#zoomed#0;n#!!block;n#high_level#0" expanded="false" />
+            <element signature="n#!!block;n#stopped#0;n#!!block;n#high_level#0" expanded="false" />
+            <element signature="n#!!block;n#reset#0;n#!!block;n#high_level#0" expanded="false" />
           </folding>
         </state>
       </provider>

@@ -96,18 +96,6 @@ function high_level() {
                 .attr('width', square_width)
                 .attr('height', square_width);
 
-            // var cover = nodes.append('rect')
-            //     .classed('high_level_cover', true)
-            //     .attr('id', 'high_level_cover'+ID)
-            //     .attr('width', square_width)
-            //     .attr('height', square_width)
-            //     .attr('stroke', 'none')
-            //     .attr('fill', 'black')
-            //     .attr('fill-opacity', 0)
-            //     .attr('x', selection.x1)
-            //     .attr('y', selection.y1)
-            //     .on('click', clicked);
-
             // Build Within, background_in, background_out arrows
             {
                 // Within Arrow
@@ -188,8 +176,7 @@ function high_level() {
 
             function getConnectionPoint(x1, y1, x2, y2) {
 
-
-
+                // todo get connection point
             }
 
             // Build Between Arrows and Number Display
@@ -276,6 +263,8 @@ function high_level() {
                     .text(num_be_in);
 
                 // Between gradient
+                // todo gradient doesn't update after change the relative position
+                // todo of the block
                 var rec_len = Math.max(Math.abs(xe - xs), Math.abs(ye - ys));
                 var X1 = (0.5 + (xs - xe) / 2 / rec_len) * 100,
                     X2 = (0.5 - (xs - xe) / 2 / rec_len) * 100,

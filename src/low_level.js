@@ -68,6 +68,27 @@ function low_level(selector, airports) {
 
     var right_click = contextMenu('#low_svg');
 
+    // background grids
+    svg.append("g")
+        .attr("class", "bg_grid_low")
+        .selectAll("line")
+        .data(d3.range(0, width+1, 50))
+        .enter().append("line")
+        .attr("x1", function(d) { return d; })
+        .attr("y1", 0)
+        .attr("x2", function(d) { return d; })
+        .attr("y2", height);
+    svg.append("g")
+        .attr("class", "bg_grid_low")
+        .selectAll("line")
+        .data(d3.range(0, height+1, 50))
+        .enter().append("line")
+        .attr("x1", 0)
+        .attr("y1", function(d) { return d; })
+        .attr("x2", width)
+        .attr("y2", function(d) { return d; });
+
+    // Right Click
     svg.on('contextmenu', function(){
         d3.event.preventDefault();
         right_click(d3.mouse(this)[0], d3.mouse(this)[1]);
@@ -75,18 +96,20 @@ function low_level(selector, airports) {
 
     svg.on("mousedown", dragCreateSel);
 
+    high_level('#high_level');
+
     // var bg_rec = svg.append("rect")
     //     .classed('background', true)
     //     .attr("width", width)
     //     .attr("height", height)
     //     .attr('fill-opacity', 0)
     //     .on('click', resetClickSel);
-
+    //
     // svg.append("rect")
     //     .classed('background', true)
     //     .attr("width", width)
     //     .attr("height", height)
-
+    //
     // var gX = svg.append('g')
     //     .attr('class', 'axis axis--x')
     //     .attr('stroke', 'white')
@@ -96,15 +119,11 @@ function low_level(selector, airports) {
     //     .attr('class', 'axis axis--y')
     //     .attr('stroke', 'white')
     //     .call(yAxis);
-
+    //
     // var container_zoom = svg.append('g')
     //     .attr('id', 'container_zoom');
-
+    //
     // svg.call(zoom);
-
-    high_level('#high_level');
-
-
     //
     // var drag = d3.behavior.drag()
     //     .orgin(function (d) { return d; })
@@ -112,8 +131,6 @@ function low_level(selector, airports) {
     //     .on("drag", dragged_map)
     //     .on("dragend", dragended_map);
     //
-
-
     //
     // function dragstarted_map(d) {
     //     d3.event.sourceEvent.stopPropagation();
@@ -129,28 +146,56 @@ function low_level(selector, airports) {
     // }
 
     var selection = null,
-        selection_color = null,
+        color = null,
         randomColor = null,
         sel_group = null;
 
     var allDots = drawDots();
 
-    // a random color generator to get get color for selection win.
-    var getColor = d3.scaleLinear()
-        .domain([0, 0.5, 1.0])
-        .range(['#fc2b30', '#3f99d1', '#64be5c']);
-    //.range(['red', 'orange', 'yellow', 'green', 'blue', 'purple']);
+    function getColor(color_schema) {
+
+        var getColor = d3.scaleLinear()
+            .domain([0, 0.5, 1.0]);
+
+        switch (color_schema) {
+            case 0:
+                getColor = d3.scaleLinear()
+                    .domain([0, 0.5, 1.0])
+                    .range(['#fc2b30', '#3f99d1', '#64be5c']);
+
+                color = getColor(Math.random())
+
+                break;
+
+            case 1:
+                color = getColor(Math.random())
+                    .range(['red', 'orange', 'yellow',
+                        'green', 'blue', 'purple']);
+                color = d3.rgb(color).brighter(1);
+                break;
+
+            case 2:
+                color = "hsl(" + Math.random() * 360 + ",100%,50%)";
+                break;
+
+            default:
+                getColor = d3.scaleLinear()
+                    .domain([0, 0.5, 1.0])
+                    .range(['#fc2b30', '#3f99d1', '#64be5c']);
+
+                color = getColor(Math.random())
+        }
+    }
 
     function dragCreateSel() {
+
+        getColor();
 
         var subject = d3.select(window),
             parent = this.parentNode,
             start = d3.mouse(parent);
 
         var startSelection = function(start) {
-            // Set window and node color of this selection.
-            selection_color = getColor(Math.random());
-            randomColor = "hsl(" + Math.random() * 360 + ",100%,50%)";
 
             sel_group = svg.append('g')
                 .classed('sel_group', true)
@@ -169,11 +214,9 @@ function low_level(selector, airports) {
                 .attr('width', 0)
                 .attr('height', 0)
                 .attr('fill-opacity', '0')
-                .attr('stroke', selection_color)
-                //.attr('stroke', randomColor)
+                .attr('stroke', color)
                 .attr('stroke-width', 3)
-                .attr('cursor', 'move')
-            ;
+                .attr('cursor', 'move');
             num_window += 1;
         };
 
@@ -199,13 +242,42 @@ function low_level(selector, airports) {
             .on("mouseup.selection", function() {
                 buildSelectedDots(start[0], start[1],
                     d3.mouse(parent)[0], d3.mouse(parent)[1],
-                    selection_color, num_window-1);
+                    color, num_window-1);
                 subject
                     .on("mousemove.selection", null)
                     .on("mouseup.selection", null);
 
                 endSelection(start, d3.mouse(parent));
             });
+    }
+
+    function rightClickCreateSel(x1, y1, x2, y2) {
+
+        var def_width = 100;
+        getColor();
+
+        sel_group = svg.append('g')
+            .classed('sel_group', true)
+            .attr('id', 'sel_group' + num_window).on('click', clickRect)
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
+
+        selection = sel_group.append("rect")
+            .classed('selection', true)
+            .attr("id", "selection"+num_window)
+            .attr('selection_id', num_window)
+            .attr('x', x1)
+            .attr('y', y1)
+            .attr('width', def_width)
+            .attr('height', def_width)
+            .attr('fill-opacity', '0')
+            .attr('stroke', color)
+            .attr('stroke-width', 3)
+            .attr('cursor', 'move');
+        buildSelectedDots(x1, y1, x2, y2, color, num_window);
+        num_window += 1;
     }
 
     // Manipulate selection rect
@@ -930,11 +1002,20 @@ function low_level(selector, airports) {
                 y1 = +sel_dom.attr('y') + trans_y,
                 y2 = +sel_dom.attr('y') + +sel_dom.attr('height') + trans_y;
 
+            selections[sel_id].x1 = x1;
+            selections[sel_id].x2 = x2;
+            selections[sel_id].y1 = y1;
+            selections[sel_id].y2 = y2;
+
+            SelectionComponentObj.Filter.updateSlider(x1, y1, x2, y2);
+
+
             deleteDot(sel_id);
             buildSelectedDots(x1, y1, x2, y2, sel_dom.attr('stroke'), sel_id);
         }
 
     }
 
-    low_level.buildSelection = buildSelectedDots;
+    low_level.rightClickCreateSel = rightClickCreateSel;
+
 }
