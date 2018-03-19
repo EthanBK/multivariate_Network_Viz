@@ -47,10 +47,10 @@
 }
 
 #high_level {
-    position: absolute;
-    top: 760px;
-    left: 25%;
+}
 
+#low_level {
+    margin-bottom:20px;
 }
 
 #high_level_svg {
