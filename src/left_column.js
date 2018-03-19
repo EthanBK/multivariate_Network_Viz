@@ -102,6 +102,11 @@ function FilterComponent(api) {
         });
     }
 
+    this.updateSlider = function(x1, y1, x2, y2) {
+        $('#attr-longitude').slider('setValue', [x1, x2]);
+        $('#attr-latitude').slider('setValue', [y1, y2]);
+    }
+
     this.init_nodes = function(s) {
         this.clear();
         this.addNav('Nodes', s);
@@ -160,7 +165,8 @@ function SelectionComponent(api) {
     var $selection_component = $('#selection_component');
     var Obj = this;
     var Selected;
-
+    
+    this.Filter = FilterComponentObj;
     this.HiddenSelections = {};
 
     this.addSelection = function(id, color) {

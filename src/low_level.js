@@ -241,6 +241,7 @@ function low_level(selector, airports) {
 
         deleteDot(id);
         buildSelectedDots(x1, y1, x2, y2, sel_dom.getAttribute('stroke'), id);
+        SelectionComponentObj.Filter.updateSlider(x1, y1, x2, y2);
     }
 
     // Draw all the dots
