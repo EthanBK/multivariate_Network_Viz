@@ -166,8 +166,8 @@ function FilterComponent(api) {
         }, function(event, scale) {
             clearTimeout(SlideTimeout);
             SlideTimeout = setTimeout(function() {
-                s.x1 = scale(event.value[0]);
-                s.x2 = scale(event.value[1]);
+                s.y1 = scale(event.value[0]);
+                s.y2 = scale(event.value[1]);
                 redrawSelection(s);
             }, 250);
         });
@@ -181,8 +181,8 @@ function FilterComponent(api) {
         }, function(event, scale) {
             clearTimeout(SlideTimeout);
             SlideTimeout = setTimeout(function() {
-                s.y1 = scale(event.value[0]);
-                s.y2 = scale(event.value[1]);
+                s.x1 = scale(event.value[0]);
+                s.x2 = scale(event.value[1]);
                 redrawSelection(s);
             }, 250);
         });
