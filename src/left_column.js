@@ -179,6 +179,7 @@ function SelectionComponent(api) {
 
         // Retain a pointer to the element
         var $child = $('#' + selection_id);
+        Obj.selectSelection($child);
 
         // Add color box
         $child.append('<div class="selection-color-box" style="background:' + color + '"></div>');
@@ -187,11 +188,11 @@ function SelectionComponent(api) {
         $child.append('<p>' + selection_id + '</p>');
 
         $child.on('mouseover', function() {
-            $(this).css('background', 'rgb(240,240,240)');
+            $(this).addClass('selection-hover');
         });
 
         $child.on('mouseleave', function() {
-            $(this).css('background', 'rgb(255,255,255)');
+            $(this).removeClass('selection-hover');
         });
 
         /* Add subcomponents */
@@ -221,7 +222,15 @@ function SelectionComponent(api) {
         $child.on('click', function() {
             if($toggle.prop('checked'))
                 FilterComponentObj.init_nodes(selection);
+            Obj.selectSelection($(this));
         });
+    }
+
+    this.selectSelection = function(ele) {
+        $('.sc-child').each(function() {
+            $(this).removeClass('selection-active');
+        });
+        ele.addClass('selection-active');
     }
 
     this.removeSelection = function(id) {
