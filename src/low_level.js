@@ -39,7 +39,15 @@ function low_level(selector, airports) {
         deleteLinks: deleteLinks,
         deleteDot: deleteDot,
         hideWithinLinks: hideWithinLinks,
-        showWithinLinks: showWithinLinks
+        showWithinLinks: showWithinLinks,
+        hideBackgroundInLinks: hideBackgroundInLinks,
+        showBackgroundInLinks: showBackgroundInLinks,
+        hideBackgroundOutLinks: hideBackgroundOutLinks,
+        showBackgroundOutLinks: showBackgroundOutLinks,
+        hideBetweenInLinks: hideBetweenInLinks,
+        showBetweenInLinks: showBetweenInLinks,
+        hideBetweenOutLinks: hideBetweenOutLinks,
+        showBetweenOutLinks: showBetweenOutLinks
     });
 
     //var airports = buildData(flight, ap_supplement, all_ap);
@@ -743,11 +751,47 @@ function low_level(selector, airports) {
 
     function hideWithinLinks(ID) {
         // 'within_linkID', 'bg_linkID', 'from_linkID', 'to_linkID'
-        $("*[class=within_link"+ID+"]").css('display', 'none');
+        $(".within_link"+ID).css('display', 'none');
     }
 
     function showWithinLinks(ID) {
-        $("*[class=within_link"+ID+"]").css('display', 'block');
+        $(".within_link"+ID).css('display', 'block');
+    }
+
+    function hideBetweenInLinks(ID) {
+        var selector = 'from_link' + ID + 'to_link';
+        $("*[class*=" + selector + "]").css('display', 'none');
+    }
+
+    function showBetweenInLinks(ID) {
+        var selector = 'from_link' + ID + 'to_link';
+        $("*[class*=" + selector + "]").css('display', 'block');
+    }
+
+    function hideBetweenOutLinks(ID) {
+        var selector = 'to_link' + ID;
+        $("*[class*=" + selector + "]").css('display', 'none');
+    }
+
+    function showBetweenOutLinks(ID) {
+        var selector = 'to_link' + ID;
+        $("*[class*=" + selector + "]").css('display', 'block');
+    }
+
+    function showBackgroundInLinks(ID) {
+        $("*[class=bg_in_link"+ID+"]").css('display', 'block');
+    }
+
+    function hideBackgroundInLinks(ID) {
+        $("*[class=bg_in_link"+ID+"]").css('display', 'none');
+    }
+
+    function hideBackgroundOutLinks(ID) {
+        $(".bg_out_link"+ID).css('display', 'none');
+    }
+
+    function showBackgroundOutLinks(ID) {
+        $(".bg_out_link" + ID).css('display', 'block');
     }
 
     function showSelection(ID) {

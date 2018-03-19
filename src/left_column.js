@@ -50,14 +50,27 @@ function FilterComponent(api) {
     }
 
     this.addSlider = function(config, callback) {
+        var axisScale = d3.scaleLinear()
+            .domain(config.domain)
+            .range(config.range);
+
+        // Scale values
+        config.value[0] = axisScale(config.value[0]);
+        config.value[1] = axisScale(config.value[1]);
+
         var ele = '<div class="row-fluid top-10">';
         ele += '<h5>' + config.title + '</h5>';
         ele += '<input id="' + config.id + '" type="text" class="span2" value=""';
-        ele += 'data-slider-min="10" data-slider-max="1000" data-slider-step="5"';
+        ele += 'data-slider-min="' + config.range[0] + '" data-slider-max="' + config.range[1] + '" data-slider-step="1"';
         ele += 'data-slider-value="[' + config.value[0] + ',' + config.value[1] + ']"/>';
         ele += '</div>';
         $filter.append(ele);
-        $('#' + config.id).slider().on('slide', callback);
+        $('#' + config.id).slider().on('slide', function(event) {
+            var scale = d3.scaleLinear()
+                .domain(config.range)
+                .range(config.domain)
+            callback(event, scale);
+        });
     }
 
     this.addToggle = function(config, on_callback, off_callback) {
@@ -88,24 +101,35 @@ function FilterComponent(api) {
         this.addToggle({
             title: 'Between In',
             id: 'attr-between-in'
-        });
+        }, c_wrap(api.showBetweenInLinks), c_wrap(api.hideBetweenInLinks));
         this.addToggle({
             title: 'Between Out',
             id: 'attr-between-out'
-        });
+        }, c_wrap(api.showBackgroundOutLinks), c_wrap(api.hideBackgroundOutLinks));
         this.addToggle({
             title: 'Background In',
-            id: 'attr-background-in'
-        });
+            id: 'attr-background-in',
+        }, c_wrap(api.showBackgroundInLinks), c_wrap(api.hideBackgroundInLinks));
         this.addToggle({
             title: 'Background Out',
             id: 'attr-background-out'
-        });
+        }, c_wrap(api.showBackgroundOutLinks), c_wrap(api.hideBackgroundOutLinks));
     }
 
     this.updateSlider = function(x1, y1, x2, y2) {
-        $('#' + LONGITUDE_SLIDER_ID).slider('setValue', [x1, x2]);
-        $('#' + LATITUDE_SLIDER_ID).slider('setValue', [y1, y2]);
+        var xAxisScale = d3.scaleLinear()
+            .domain([0, 1500])
+            .range([-180, 180]);
+        var yAxisScale = d3.scaleLinear()
+            .domain([0, 750])
+            .range([-90, 90])
+        $('#' + LONGITUDE_SLIDER_ID).slider('setValue', [
+            xAxisScale(x1), xAxisScale(x2)
+        ]);
+        $('#' + LATITUDE_SLIDER_ID).slider('setValue', [
+            yAxisScale(y1), 
+            yAxisScale(y2)
+        ]);
     }
 
     this.init_nodes = function(s) {
@@ -137,12 +161,14 @@ function FilterComponent(api) {
         this.addSlider({
             title: 'Latitude',
             id: LATITUDE_SLIDER_ID,
-            value: [s.x1, s.x2]
-        }, function(event) {
+            value: [s.x1, s.x2],
+            domain: [0, 1500],
+            range: [-180, 180]
+        }, function(event, scale) {
             clearTimeout(SlideTimeout);
             SlideTimeout = setTimeout(function() {
-                s.x1 = event.value[0];
-                s.x2 = event.value[1];
+                s.x1 = scale(event.value[0]);
+                s.x2 = scale(event.value[1]);
                 redrawSelection(s);
             }, 250);
         });
@@ -150,12 +176,14 @@ function FilterComponent(api) {
         this.addSlider({
             title: 'Longitude',
             id: LONGITUDE_SLIDER_ID, 
-            value: [s.y1, s.y2]
-        }, function(event) {
+            value: [s.y1, s.y2],
+            domain: [0, 750],
+            range: [-90, 90]
+        }, function(event, scale) {
             clearTimeout(SlideTimeout);
             SlideTimeout = setTimeout(function() {
-                s.y1 = event.value[0];
-                s.y2 = event.value[1];
+                s.y1 = scale(event.value[0]);
+                s.y2 = scale(event.value[1]);
                 redrawSelection(s);
             }, 250);
         });
@@ -179,6 +207,7 @@ function SelectionComponent(api) {
 
         // Retain a pointer to the element
         var $child = $('#' + selection_id);
+        Obj.selectSelection($child);
 
         // Add color box
         $child.append('<div class="selection-color-box" style="background:' + color + '"></div>');
@@ -187,11 +216,11 @@ function SelectionComponent(api) {
         $child.append('<p>' + selection_id + '</p>');
 
         $child.on('mouseover', function() {
-            $(this).css('background', 'rgb(240,240,240)');
+            $(this).addClass('selection-hover');
         });
 
         $child.on('mouseleave', function() {
-            $(this).css('background', 'rgb(255,255,255)');
+            $(this).removeClass('selection-hover');
         });
 
         /* Add subcomponents */
@@ -221,7 +250,15 @@ function SelectionComponent(api) {
         $child.on('click', function() {
             if($toggle.prop('checked'))
                 FilterComponentObj.init_nodes(selection);
+            Obj.selectSelection($(this));
         });
+    }
+
+    this.selectSelection = function(ele) {
+        $('.sc-child').each(function() {
+            $(this).removeClass('selection-active');
+        });
+        ele.addClass('selection-active');
     }
 
     this.removeSelection = function(id) {

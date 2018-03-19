@@ -46,6 +46,14 @@
     float:right;
 }
 
+.selection-active {
+    background:rgb(244,244,244);
+}
+
+.selection-hover {
+    background:rgb(244,244,244);
+}
+
 #high_level {
 }
 
