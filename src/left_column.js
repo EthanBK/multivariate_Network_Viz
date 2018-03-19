@@ -117,8 +117,19 @@ function FilterComponent(api) {
     }
 
     this.updateSlider = function(x1, y1, x2, y2) {
-        $('#' + LONGITUDE_SLIDER_ID).slider('setValue', [x1, x2]);
-        $('#' + LATITUDE_SLIDER_ID).slider('setValue', [y1, y2]);
+        var xAxisScale = d3.scaleLinear()
+            .domain([0, 1500])
+            .range([-180, 180]);
+        var yAxisScale = d3.scaleLinear()
+            .domain([0, 750])
+            .range([-90, 90])
+        $('#' + LONGITUDE_SLIDER_ID).slider('setValue', [
+            xAxisScale(x1), xAxisScale(x2)
+        ]);
+        $('#' + LATITUDE_SLIDER_ID).slider('setValue', [
+            yAxisScale(y1), 
+            yAxisScale(y2)
+        ]);
     }
 
     this.init_nodes = function(s) {
