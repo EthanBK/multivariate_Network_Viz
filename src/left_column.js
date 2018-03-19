@@ -108,7 +108,13 @@ function FilterComponent(api) {
 
         function redrawSelection(s) {
             var $selection_box = $('#sel_group' + s.id);
+            // Delete existing links
+            api.deleteLinks(s.id);
+
+            // Re-draw links with resized box
             api.buildSelection(s.x1, s.y1, s.x2, s.y2, s.color, s.id);
+
+            // Adjust box to new dimensions
             $selection_box.attr('x', s.x1);
             $selection_box.attr('y', s.y1);
             $selection_box.attr('width', s.x2 - s.x1);

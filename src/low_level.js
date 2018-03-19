@@ -36,6 +36,7 @@ function low_level(selector, airports) {
         deleteSelection: deleteSelection,
         hideSelection: hideSelection,
         showSelection: showSelection,
+        deleteLinks: deleteLinks,
         hideWithinLinks: hideWithinLinks,
         showWithinLinks: showWithinLinks
     });
@@ -576,6 +577,10 @@ function low_level(selector, airports) {
         $('.selected'+ID).css('display', 'none');
         $("*[id*=btg"+ID+"]").css('display', 'none');
         $('.selection'+ID).css('display', 'none');
+    }
+
+    function deleteLinks(ID) {
+        $("*[class*=link"+ID+"]").remove();
     }
 
     function hideWithinLinks(ID) {
