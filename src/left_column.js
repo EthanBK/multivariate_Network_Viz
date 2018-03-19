@@ -160,8 +160,8 @@ function FilterComponent(api) {
         this.addSlider({
             title: 'Latitude',
             id: LATITUDE_SLIDER_ID,
-            value: [s.x1, s.x2],
-            domain: [0, 1500],
+            value: [s.y1, s.y2],
+            domain: [0, 750],
             range: [-90, 90]
         }, function(event, scale) {
             clearTimeout(SlideTimeout);
@@ -175,8 +175,8 @@ function FilterComponent(api) {
         this.addSlider({
             title: 'Longitude',
             id: LONGITUDE_SLIDER_ID, 
-            value: [s.y1, s.y2],
-            domain: [0, 750],
+            value: [s.x1, s.x2],
+            domain: [0, 1500],
             range: [-180, 180]
         }, function(event, scale) {
             clearTimeout(SlideTimeout);
