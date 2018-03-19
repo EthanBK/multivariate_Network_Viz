@@ -44,22 +44,43 @@ function low_level(selector, airports) {
         .attr('id', 'low_svg')
         .attr('width', width)
         .attr('height', height)
-        .style('background', '#141411');
+        .style('background', '#141411')
+        .on('click', function() {
+            var coords = d3.mouse(this);
+            var isBackground = true;
+            selections.forEach(function (sel) {
+                if (sel === null) return;
+                if (coords[0] > sel.x1 && coords[0] < sel.x2 &&
+                    coords[1] > sel.y1 && coords[1] < sel.y2)
+                    isBackground = false;
+            });
+            if (isBackground) {
+                resetClickSel();
+                high_level.reset();
+            }
+        });
+
+    // var bg_rec = svg.append("rect")
+    //     .classed('background', true)
+    //     .attr("width", width)
+    //     .attr("height", height)
+    //     .attr('fill-opacity', 0)
+    //     .on('click', resetClickSel);
 
     // svg.append("rect")
     //     .classed('background', true)
     //     .attr("width", width)
     //     .attr("height", height)
 
-    var gX = svg.append('g')
-        .attr('class', 'axis axis--x')
-        .attr('stroke', 'white')
-        .call(xAxis);
-
-    var gY = svg.append('g')
-        .attr('class', 'axis axis--y')
-        .attr('stroke', 'white')
-        .call(yAxis);
+    // var gX = svg.append('g')
+    //     .attr('class', 'axis axis--x')
+    //     .attr('stroke', 'white')
+    //     .call(xAxis);
+    //
+    // var gY = svg.append('g')
+    //     .attr('class', 'axis axis--y')
+    //     .attr('stroke', 'white')
+    //     .call(yAxis);
 
     // var container_zoom = svg.append('g')
     //     .attr('id', 'container_zoom');
@@ -95,7 +116,7 @@ function low_level(selector, airports) {
     var selection = null,
         selection_color = null,
         randomColor = null,
-        sel_group = null
+        sel_group = null;
 
 
     // a random color generator to get get color for selection win.
@@ -110,10 +131,14 @@ function low_level(selector, airports) {
         selection_color = getColor(Math.random());
         randomColor = "hsl(" + Math.random() * 360 + ",100%,50%)";
 
-
         sel_group = svg.append('g')
             .classed('sel_group', true)
-            .attr('id', 'sel_group' + num_window);
+            .attr('id', 'sel_group' + num_window).on('click', clickRect)
+
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
 
         selection = sel_group.append("rect")
             .classed('selection', true)
@@ -129,10 +154,8 @@ function low_level(selector, airports) {
             .attr('stroke', selection_color)
             //.attr('stroke', randomColor)
             .attr('stroke-width', 3)
-            .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended));
+            .attr('cursor', 'move')
+        ;
         num_window += 1;
     };
 
@@ -143,8 +166,10 @@ function low_level(selector, airports) {
     };
 
     var endSelection = function(start, end) {
-        sel_group.on('click', clickRect)
-        // selection.attr("visibility", "hidden");
+        if (end[0] <= start[0] || end[1] <= start[1]) {
+            // if click on svg, or invalid selection creation
+            d3.select('#sel_group'+num_window).remove()
+        }
     };
 
     svg.on("mousedown", function() {
@@ -164,7 +189,7 @@ function low_level(selector, airports) {
                     .on("mousemove.selection", null)
                     .on("mouseup.selection", null);
 
-                endSelection(selection_color, start, d3.mouse(parent));
+                endSelection(start, d3.mouse(parent));
             });
     });
 
@@ -172,22 +197,36 @@ function low_level(selector, airports) {
     function dragstarted() {
         d3.select(this).raise().classed("active", true);
     }
-
     function dragged() {
-        d3.select(this)
-            .attr('x', this.x.baseVal.value + d3.event.dx)
-            .attr('y', this.y.baseVal.value + d3.event.dy)
+        this.x = this.x || 0;
+        this.y = this.y || 0;
+        this.x += d3.event.dx;
+        this.y += d3.event.dy;
+        d3.select(this).attr("transform", "translate(" + this.x + "," + this.y + ")");
     }
-
     function dragended() {
         d3.select(this).classed("active", false);
-        var x1 = +this.getAttribute('x'),
-            y1 = +this.getAttribute('y'),
-            x2 = +this.getAttribute('x') + this.width.baseVal.value,
-            y2 = +this.getAttribute('y') + this.height.baseVal.value;
 
-        deleteDot( +this.getAttribute('selection_id'));
-        buildSelection(x1, y1, x2, y2, this.getAttribute('stroke'), +this.getAttribute('selection_id'));
+        var trans_x = 0,
+            trans_y = 0;
+        if (this.getAttribute('transform') !== null) {
+            var transform = this.getAttribute('transform'),
+                regExp_x = /\(([^)]+),/,
+                regExp_y = /,([^)]+)\)/;
+            trans_x = +regExp_x.exec(transform)[1];
+            trans_y = +regExp_y.exec(transform)[1];
+        }
+
+        var id = +this.getAttribute('id').substring(9),
+            sel_dom = document.getElementById('selection' + id);
+
+        var x1 = +sel_dom.getAttribute('x') + trans_x,
+            y1 = +sel_dom.getAttribute('y') + trans_y,
+            x2 = x1 + +sel_dom.getAttribute('width'),
+            y2 = y1 + +sel_dom.getAttribute('height');
+
+        deleteDot(id);
+        buildSelection(x1, y1, x2, y2, sel_dom.getAttribute('stroke'), id);
     }
 
     var allDots = null;
@@ -348,7 +387,12 @@ function low_level(selector, airports) {
             });
         });
 
-        high_level.buildBlock(ID, isNew)
+        high_level.buildBlock(ID, isNew);
+
+        // build detailed view in agg_svg
+        // Build default view (bubble chart + num_total_edge)
+        var ran = Math.round(Math.random());
+        aggregationView(ID, 0, ran)
     }
 
     function buildLinks (ID) {
@@ -516,10 +560,13 @@ function low_level(selector, airports) {
         d3.selectAll('.selected'+ID).remove();
         d3.selectAll("*[id*=btg"+ID+"]").remove();
         d3.select('#selection'+ID).remove();
-        selections[ID] = null;
+        d3.select('#handle_group'+ID).remove();
         d3.selectAll('#high_group'+ID).remove();
-        d3.selectAll("*[id*=be_arrow"+ID+"]").remove();
-        d3.selectAll("*[id*=be_arrow_num"+ID+"]").remove();
+        d3.selectAll("*[id*=be_arrow_from"+ID+"]").remove();
+        d3.selectAll("*[id*=be_arrow_to"+ID+"]").remove();
+        d3.selectAll("*[id*=be_arrow_from_num"+ID+"]").remove();
+        d3.selectAll("*[id*=be_arrow_to_num"+ID+"]").remove();
+        selections[ID] = null;
     }
 
     function hideSelection(ID) {
@@ -536,47 +583,244 @@ function low_level(selector, airports) {
         $('.selection'+ID).css('display', 'block');
     }
 
+    function resetClickSel() {
+
+        d3.selectAll('.handle').remove();
+
+        d3.selectAll(".clicked")
+            .classed('clicked', false)
+            .attr('stroke-width', 3)
+    }
+
     function clickRect() {
 
+        resetClickSel();
 
+        var group = d3.select(this);
+        var sel_id = +this.getAttribute('id').substring(9);
 
-        console.log(selections)
-        var group = this,
-            id = +this.getAttribute('selection_id'),
-            selection = selections.find(function (sel) {
-                console.log('sel',sel)
-                return sel.id === id;
-            });
+        high_level.clicked(document.getElementById('high_level_rect'+sel_id))
+
+        var sel_dom = d3.select('#selection'+sel_id);
+        var sel_obj = selections.find(function (sel) {
+            if (sel !== null)
+                return sel.id === sel_id;
+            else return false
+        });
+
+        if (sel_dom.attr('class').indexOf('clicked') > 0)
+            return;
 
         // Increase stroke width
-        var sel_dom = d3.select('#selection'+id)
-            .attr('stroke-width', 6)
-
-        console.log(selection)
+        sel_dom
+            .classed('clicked', true)
+            .attr('stroke-width', 6);
 
         var sq_width = 12;
 
-        var x = selection.x1,
-            y = selection.y1,
-            sel_width = selection.width,
-            sel_height = selection.height,
-            color = selection.color;
+        var x = +sel_obj.x1,
+            y = +sel_obj.y1,
+            sel_width = +sel_obj.x2 - +sel_obj.x1,
+            sel_height = +sel_obj.y2 - +sel_obj.y1,
+            color = sel_obj.color,
+            trans_x = 0,
+            trans_y = 0;
 
-        d3.select(this).append('rect')
-            .classed('handle'+id, true)
-            .attr('x', x - sq_width / 2)
-            .attr('y', y - sq_width / 2)
+        if (this.getAttribute('transform') !== null) {
+            var transform = this.getAttribute('transform'),
+                regExp_x = /\(([^)]+),/,
+                regExp_y = /,([^)]+)\)/;
+            trans_x = +regExp_x.exec(transform)[1];
+            trans_y = +regExp_y.exec(transform)[1];
+        }
+
+        var x_handle = x - sq_width / 2 - trans_x,
+            y_handle = y - sq_width / 2 - trans_y;
+
+        var pos = [
+            {x: x_handle, y: y_handle},
+            {x: x_handle + sel_width / 2, y: y_handle},
+            {x: x_handle + sel_width, y: y_handle},
+            {x: x_handle, y: y_handle + sel_height / 2},
+            {x: x_handle + sel_width, y: y_handle + sel_height / 2},
+            {x: x_handle, y: y_handle + sel_height},
+            {x: x_handle + sel_width / 2, y: y_handle + sel_height},
+            {x: x_handle + sel_width, y: y_handle + sel_height}
+        ];
+
+        // Add 8 handles, keep them in a group
+        var handles = group.append('g')
+            .attr('id', 'handle_group'+sel_id);
+
+        handles.selectAll('rect')
+            .data(pos).enter()
+            .append('rect')
+            .classed('handle', true)
+            .attr('id', function (d, i) { return 'handle' + sel_id +'_' + i; })
+            .attr('x', function (d) { return d.x; })
+            .attr('y', function (d) { return d.y; })
             .attr('width', sq_width)
             .attr('height', sq_width)
-            .attr('stroke', color)
             .attr('fill', color)
+            .attr('stroke', color)
+            .call(d3.drag()
+                .on("start", dragstarted_handle)
+                .on("drag", dragged_handle)
+                .on("end", dragended_handle));
 
+        function dragstarted_handle() {
+            d3.select(this).raise().classed("active", true);
+        }
 
+        var handle_0 = d3.select('#handle' + sel_id +'_' + 0).attr('cursor', 'nwse-resize'),
+            handle_1 = d3.select('#handle' + sel_id +'_' + 1).attr('cursor', 'ns-resize'),
+            handle_2 = d3.select('#handle' + sel_id +'_' + 2).attr('cursor', 'nesw-resize'),
+            handle_3 = d3.select('#handle' + sel_id +'_' + 3).attr('cursor', 'ew-resize'),
+            handle_4 = d3.select('#handle' + sel_id +'_' + 4).attr('cursor', 'ew-resize'),
+            handle_5 = d3.select('#handle' + sel_id +'_' + 5).attr('cursor', 'nesw-resize'),
+            handle_6 = d3.select('#handle' + sel_id +'_' + 6).attr('cursor', 'ns-resize'),
+            handle_7 = d3.select('#handle' + sel_id +'_' + 7).attr('cursor', 'nwse-resize');
 
+        function dragged_handle() {
 
+            var sel_width = +sel_dom.attr('width'),
+                sel_height = +sel_dom.attr('height');
 
+            var idString = this.getAttribute('id'),
+                handle_id = +idString.substring(idString.indexOf('_')+1);
+
+            switch(handle_id) {
+
+                case 0:
+                    handle_0.attr('x', +handle_0.attr('x') + d3.event.dx);
+                    handle_1.attr('x', +handle_1.attr('x') + d3.event.dx/2);
+                    handle_3.attr('x', +handle_3.attr('x') + d3.event.dx);
+                    handle_5.attr('x', +handle_5.attr('x') + d3.event.dx);
+                    handle_6.attr('x', +handle_6.attr('x') + d3.event.dx/2);
+                    sel_dom.attr('x', +sel_dom.attr('x') + d3.event.dx);
+                    sel_dom.attr('width', +sel_width - d3.event.dx);
+
+                    handle_0.attr('y', +handle_0.attr('y') + d3.event.dy);
+                    handle_1.attr('y', +handle_1.attr('y') + d3.event.dy);
+                    handle_2.attr('y', +handle_2.attr('y') + d3.event.dy);
+                    handle_3.attr('y', +handle_3.attr('y') + d3.event.dy/2);
+                    handle_4.attr('y', +handle_4.attr('y') + d3.event.dy/2);
+                    sel_dom.attr('y', +sel_dom.attr('y') + d3.event.dy);
+                    sel_dom.attr('height', +sel_height - d3.event.dy);
+                    break;
+
+                case 1:
+                    handle_0.attr('y', +handle_0.attr('y') + d3.event.dy);
+                    handle_1.attr('y', +handle_1.attr('y') + d3.event.dy);
+                    handle_2.attr('y', +handle_2.attr('y') + d3.event.dy);
+                    handle_3.attr('y', +handle_3.attr('y') + d3.event.dy/2);
+                    handle_4.attr('y', +handle_4.attr('y') + d3.event.dy/2);
+                    sel_dom.attr('y', +sel_dom.attr('y') + d3.event.dy);
+                    sel_dom.attr('height', +sel_height - d3.event.dy);
+                    break;
+
+                case 2:
+                    handle_1.attr('x', +handle_1.attr('x') + d3.event.dx/2);
+                    handle_2.attr('x', +handle_2.attr('x') + d3.event.dx);
+                    handle_4.attr('x', +handle_4.attr('x') + d3.event.dx);
+                    handle_6.attr('x', +handle_6.attr('x') + d3.event.dx/2);
+                    handle_7.attr('x', +handle_7.attr('x') + d3.event.dx);
+                    sel_dom.attr('width', +sel_width + d3.event.dx);
+
+                    handle_0.attr('y', +handle_0.attr('y') + d3.event.dy);
+                    handle_1.attr('y', +handle_1.attr('y') + d3.event.dy);
+                    handle_2.attr('y', +handle_2.attr('y') + d3.event.dy);
+                    handle_3.attr('y', +handle_3.attr('y') + d3.event.dy/2);
+                    handle_4.attr('y', +handle_4.attr('y') + d3.event.dy/2);
+                    sel_dom.attr('y', +sel_dom.attr('y') + d3.event.dy);
+                    sel_dom.attr('height', +sel_height - d3.event.dy);
+                    break;
+
+                case 3:
+                    handle_0.attr('x', +handle_0.attr('x') + d3.event.dx);
+                    handle_1.attr('x', +handle_1.attr('x') + d3.event.dx/2);
+                    handle_3.attr('x', +handle_3.attr('x') + d3.event.dx);
+                    handle_5.attr('x', +handle_5.attr('x') + d3.event.dx);
+                    handle_6.attr('x', +handle_6.attr('x') + d3.event.dx/2);
+                    sel_dom.attr('x', +sel_dom.attr('x') + d3.event.dx);
+                    sel_dom.attr('width', +sel_width - d3.event.dx);
+                    break;
+
+                case 4:
+                    handle_1.attr('x', +handle_1.attr('x') + d3.event.dx/2);
+                    handle_2.attr('x', +handle_2.attr('x') + d3.event.dx);
+                    handle_4.attr('x', +handle_4.attr('x') + d3.event.dx);
+                    handle_6.attr('x', +handle_6.attr('x') + d3.event.dx/2);
+                    handle_7.attr('x', +handle_7.attr('x') + d3.event.dx);
+                    sel_dom.attr('width', +sel_width + d3.event.dx);
+                    break;
+
+                case 5:
+                    handle_0.attr('x', +handle_0.attr('x') + d3.event.dx);
+                    handle_1.attr('x', +handle_1.attr('x') + d3.event.dx/2);
+                    handle_3.attr('x', +handle_3.attr('x') + d3.event.dx);
+                    handle_5.attr('x', +handle_5.attr('x') + d3.event.dx);
+                    handle_6.attr('x', +handle_6.attr('x') + d3.event.dx/2);
+                    sel_dom.attr('x', +sel_dom.attr('x') + d3.event.dx);
+                    sel_dom.attr('width', +sel_width - d3.event.dx);
+
+                    handle_3.attr('y', +handle_3.attr('y') + d3.event.dy/2);
+                    handle_4.attr('y', +handle_4.attr('y') + d3.event.dy/2);
+                    handle_5.attr('y', +handle_5.attr('y') + d3.event.dy);
+                    handle_6.attr('y', +handle_6.attr('y') + d3.event.dy);
+                    handle_7.attr('y', +handle_7.attr('y') + d3.event.dy);
+                    sel_dom.attr('height', +sel_height + d3.event.dy);
+                    break;
+
+                case 6:
+                    handle_3.attr('y', +handle_3.attr('y') + d3.event.dy/2);
+                    handle_4.attr('y', +handle_4.attr('y') + d3.event.dy/2);
+                    handle_5.attr('y', +handle_5.attr('y') + d3.event.dy);
+                    handle_6.attr('y', +handle_6.attr('y') + d3.event.dy);
+                    handle_7.attr('y', +handle_7.attr('y') + d3.event.dy);
+                    sel_dom.attr('height', +sel_height + d3.event.dy);
+                    break;
+
+                case 7:
+                    handle_1.attr('x', +handle_1.attr('x') + d3.event.dx/2);
+                    handle_2.attr('x', +handle_2.attr('x') + d3.event.dx);
+                    handle_4.attr('x', +handle_4.attr('x') + d3.event.dx);
+                    handle_6.attr('x', +handle_6.attr('x') + d3.event.dx/2);
+                    handle_7.attr('x', +handle_7.attr('x') + d3.event.dx);
+                    sel_dom.attr('width', +sel_width + d3.event.dx);
+
+                    handle_3.attr('y', +handle_3.attr('y') + d3.event.dy/2);
+                    handle_4.attr('y', +handle_4.attr('y') + d3.event.dy/2);
+                    handle_5.attr('y', +handle_5.attr('y') + d3.event.dy);
+                    handle_6.attr('y', +handle_6.attr('y') + d3.event.dy);
+                    handle_7.attr('y', +handle_7.attr('y') + d3.event.dy);
+                    sel_dom.attr('height', +sel_height + d3.event.dy);
+                    break;
+
+                default:
+                    return
+            }
+        }
+
+        function dragended_handle() {
+            d3.select(this).classed("active", false);
+
+            if (group.attr('transform') !== null) {
+                var transform = group.attr('transform'),
+                    regExp_x = /\(([^)]+),/,
+                    regExp_y = /,([^)]+)\)/;
+                trans_x = +regExp_x.exec(transform)[1];
+                trans_y = +regExp_y.exec(transform)[1];
+            }
+
+            var x1 = +sel_dom.attr('x') + trans_x,
+                x2 = +sel_dom.attr('x') + +sel_dom.attr('width') + trans_x,
+                y1 = +sel_dom.attr('y') + trans_y,
+                y2 = +sel_dom.attr('y') + +sel_dom.attr('height') + trans_y;
+
+            deleteDot(sel_id);
+            buildSelection(x1, y1, x2, y2, sel_dom.attr('stroke'), sel_id);
+        }
 
     }
-
-
 }
