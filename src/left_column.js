@@ -1,8 +1,9 @@
 function FilterComponent(api) {
     var Obj = this;
     var $filter = $('#filter_component');
-    var $latitude = $("#attr-latitude");
-    var $longitude = $("#attr-longitude");
+
+    var LATITUDE_SLIDER_ID = 'attr-latitude';
+    var LONGITUDE_SLIDER_ID = 'attr-longitude';
 
     this.clear = function() {
         $filter.empty();
@@ -103,8 +104,8 @@ function FilterComponent(api) {
     }
 
     this.updateSlider = function(x1, y1, x2, y2) {
-        $('#attr-longitude').slider('setValue', [x1, x2]);
-        $('#attr-latitude').slider('setValue', [y1, y2]);
+        $('#' + LONGITUDE_SLIDER_ID).slider('setValue', [x1, x2]);
+        $('#' + LATITUDE_SLIDER_ID).slider('setValue', [y1, y2]);
     }
 
     this.init_nodes = function(s) {
@@ -115,6 +116,7 @@ function FilterComponent(api) {
             var $selection_box = $('#sel_group' + s.id);
             // Delete existing links
             api.deleteLinks(s.id);
+            api.deleteDot(s.id);
 
             // Re-draw links with resized box
             api.buildSelection(s.x1, s.y1, s.x2, s.y2, s.color, s.id);
@@ -134,7 +136,7 @@ function FilterComponent(api) {
         var SlideTimeout;
         this.addSlider({
             title: 'Latitude',
-            id: 'attr-latitude',
+            id: LATITUDE_SLIDER_ID,
             value: [s.x1, s.x2]
         }, function(event) {
             clearTimeout(SlideTimeout);
@@ -147,7 +149,7 @@ function FilterComponent(api) {
 
         this.addSlider({
             title: 'Longitude',
-            id: 'attr-longitude',
+            id: LONGITUDE_SLIDER_ID, 
             value: [s.y1, s.y2]
         }, function(event) {
             clearTimeout(SlideTimeout);

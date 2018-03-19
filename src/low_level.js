@@ -37,6 +37,7 @@ function low_level(selector, airports) {
         hideSelection: hideSelection,
         showSelection: showSelection,
         deleteLinks: deleteLinks,
+        deleteDot: deleteDot,
         hideWithinLinks: hideWithinLinks,
         showWithinLinks: showWithinLinks
     });
