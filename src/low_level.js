@@ -140,9 +140,6 @@ function low_level(selector, airports) {
         .range(['#fc2b30', '#3f99d1', '#64be5c']);
     //.range(['red', 'orange', 'yellow', 'green', 'blue', 'purple']);
 
-
-
-
     function dragCreateSel() {
 
         var subject = d3.select(window),
@@ -278,7 +275,6 @@ function low_level(selector, airports) {
             num_window -= 1;
             return;
         }
-        console.log(ID, color)
 
         // If this is new selection window or drag old window
         var isNew = false;
@@ -425,13 +421,13 @@ function low_level(selector, airports) {
             // get destination of edges
             ap.out_edges.forEach(function (out_edge) {
 
-                // // draw 'within' edges
-                // if (x1 < out_edge.des_x && out_edge.des_x < x2 &&
-                //     y1 < out_edge.des_y && out_edge.des_y < y2) {
-                //     selections[ID].num_edge_within ++;
-                //     drawEdge(ap.x, ap.y, out_edge.des_x, out_edge.des_y, 1,
-                //         ID, ID, color, undefined);
-                // }
+                // draw 'within' edges
+                if (x1 < out_edge.des_x && out_edge.des_x < x2 &&
+                    y1 < out_edge.des_y && out_edge.des_y < y2) {
+                    selections[ID].num_edge_within ++;
+                    drawEdge(ap.x, ap.y, out_edge.des_x, out_edge.des_y, 1,
+                        ID, ID, color, undefined);
+                }
 
                 // draw 'out' edges
                 if (out_edge.des_x < x1 || x2 < out_edge.des_x ||
