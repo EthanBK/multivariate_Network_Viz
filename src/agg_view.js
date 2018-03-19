@@ -125,6 +125,7 @@ function bubbleChart(svg_bg, data_to_show, ID) {
         .on('click', function () {
             high_level.clicked(document.getElementById('high_level_rect' + ID))
         });
+
     var text = nodes.append('text')
         .classed('bubble_text' + ID, true)
         .attr('x', 0)
@@ -140,21 +141,6 @@ function bubbleChart(svg_bg, data_to_show, ID) {
         .on('click', function () {
             high_level.clicked(document.getElementById('high_level_rect' + ID))
         });
-    // var cover = nodes.append('circle')
-    //     .classed('bubble_cover' + ID, true)
-    //     .attr('cx', 0)
-    //     .attr('cy', 0)
-    //     .attr('r', function (d) {
-    //         return radius_scale(d.value)
-    //     })
-    //     .attr('fill', function (d) {
-    //         return color_scale(d.value)
-    //     })
-    //     .on('mouseover', mouseover)
-    //     .on('mouseout', mouseout)
-    //     .on('click', function () {
-    //         high_level.clicked(document.getElementById('high_level_rect' + ID))
-    //     });
 
     simulation.nodes(data_to_show);
 
@@ -173,7 +159,7 @@ function bubbleChart(svg_bg, data_to_show, ID) {
             .transition().duration(200)
             .attr('r', radius_max + 2);
 
-        simulation.alphaTarget(0.1).nodes(data_to_show);
+        simulation.nodes(data_to_show);
 
         var ap = data.find(function (value) {
             return value.id === d.id;

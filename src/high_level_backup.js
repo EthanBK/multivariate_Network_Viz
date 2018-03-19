@@ -26,10 +26,32 @@ function high_level() {
         .classed('background', true)
         .attr("width", width)
         .attr("height", height)
+        .style("fill", "none")
+        .style("pointer-events", "all")
         .on('click', reset);
 
     container_zoom = high_level_svg.append('g')
         .attr('id', 'container_zoom');
+
+    // background grids
+    container_zoom.append("g")
+        .attr("class", "x axis")
+        .selectAll("line")
+        .data(d3.range(0, width+1, 50))
+        .enter().append("line")
+        .attr("x1", function(d) { return d; })
+        .attr("y1", 0)
+        .attr("x2", function(d) { return d; })
+        .attr("y2", height);
+    container_zoom.append("g")
+        .attr("class", "y axis")
+        .selectAll("line")
+        .data(d3.range(0, height+1, 50))
+        .enter().append("line")
+        .attr("x1", 0)
+        .attr("y1", function(d) { return d; })
+        .attr("x2", width)
+        .attr("y2", function(d) { return d; });
 
     high_level_svg.call(zoom);
 
@@ -47,13 +69,16 @@ function high_level() {
         if (isNew) {
             // Create New Block
             var nodes = container_zoom.append('g')
-                .attr('id', 'group' + selection.id);
-            // .call(d3.drag()
-            //     .on("start", dragstarted)
-            //     .on("drag", dragged)
-            //     .on("end", dragended));
+                .classed('high_group', true)
+                .attr('id', 'high_group' + selection.id)
+                .call(d3.drag()
+                    .on("start", dragstarted_hi)
+                    .on("drag", dragged_hi)
+                    .on("end", dragended_hi));
 
             var rect = nodes.append('rect')
+                .classed('high_level_rect', true)
+                .attr('id', 'high_level_rect'+ID)
                 .attr('width', square_width)
                 .attr('height', square_width)
                 .attr('stroke', selection.color)
@@ -63,13 +88,33 @@ function high_level() {
                 .attr('y', selection.y1)
                 .on('click', clicked);
 
+            var aggr_svg = nodes.append('svg')
+                .classed('agg_svg', true)
+                .attr('id', 'agg_svg'+ID)
+                .attr('x', selection.x1)
+                .attr('y', selection.y1)
+                .attr('width', square_width)
+                .attr('height', square_width);
+
+            // var cover = nodes.append('rect')
+            //     .classed('high_level_cover', true)
+            //     .attr('id', 'high_level_cover'+ID)
+            //     .attr('width', square_width)
+            //     .attr('height', square_width)
+            //     .attr('stroke', 'none')
+            //     .attr('fill', 'black')
+            //     .attr('fill-opacity', 0)
+            //     .attr('x', selection.x1)
+            //     .attr('y', selection.y1)
+            //     .on('click', clicked);
+
             // Build Within, background_in, background_out arrows
             {
                 // Within Arrow
                 var path_start_within = (selection.x1 + square_width) +
                     ' ' + (selection.y1 + square_width / 2),
                     path_end_within = (selection.x1 + square_width / 2) +
-                        ' ' + (+selection.y1 - 10);
+                        ' ' + (+selection.y1 - 20);
                 nodes.append('path')
                     .classed('within_arrow' + selection.id, true)
                     .attr('stroke', selection.color)
@@ -161,17 +206,18 @@ function high_level() {
                     yo1 = selection.y1 + square_width / 2,
                     xo2 = selections[i].x1 + square_width / 2,
                     yo2 = selections[i].y1 + square_width / 2,
-                    radian = Math.abs(selection.x1 - selections[i].x1);
+                    dis = Math.sqrt(Math.pow(xo1 - xo2, 2) + Math.pow(yo1 - yo2, 2)),
+                    radius = dis
 
                 var p = 0.3,
                     tana = (xo1 - xo2) / (yo1 - yo2);
-                if (Math.abs(yo1 - yo2) < Math.abs(xo1 - xo2)) {
-                    var ym = 10,
-                        xm = ym / tana;
-                } else {
-                    xm = 10;
-                    ym = xm * tana;
-                }
+                // if (Math.abs(yo1 - yo2) < Math.abs(xo1 - xo2)) {
+                var ym = 10,
+                    xm = ym / tana;
+                // } else {
+                //     xm = 10;
+                //     ym = xm * tana;
+                // }
                 var xs = xo1 + p * (xo2 - xo1),
                     xe = xo2 + p * (xo1 - xo2),
                     ys = yo1 + p * (yo2 - yo1),
@@ -179,44 +225,46 @@ function high_level() {
 
                 // Between out
                 container_zoom.append('path')
-                    .attr('id', 'be_arrow' + selection.id +
-                        'be_arrow' + selections[i].id)
+                    .attr('id', 'be_arrow_from' + selection.id +
+                        'be_arrow_to' + selections[i].id)
                     .attr('stroke', 'url(#bag' + selection.id +
                         'bag' + selections[i].id + ")")
                     .attr('stroke-width', 5)
                     .attr('fill-opacity', 0)
                     .attr('d', 'M ' + (xs - xm) + ' ' + (ys + ym) +
-                        ' A ' + radian + ' ' + radian +
+                        ' A ' + radius + ' ' + radius +
                         ', 1, 0, 0, ' + (xe - xm) + ' ' + (ye + ym))
                     .attr('marker-end', 'url(#arrow' + selections[i].id + ')');
 
                 // between out num
-                nodes.append('text')
+                container_zoom.append('text')
                     .attr('x', (xs + xe) / 2 - xm)
                     .attr('y', (ys + ye) / 2 + ym)
-                    .attr('id', 'be_arrow_num' + selection.id + 'be_arrow_num' + selections[i].id)
+                    .attr('id', 'be_arrow_from_num' + selection.id +
+                        'be_arrow_to_num' + selections[i].id)
                     .attr('font-size', 30)
                     .attr('fill', 'white')
                     .text(num_be_out);
 
                 // Between in
                 container_zoom.append('path')
-                    .attr('id', 'be_arrow' + selection.id +
-                        'be_arrow' + selections[i].id)
+                    .attr('id', 'be_arrow_from' + selections[i].id +
+                        'be_arrow_to' + selection.id)
                     .attr('stroke', 'url(#bag' + selection.id +
                         'bag' + selections[i].id + ")")
                     .attr('stroke-width', 5)
                     .attr('fill-opacity', 0)
                     .attr('d', 'M ' + (xe + xm) + ' ' + (ye - ym) +
-                        ' A ' + radian + ' ' + radian +
+                        ' A ' + radius + ' ' + radius +
                         ', 0, 0, 0, ' + (xs + xm) + ' ' + (ys - ym))
                     .attr('marker-end', 'url(#arrow' + selection.id + ')');
 
                 // Between in num
-                nodes.append('text')
+                container_zoom.append('text')
                     .attr('x', (xs + xe) / 2 + xm)
                     .attr('y', (ys + ye) / 2 - ym)
-                    .attr('id', 'be_arrow_num' + selections[i].id + 'be_arrow_num' + selection.id)
+                    .attr('id', 'be_arrow_from_num' + selections[i].id +
+                        'be_arrow_to_num' + selection.id)
                     .attr('font-size', 30)
                     .attr('fill', 'white')
                     .text(num_be_in);
@@ -246,6 +294,7 @@ function high_level() {
 
             // Marker for each box
             {
+                // todo work on the size of the marker
                 defs = nodes.append('defs');
                 // normal arrow marker
                 defs.append('svg:marker')
@@ -323,27 +372,100 @@ function high_level() {
             }
         }
 
-
         // Drag helper Functions
-        {
-            function dragstarted(d) {
-                d.fx = d.x;
-                d.fy = d.y;
-            }
+        function dragstarted_hi() {
+            d3.select(this).raise().classed("active", true);
+        }
+        function dragged_hi() {
+            this.x = this.x || 0;
+            this.y = this.y || 0;
+            this.x += d3.event.dx;
+            this.y += d3.event.dy;
+            d3.select(this).attr("transform", "translate(" + this.x + "," + this.y + ")");
 
-            function dragged(d) {
-                d.fx = d3.event.x;
-                d.fy = d3.event.y;
-            }
-
-            function dragended(d) {
-                d.fx = null;
-                d.fy = null;
-            }
+            var id = +this.getAttribute('id').substring(10);
+            updateBetweenArrow(id, this.x, this.y);
+        }
+        function dragended_hi() {
+            d3.select(this).classed("active", false);
         }
 
-    }
+        function updateBetweenArrow(ID, trans_x, trans_y) {
 
+            var rect_dom_this = document.getElementById('high_level_rect'+ID);
+
+            var x1_now_this = +rect_dom_this.getAttribute('x') + trans_x,
+                y1_now_this = +rect_dom_this.getAttribute('y') + trans_y;
+
+            for (var i = 0; i < selections.length; i++) {
+                if (i === ID) continue;
+                if (!selections[i]) continue;
+
+                var rect_dom_that = document.getElementById('high_level_rect'+i),
+                    Group_that = document.getElementById('high_group'+i)
+
+                var trans_x_that = 0,
+                    trans_y_that = 0;
+
+                if (Group_that.getAttribute('transform') !== null) {
+                    var transform = Group_that.getAttribute('transform'),
+                        regExp_x = /\(([^)]+),/,
+                        regExp_y = /,([^)]+)\)/;
+                    trans_x_that = +regExp_x.exec(transform)[1];
+                    trans_y_that = +regExp_y.exec(transform)[1];
+                }
+
+                var x1_now_that = +rect_dom_that.getAttribute('x') + trans_x_that,
+                    y1_now_that = +rect_dom_that.getAttribute('y') + trans_y_that;
+
+                var xo1 = x1_now_this + square_width / 2,
+                    yo1 = y1_now_this + square_width / 2,
+                    xo2 = x1_now_that + square_width / 2,
+                    yo2 = y1_now_that + square_width / 2,
+                    dis = Math.sqrt(Math.pow(xo1 - xo2, 2) + Math.pow(yo1 - yo2, 2)),
+                    radius = dis;
+
+                var p = 0.3,
+                    tana = (xo1 - xo2) / (yo1 - yo2);
+                if (Math.abs(yo1 - yo2) < Math.abs(xo1 - xo2)) {
+                    var ym = 10,
+                        xm = ym / tana;
+                } else {
+                    xm = 10;
+                    ym = xm * tana;
+                }
+                var xs = xo1 + p * (xo2 - xo1),
+                    xe = xo2 + p * (xo1 - xo2),
+                    ys = yo1 + p * (yo2 - yo1),
+                    ye = yo2 + p * (yo1 - yo2);
+
+                // Between out
+                d3.select('#be_arrow_from' + ID +
+                    'be_arrow_to' + i)
+                    .attr('d', 'M ' + (xs - xm) + ' ' + (ys + ym) +
+                        ' A ' + radius + ' ' + radius +
+                        ', 1, 0, 0, ' + (xe - xm) + ' ' + (ye + ym));
+
+                // between out num
+                d3.select('#be_arrow_from_num' + ID +
+                    'be_arrow_to_num' + i)
+                    .attr('x', (xs + xe) / 2 - xm)
+                    .attr('y', (ys + ye) / 2 + ym);
+
+                // Between in
+                d3.select('#be_arrow_from' + i + 'be_arrow_to' + ID)
+                    .attr('d', 'M ' + (xe + xm) + ' ' + (ye - ym) +
+                        ' A ' + radius + ' ' + radius +
+                        ', 0, 0, 0, ' + (xs + xm) + ' ' + (ys - ym));
+
+                // Between in num
+                d3.select('#be_arrow_from_num' + i +
+                    'be_arrow_to_num' + ID)
+                    .attr('x', (xs + xe) / 2 + xm)
+                    .attr('y', (ys + ye) / 2 - ym);
+            }
+        }
+    }
 
     function zoomed() {
         container_zoom.attr("transform", d3.event.transform);
@@ -363,13 +485,32 @@ function high_level() {
             .call(zoom.transform, d3.zoomIdentity);
     }
 
-    function clicked() {
+    function clicked(input) {
 
-        if (active.node === this) return reset();
-        active.classed('active', true);
+        var rect_dom = this;
+        if (input)
+            rect_dom = input;
 
-        var x1 = +this.getAttribute('x'),
-            y1 = +this.getAttribute('y');
+        if (active.node === rect_dom) return reset();
+        active.classed('active', rect_dom);
+
+        var id = rect_dom.getAttribute('id').substring(15);
+        var parentGroup = document.getElementById('high_group' + id)
+
+
+        var trans_x = 0,
+            trans_y = 0;
+
+        if (parentGroup.getAttribute('transform') !== null) {
+            var transform = parentGroup.getAttribute('transform'),
+                regExp_x = /\(([^)]+),/,
+                regExp_y = /,([^)]+)\)/;
+            trans_x = +regExp_x.exec(transform)[1];
+            trans_y = +regExp_y.exec(transform)[1];
+        }
+
+        var x1 = +rect_dom.getAttribute('x') + trans_x,
+            y1 = +rect_dom.getAttribute('y') + trans_y;
 
         var x = x1 + square_width / 2,
             y = y1 + square_width / 2;
@@ -382,8 +523,8 @@ function high_level() {
     }
 
     high_level.buildBlock = buildBlock;
+    high_level.reset = reset;
+    high_level.clicked = clicked;
 }
 
-function update_arrow_width(ID) {
 
-}

@@ -186,6 +186,12 @@ function high_level() {
                     .text(selection.num_bg_in);
             }
 
+            function getConnectionPoint(x1, y1, x2, y2) {
+
+
+
+            }
+
             // Build Between Arrows and Number Display
             for (var i = 0; i < selections.length; i++) {
                 if (i === selection.id) continue;
@@ -526,5 +532,3 @@ function high_level() {
     high_level.reset = reset;
     high_level.clicked = clicked;
 }
-
-
