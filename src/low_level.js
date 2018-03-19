@@ -60,18 +60,22 @@ function low_level(selector, airports) {
         .on('click', function() {
             d3.selectAll('#menu_group').remove();
 
-            var coords = d3.mouse(this);
+            var click = d3.mouse(this);
             var isBackground = true;
             selections.forEach(function (sel) {
                 if (sel === null) return;
-                if (coords[0] > sel.x1 && coords[0] < sel.x2 &&
-                coords[1] > sel.y1 && coords[1] < sel.y2)
+                if (click[0] > sel.x1 && click[0] < sel.x2 &&
+                click[1] > sel.y1 && click[1] < sel.y2)
                     isBackground = false;
             });
             if (isBackground) {
                 resetClickSel();
                 high_level.reset();
             }
+        })
+        .on('contextmenu', function(){
+            d3.event.preventDefault();
+            right_click(d3.mouse(this)[0], d3.mouse(this)[1]);
         });
 
     var right_click = contextMenu('#low_svg');
@@ -86,6 +90,7 @@ function low_level(selector, airports) {
         .attr("y1", 0)
         .attr("x2", function(d) { return d; })
         .attr("y2", height);
+
     svg.append("g")
         .attr("class", "bg_grid_low")
         .selectAll("line")
@@ -96,16 +101,11 @@ function low_level(selector, airports) {
         .attr("x2", width)
         .attr("y2", function(d) { return d; });
 
-    // Right Click
-    svg.on('contextmenu', function(){
-        d3.event.preventDefault();
-        right_click(d3.mouse(this)[0], d3.mouse(this)[1]);
-    });
-
     svg.on("mousedown", dragCreateSel);
 
     high_level('#high_level');
 
+    // Zooming and pan
     // var bg_rec = svg.append("rect")
     //     .classed('background', true)
     //     .attr("width", width)
@@ -155,7 +155,6 @@ function low_level(selector, airports) {
 
     var selection = null,
         color = null,
-        randomColor = null,
         sel_group = null;
 
     var allDots = drawDots();
@@ -197,7 +196,8 @@ function low_level(selector, airports) {
 
             sel_group = svg.append('g')
                 .classed('sel_group', true)
-                .attr('id', 'sel_group' + num_window).on('click', clickRect)
+                .attr('id', 'sel_group' + num_window)
+                .on('mousedown', clickRect)
                 .call(d3.drag()
                     .on("start", dragstarted)
                     .on("drag", dragged)
@@ -215,6 +215,7 @@ function low_level(selector, airports) {
                 .attr('stroke', color)
                 .attr('stroke-width', 3)
                 .attr('cursor', 'move');
+
             num_window += 1;
         };
 
@@ -238,9 +239,11 @@ function low_level(selector, airports) {
                 moveSelection(start, d3.mouse(parent));
             })
             .on("mouseup.selection", function() {
+
                 buildSelectedDots(start[0], start[1],
                     d3.mouse(parent)[0], d3.mouse(parent)[1],
                     color, num_window-1);
+
                 subject
                     .on("mousemove.selection", null)
                     .on("mouseup.selection", null);
@@ -256,7 +259,8 @@ function low_level(selector, airports) {
 
         sel_group = svg.append('g')
             .classed('sel_group', true)
-            .attr('id', 'sel_group' + num_window).on('click', clickRect)
+            .attr('id', 'sel_group' + num_window)
+            .on('mousedown', clickRect)
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
@@ -278,8 +282,9 @@ function low_level(selector, airports) {
         num_window += 1;
     }
 
-    // Manipulate selection rect
+    // drag selection window
     function dragstarted() {
+
         d3.select(this).raise().classed("active", true);
     }
     function dragged() {
@@ -803,11 +808,12 @@ function low_level(selector, airports) {
 
     function resetClickSel() {
 
-        d3.selectAll('.handle').remove();
+        d3.select("*[id*=handle_group]").remove();
 
-        d3.selectAll(".clicked")
+        d3.select(".clicked")
             .classed('clicked', false)
-            .attr('stroke-width', 3)
+            .attr('stroke-width', 3);
+
     }
 
     function clickRect() {
@@ -815,16 +821,17 @@ function low_level(selector, airports) {
         resetClickSel();
 
         var group = d3.select(this);
+
         var sel_id = +this.getAttribute('id').substring(9);
 
-        high_level.clicked(document.getElementById('high_level_rect'+sel_id))
+        high_level.clicked(document.getElementById('high_level_rect' + sel_id))
 
-        var sel_dom = d3.select('#selection'+sel_id);
+        var sel_dom = d3.select('#selection' + sel_id);
         var sel_obj = selections.find(function (sel) {
-                if (sel !== null)
-                    return sel.id === sel_id;
-                else return false
-            });
+            if (sel !== null)
+                return sel.id === sel_id;
+            else return false
+        });
 
         if (sel_dom.attr('class').indexOf('clicked') > 0)
             return;
@@ -864,40 +871,46 @@ function low_level(selector, airports) {
             {x: x_handle, y: y_handle + sel_height},
             {x: x_handle + sel_width / 2, y: y_handle + sel_height},
             {x: x_handle + sel_width, y: y_handle + sel_height}
-            ];
+        ];
 
         // Add 8 handles, keep them in a group
         var handles = group.append('g')
-            .attr('id', 'handle_group'+sel_id);
+            .attr('id', 'handle_group' + sel_id);
 
         handles.selectAll('rect')
             .data(pos).enter()
             .append('rect')
             .classed('handle', true)
-            .attr('id', function (d, i) { return 'handle' + sel_id +'_' + i; })
-            .attr('x', function (d) { return d.x; })
-            .attr('y', function (d) { return d.y; })
+            .attr('id', function (d, i) {
+                return 'handle' + sel_id + '_' + i;
+            })
+            .attr('x', function (d) {
+                return d.x;
+            })
+            .attr('y', function (d) {
+                return d.y;
+            })
             .attr('width', sq_width)
             .attr('height', sq_width)
             .attr('fill', color)
             .attr('stroke', color)
             .call(d3.drag()
-            .on("start", dragstarted_handle)
-            .on("drag", dragged_handle)
-            .on("end", dragended_handle));
+                .on("start", dragstarted_handle)
+                .on("drag", dragged_handle)
+                .on("end", dragended_handle));
 
         function dragstarted_handle() {
             d3.select(this).raise().classed("active", true);
         }
 
-        var handle_0 = d3.select('#handle' + sel_id +'_' + 0).attr('cursor', 'nwse-resize'),
-            handle_1 = d3.select('#handle' + sel_id +'_' + 1).attr('cursor', 'ns-resize'),
-            handle_2 = d3.select('#handle' + sel_id +'_' + 2).attr('cursor', 'nesw-resize'),
-            handle_3 = d3.select('#handle' + sel_id +'_' + 3).attr('cursor', 'ew-resize'),
-            handle_4 = d3.select('#handle' + sel_id +'_' + 4).attr('cursor', 'ew-resize'),
-            handle_5 = d3.select('#handle' + sel_id +'_' + 5).attr('cursor', 'nesw-resize'),
-            handle_6 = d3.select('#handle' + sel_id +'_' + 6).attr('cursor', 'ns-resize'),
-            handle_7 = d3.select('#handle' + sel_id +'_' + 7).attr('cursor', 'nwse-resize');
+        var handle_0 = d3.select('#handle' + sel_id + '_' + 0).attr('cursor', 'nwse-resize'),
+            handle_1 = d3.select('#handle' + sel_id + '_' + 1).attr('cursor', 'ns-resize'),
+            handle_2 = d3.select('#handle' + sel_id + '_' + 2).attr('cursor', 'nesw-resize'),
+            handle_3 = d3.select('#handle' + sel_id + '_' + 3).attr('cursor', 'ew-resize'),
+            handle_4 = d3.select('#handle' + sel_id + '_' + 4).attr('cursor', 'ew-resize'),
+            handle_5 = d3.select('#handle' + sel_id + '_' + 5).attr('cursor', 'nesw-resize'),
+            handle_6 = d3.select('#handle' + sel_id + '_' + 6).attr('cursor', 'ns-resize'),
+            handle_7 = d3.select('#handle' + sel_id + '_' + 7).attr('cursor', 'nwse-resize');
 
         function dragged_handle() {
 
@@ -905,24 +918,24 @@ function low_level(selector, airports) {
                 sel_height = +sel_dom.attr('height');
 
             var idString = this.getAttribute('id'),
-                handle_id = +idString.substring(idString.indexOf('_')+1);
+                handle_id = +idString.substring(idString.indexOf('_') + 1);
 
-            switch(handle_id) {
+            switch (handle_id) {
 
                 case 0:
                     handle_0.attr('x', +handle_0.attr('x') + d3.event.dx);
-                    handle_1.attr('x', +handle_1.attr('x') + d3.event.dx/2);
+                    handle_1.attr('x', +handle_1.attr('x') + d3.event.dx / 2);
                     handle_3.attr('x', +handle_3.attr('x') + d3.event.dx);
                     handle_5.attr('x', +handle_5.attr('x') + d3.event.dx);
-                    handle_6.attr('x', +handle_6.attr('x') + d3.event.dx/2);
+                    handle_6.attr('x', +handle_6.attr('x') + d3.event.dx / 2);
                     sel_dom.attr('x', +sel_dom.attr('x') + d3.event.dx);
                     sel_dom.attr('width', +sel_width - d3.event.dx);
 
                     handle_0.attr('y', +handle_0.attr('y') + d3.event.dy);
                     handle_1.attr('y', +handle_1.attr('y') + d3.event.dy);
                     handle_2.attr('y', +handle_2.attr('y') + d3.event.dy);
-                    handle_3.attr('y', +handle_3.attr('y') + d3.event.dy/2);
-                    handle_4.attr('y', +handle_4.attr('y') + d3.event.dy/2);
+                    handle_3.attr('y', +handle_3.attr('y') + d3.event.dy / 2);
+                    handle_4.attr('y', +handle_4.attr('y') + d3.event.dy / 2);
                     sel_dom.attr('y', +sel_dom.attr('y') + d3.event.dy);
                     sel_dom.attr('height', +sel_height - d3.event.dy);
                     break;
@@ -931,59 +944,59 @@ function low_level(selector, airports) {
                     handle_0.attr('y', +handle_0.attr('y') + d3.event.dy);
                     handle_1.attr('y', +handle_1.attr('y') + d3.event.dy);
                     handle_2.attr('y', +handle_2.attr('y') + d3.event.dy);
-                    handle_3.attr('y', +handle_3.attr('y') + d3.event.dy/2);
-                    handle_4.attr('y', +handle_4.attr('y') + d3.event.dy/2);
+                    handle_3.attr('y', +handle_3.attr('y') + d3.event.dy / 2);
+                    handle_4.attr('y', +handle_4.attr('y') + d3.event.dy / 2);
                     sel_dom.attr('y', +sel_dom.attr('y') + d3.event.dy);
                     sel_dom.attr('height', +sel_height - d3.event.dy);
                     break;
 
                 case 2:
-                    handle_1.attr('x', +handle_1.attr('x') + d3.event.dx/2);
+                    handle_1.attr('x', +handle_1.attr('x') + d3.event.dx / 2);
                     handle_2.attr('x', +handle_2.attr('x') + d3.event.dx);
                     handle_4.attr('x', +handle_4.attr('x') + d3.event.dx);
-                    handle_6.attr('x', +handle_6.attr('x') + d3.event.dx/2);
+                    handle_6.attr('x', +handle_6.attr('x') + d3.event.dx / 2);
                     handle_7.attr('x', +handle_7.attr('x') + d3.event.dx);
                     sel_dom.attr('width', +sel_width + d3.event.dx);
 
                     handle_0.attr('y', +handle_0.attr('y') + d3.event.dy);
                     handle_1.attr('y', +handle_1.attr('y') + d3.event.dy);
                     handle_2.attr('y', +handle_2.attr('y') + d3.event.dy);
-                    handle_3.attr('y', +handle_3.attr('y') + d3.event.dy/2);
-                    handle_4.attr('y', +handle_4.attr('y') + d3.event.dy/2);
+                    handle_3.attr('y', +handle_3.attr('y') + d3.event.dy / 2);
+                    handle_4.attr('y', +handle_4.attr('y') + d3.event.dy / 2);
                     sel_dom.attr('y', +sel_dom.attr('y') + d3.event.dy);
                     sel_dom.attr('height', +sel_height - d3.event.dy);
                     break;
 
                 case 3:
                     handle_0.attr('x', +handle_0.attr('x') + d3.event.dx);
-                    handle_1.attr('x', +handle_1.attr('x') + d3.event.dx/2);
+                    handle_1.attr('x', +handle_1.attr('x') + d3.event.dx / 2);
                     handle_3.attr('x', +handle_3.attr('x') + d3.event.dx);
                     handle_5.attr('x', +handle_5.attr('x') + d3.event.dx);
-                    handle_6.attr('x', +handle_6.attr('x') + d3.event.dx/2);
+                    handle_6.attr('x', +handle_6.attr('x') + d3.event.dx / 2);
                     sel_dom.attr('x', +sel_dom.attr('x') + d3.event.dx);
                     sel_dom.attr('width', +sel_width - d3.event.dx);
                     break;
 
                 case 4:
-                    handle_1.attr('x', +handle_1.attr('x') + d3.event.dx/2);
+                    handle_1.attr('x', +handle_1.attr('x') + d3.event.dx / 2);
                     handle_2.attr('x', +handle_2.attr('x') + d3.event.dx);
                     handle_4.attr('x', +handle_4.attr('x') + d3.event.dx);
-                    handle_6.attr('x', +handle_6.attr('x') + d3.event.dx/2);
+                    handle_6.attr('x', +handle_6.attr('x') + d3.event.dx / 2);
                     handle_7.attr('x', +handle_7.attr('x') + d3.event.dx);
                     sel_dom.attr('width', +sel_width + d3.event.dx);
                     break;
 
                 case 5:
                     handle_0.attr('x', +handle_0.attr('x') + d3.event.dx);
-                    handle_1.attr('x', +handle_1.attr('x') + d3.event.dx/2);
+                    handle_1.attr('x', +handle_1.attr('x') + d3.event.dx / 2);
                     handle_3.attr('x', +handle_3.attr('x') + d3.event.dx);
                     handle_5.attr('x', +handle_5.attr('x') + d3.event.dx);
-                    handle_6.attr('x', +handle_6.attr('x') + d3.event.dx/2);
+                    handle_6.attr('x', +handle_6.attr('x') + d3.event.dx / 2);
                     sel_dom.attr('x', +sel_dom.attr('x') + d3.event.dx);
                     sel_dom.attr('width', +sel_width - d3.event.dx);
 
-                    handle_3.attr('y', +handle_3.attr('y') + d3.event.dy/2);
-                    handle_4.attr('y', +handle_4.attr('y') + d3.event.dy/2);
+                    handle_3.attr('y', +handle_3.attr('y') + d3.event.dy / 2);
+                    handle_4.attr('y', +handle_4.attr('y') + d3.event.dy / 2);
                     handle_5.attr('y', +handle_5.attr('y') + d3.event.dy);
                     handle_6.attr('y', +handle_6.attr('y') + d3.event.dy);
                     handle_7.attr('y', +handle_7.attr('y') + d3.event.dy);
@@ -991,8 +1004,8 @@ function low_level(selector, airports) {
                     break;
 
                 case 6:
-                    handle_3.attr('y', +handle_3.attr('y') + d3.event.dy/2);
-                    handle_4.attr('y', +handle_4.attr('y') + d3.event.dy/2);
+                    handle_3.attr('y', +handle_3.attr('y') + d3.event.dy / 2);
+                    handle_4.attr('y', +handle_4.attr('y') + d3.event.dy / 2);
                     handle_5.attr('y', +handle_5.attr('y') + d3.event.dy);
                     handle_6.attr('y', +handle_6.attr('y') + d3.event.dy);
                     handle_7.attr('y', +handle_7.attr('y') + d3.event.dy);
@@ -1000,15 +1013,15 @@ function low_level(selector, airports) {
                     break;
 
                 case 7:
-                    handle_1.attr('x', +handle_1.attr('x') + d3.event.dx/2);
+                    handle_1.attr('x', +handle_1.attr('x') + d3.event.dx / 2);
                     handle_2.attr('x', +handle_2.attr('x') + d3.event.dx);
                     handle_4.attr('x', +handle_4.attr('x') + d3.event.dx);
-                    handle_6.attr('x', +handle_6.attr('x') + d3.event.dx/2);
+                    handle_6.attr('x', +handle_6.attr('x') + d3.event.dx / 2);
                     handle_7.attr('x', +handle_7.attr('x') + d3.event.dx);
                     sel_dom.attr('width', +sel_width + d3.event.dx);
 
-                    handle_3.attr('y', +handle_3.attr('y') + d3.event.dy/2);
-                    handle_4.attr('y', +handle_4.attr('y') + d3.event.dy/2);
+                    handle_3.attr('y', +handle_3.attr('y') + d3.event.dy / 2);
+                    handle_4.attr('y', +handle_4.attr('y') + d3.event.dy / 2);
                     handle_5.attr('y', +handle_5.attr('y') + d3.event.dy);
                     handle_6.attr('y', +handle_6.attr('y') + d3.event.dy);
                     handle_7.attr('y', +handle_7.attr('y') + d3.event.dy);
@@ -1048,8 +1061,8 @@ function low_level(selector, airports) {
             buildSelectedDots(x1, y1, x2, y2, sel_dom.attr('stroke'), sel_id);
         }
 
+
     }
 
     low_level.rightClickCreateSel = rightClickCreateSel;
-
 }
