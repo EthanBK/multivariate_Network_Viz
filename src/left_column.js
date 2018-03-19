@@ -76,8 +76,14 @@ function FilterComponent(api) {
     }
 
     this.init_edges = function(s) {
+        function c_wrap(callback) { return function() { callback(s.id)};}
+        
         this.clear();
         this.addNav('Edges', s);
+        this.addToggle({
+            title: 'Within',
+            id: 'attr-within'
+        }, c_wrap(api.showWithinLinks), c_wrap(api.hideWithinLinks))
         this.addToggle({
             title: 'Between In',
             id: 'attr-between-in'
@@ -85,15 +91,15 @@ function FilterComponent(api) {
         this.addToggle({
             title: 'Between Out',
             id: 'attr-between-out'
-        })
+        });
         this.addToggle({
             title: 'Background In',
             id: 'attr-background-in'
-        })
+        });
         this.addToggle({
             title: 'Background Out',
             id: 'attr-background-out'
-        })
+        });
     }
 
     this.init_nodes = function(s) {
@@ -102,7 +108,13 @@ function FilterComponent(api) {
 
         function redrawSelection(s) {
             var $selection_box = $('#sel_group' + s.id);
+            // Delete existing links
+            api.deleteLinks(s.id);
+
+            // Re-draw links with resized box
             api.buildSelection(s.x1, s.y1, s.x2, s.y2, s.color, s.id);
+
+            // Adjust box to new dimensions
             $selection_box.attr('x', s.x1);
             $selection_box.attr('y', s.y1);
             $selection_box.attr('width', s.x2 - s.x1);

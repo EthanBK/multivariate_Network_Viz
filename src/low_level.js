@@ -35,7 +35,10 @@ function low_level(selector, airports) {
         buildSelection: buildSelectedDots,
         deleteSelection: deleteSelection,
         hideSelection: hideSelection,
-        showSelection: showSelection
+        showSelection: showSelection,
+        deleteLinks: deleteLinks,
+        hideWithinLinks: hideWithinLinks,
+        showWithinLinks: showWithinLinks
     });
 
     //var airports = buildData(flight, ap_supplement, all_ap);
@@ -672,6 +675,19 @@ function low_level(selector, airports) {
         $('.selected'+ID).css('display', 'none');
         $("*[id*=btg"+ID+"]").css('display', 'none');
         $('.selection'+ID).css('display', 'none');
+    }
+
+    function deleteLinks(ID) {
+        $("*[class*=link"+ID+"]").remove();
+    }
+
+    function hideWithinLinks(ID) {
+        // 'within_linkID', 'bg_linkID', 'from_linkID', 'to_linkID'
+        $("*[class=within_link"+ID+"]").css('display', 'none');
+    }
+
+    function showWithinLinks(ID) {
+        $("*[class=within_link"+ID+"]").css('display', 'block');
     }
 
     function showSelection(ID) {
