@@ -127,8 +127,7 @@ function FilterComponent(api) {
             xAxisScale(x1), xAxisScale(x2)
         ]);
         $('#' + LATITUDE_SLIDER_ID).slider('setValue', [
-            yAxisScale(y1), 
-            yAxisScale(y2)
+            yAxisScale(y1), yAxisScale(y2)
         ]);
     }
 
@@ -163,7 +162,7 @@ function FilterComponent(api) {
             id: LATITUDE_SLIDER_ID,
             value: [s.x1, s.x2],
             domain: [0, 1500],
-            range: [-180, 180]
+            range: [-90, 90]
         }, function(event, scale) {
             clearTimeout(SlideTimeout);
             SlideTimeout = setTimeout(function() {
@@ -178,7 +177,7 @@ function FilterComponent(api) {
             id: LONGITUDE_SLIDER_ID, 
             value: [s.y1, s.y2],
             domain: [0, 750],
-            range: [-90, 90]
+            range: [-180, 180]
         }, function(event, scale) {
             clearTimeout(SlideTimeout);
             SlideTimeout = setTimeout(function() {
