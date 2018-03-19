@@ -88,19 +88,19 @@ function FilterComponent(api) {
         this.addToggle({
             title: 'Between In',
             id: 'attr-between-in'
-        });
+        }, c_wrap(api.showBetweenInLinks), c_wrap(api.hideBetweenInLinks));
         this.addToggle({
             title: 'Between Out',
             id: 'attr-between-out'
-        });
+        }, c_wrap(api.showBackgroundOutLinks), c_wrap(api.hideBackgroundOutLinks));
         this.addToggle({
             title: 'Background In',
-            id: 'attr-background-in'
-        });
+            id: 'attr-background-in',
+        }, c_wrap(api.showBackgroundInLinks), c_wrap(api.hideBackgroundInLinks));
         this.addToggle({
             title: 'Background Out',
             id: 'attr-background-out'
-        });
+        }, c_wrap(api.showBackgroundOutLinks), c_wrap(api.hideBackgroundOutLinks));
     }
 
     this.updateSlider = function(x1, y1, x2, y2) {
