@@ -50,14 +50,27 @@ function FilterComponent(api) {
     }
 
     this.addSlider = function(config, callback) {
+        var axisScale = d3.scaleLinear()
+            .domain(config.domain)
+            .range(config.range);
+
+        // Scale values
+        config.value[0] = axisScale(config.value[0]);
+        config.value[1] = axisScale(config.value[1]);
+
         var ele = '<div class="row-fluid top-10">';
         ele += '<h5>' + config.title + '</h5>';
         ele += '<input id="' + config.id + '" type="text" class="span2" value=""';
-        ele += 'data-slider-min="10" data-slider-max="1000" data-slider-step="5"';
+        ele += 'data-slider-min="' + config.range[0] + '" data-slider-max="' + config.range[1] + '" data-slider-step="1"';
         ele += 'data-slider-value="[' + config.value[0] + ',' + config.value[1] + ']"/>';
         ele += '</div>';
         $filter.append(ele);
-        $('#' + config.id).slider().on('slide', callback);
+        $('#' + config.id).slider().on('slide', function(event) {
+            var scale = d3.scaleLinear()
+                .domain(config.range)
+                .range(config.domain)
+            callback(event, scale);
+        });
     }
 
     this.addToggle = function(config, on_callback, off_callback) {
@@ -137,12 +150,14 @@ function FilterComponent(api) {
         this.addSlider({
             title: 'Latitude',
             id: LATITUDE_SLIDER_ID,
-            value: [s.x1, s.x2]
-        }, function(event) {
+            value: [s.x1, s.x2],
+            domain: [0, 1500],
+            range: [-180, 180]
+        }, function(event, scale) {
             clearTimeout(SlideTimeout);
             SlideTimeout = setTimeout(function() {
-                s.x1 = event.value[0];
-                s.x2 = event.value[1];
+                s.x1 = scale(event.value[0]);
+                s.x2 = scale(event.value[1]);
                 redrawSelection(s);
             }, 250);
         });
@@ -150,12 +165,14 @@ function FilterComponent(api) {
         this.addSlider({
             title: 'Longitude',
             id: LONGITUDE_SLIDER_ID, 
-            value: [s.y1, s.y2]
-        }, function(event) {
+            value: [s.y1, s.y2],
+            domain: [0, 750],
+            range: [-90, 90]
+        }, function(event, scale) {
             clearTimeout(SlideTimeout);
             SlideTimeout = setTimeout(function() {
-                s.y1 = event.value[0];
-                s.y2 = event.value[1];
+                s.y1 = scale(event.value[0]);
+                s.y2 = scale(event.value[1]);
                 redrawSelection(s);
             }, 250);
         });
