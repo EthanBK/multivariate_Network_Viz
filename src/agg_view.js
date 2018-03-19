@@ -69,8 +69,8 @@ function bubbleChart(svg_bg, data_to_show, ID) {
     var width = +svg_bg.getAttribute('width'),
         height = +svg_bg.getAttribute('height');
 
-    var radius_max = 18,
-        radius_min = 6;
+    var radius_max = 16,
+        radius_min = 5;
 
     var val_min = d3.min(data_to_show, function (d) {
         return d.value
@@ -130,6 +130,7 @@ function bubbleChart(svg_bg, data_to_show, ID) {
         .classed('bubble_text' + ID, true)
         .attr('x', 0)
         .attr('y', 0)
+        .attr('dy', 1.5)
         .attr("text-anchor", "middle")
         .attr("alignment-baseline", "hanging")
         .attr('font-size', 4)

@@ -158,31 +158,21 @@ function low_level(selector, airports) {
             .domain([0, 0.5, 1.0]);
 
         switch (color_schema) {
+
             case 0:
-                getColor = d3.scaleLinear()
-                    .domain([0, 0.5, 1.0])
-                    .range(['#fc2b30', '#3f99d1', '#64be5c']);
-
-                color = getColor(Math.random())
-
-                break;
-
-            case 1:
-                color = getColor(Math.random())
+                getColor
                     .range(['red', 'orange', 'yellow',
                         'green', 'blue', 'purple']);
                 color = d3.rgb(color).brighter(1);
                 break;
 
-            case 2:
+            case 1:
                 color = "hsl(" + Math.random() * 360 + ",100%,50%)";
                 break;
 
             default:
-                getColor = d3.scaleLinear()
-                    .domain([0, 0.5, 1.0])
+                getColor
                     .range(['#fc2b30', '#3f99d1', '#64be5c']);
-
                 color = getColor(Math.random())
         }
     }
