@@ -681,6 +681,15 @@ function low_level(selector, airports) {
         $('.selected'+ID).css('display', 'none');
         $("*[id*=btg"+ID+"]").css('display', 'none');
         $('.selection'+ID).css('display', 'none');
+        $('#sel_group'+ID).css('display', 'none');
+    }
+
+    function showSelection(ID) {
+        $("*[class*=link"+ID+"]").css('display', 'block');
+        $('.selected'+ID).css('display', 'block');
+        $("*[id*=btg"+ID+"]").css('display', 'block');
+        $('.selection'+ID).css('display', 'block');
+        $('#sel_group'+ID).css('display', 'block');
     }
 
     function deleteLinks(ID) {
@@ -730,13 +739,6 @@ function low_level(selector, airports) {
 
     function showBackgroundOutLinks(ID) {
         $(".bg_out_link" + ID).css('display', 'block');
-    }
-
-    function showSelection(ID) {
-        $("*[class*=link"+ID+"]").css('display', 'block');
-        $('.selected'+ID).css('display', 'block');
-        $("*[id*=btg"+ID+"]").css('display', 'block');
-        $('.selection'+ID).css('display', 'block');
     }
 
     function resetClickSel() {
