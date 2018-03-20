@@ -13,12 +13,12 @@ function FilterComponent(api) {
         var tabs = {
             'Nodes': {
                 id: 'left-col-nodes'
-            }, 
+            },
             'Edges': {
                 id: 'left-col-edges'
             }
         };
-        
+
         // For each tab, generate HTML
         var ele = '<ul class="nav nav-tabs">';
         for(var key in tabs) {
@@ -39,7 +39,7 @@ function FilterComponent(api) {
                     Obj.init_nodes(s);
                 });
                 tabs[active].ref.addClass('active');
-                break; 
+                break;
             case 'Nodes':
                 tabs['Edges'].ref.on('click', function() {
                     Obj.init_edges(s);
@@ -91,7 +91,7 @@ function FilterComponent(api) {
 
     this.init_edges = function(s) {
         function c_wrap(callback) { return function() { callback(s.id)};}
-        
+
         this.clear();
         this.addNav('Edges', s);
         this.addToggle({
@@ -105,7 +105,7 @@ function FilterComponent(api) {
         this.addToggle({
             title: 'Between Out',
             id: 'attr-between-out'
-        }, c_wrap(api.showBackgroundOutLinks), c_wrap(api.hideBackgroundOutLinks));
+        }, c_wrap(api.showBetweenOutLinks), c_wrap(api.hideBetweenOutLinks));
         this.addToggle({
             title: 'Background In',
             id: 'attr-background-in',
@@ -155,7 +155,7 @@ function FilterComponent(api) {
             $rect_box.attr('width', s.x2 - s.x1);
             $rect_box.attr('height', s.y2 - s.y1);
         }
- 
+
         var SlideTimeout;
         this.addSlider({
             title: 'Latitude',
@@ -174,7 +174,7 @@ function FilterComponent(api) {
 
         this.addSlider({
             title: 'Longitude',
-            id: LONGITUDE_SLIDER_ID, 
+            id: LONGITUDE_SLIDER_ID,
             value: [s.x1, s.x2],
             domain: [0, 1500],
             range: [-180, 180]
@@ -194,7 +194,7 @@ function SelectionComponent(api) {
     var $selection_component = $('#selection_component');
     var Obj = this;
     var Selected;
-    
+
     this.Filter = FilterComponentObj;
     this.HiddenSelections = {};
 

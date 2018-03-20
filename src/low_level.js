@@ -49,7 +49,7 @@ function low_level(selector, airports) {
         hideBetweenOutLinks: hideBetweenOutLinks,
         showBetweenOutLinks: showBetweenOutLinks
     });
-    
+
     //var airports = buildData(flight, ap_supplement, all_ap);
 
     var svg = d3.selectAll(selector).append('svg')
@@ -339,7 +339,7 @@ function low_level(selector, airports) {
         return dots;
     }
 
-    // Draw dots in the selection window
+    // Draw dots in the selection window, Build selections[ID]
     function buildSelectedDots(x1, y1, x2, y2, color, ID) {
 
         if (ID === undefined) {
@@ -479,8 +479,16 @@ function low_level(selector, airports) {
 
         // build detailed view in agg_svg
         // Build default view (bubble chart + num_total_edge)
-        var ran = Math.round(Math.random());
-        aggregationView(ID, 0, ran)
+        console.log(document.getElementById('inner_svg'+ID))
+        if (document.getElementById('inner_svg'+ID) === null) {
+            var ran = Math.round(Math.random());
+            aggregationView(ID, 0, ran)
+        }
+        else {
+            aggregationView(ID, 0, undefined)
+        }
+
+
     }
 
     function buildLinks (ID) {

@@ -67,7 +67,7 @@ function high_level() {
             aggregationView(active_selection, 0, parseInt($this.attr('chart-type')))
         });
     });
-    
+
     // Control chart number
     $('#high-level-chart-number').children().each(function() {
         var $this = $(this);
@@ -78,7 +78,7 @@ function high_level() {
                 return alert('Please make a selection first.');
             aggregationView(active_selection, parseInt($this.attr('chart-number'), 0))
         });
-    })
+    });
 
     function buildBlock(ID, isNew) {
 
@@ -225,7 +225,7 @@ function high_level() {
                     xo2 = selections[i].x1 + square_width / 2,
                     yo2 = selections[i].y1 + square_width / 2,
                     dis = Math.sqrt(Math.pow(xo1 - xo2, 2) + Math.pow(yo1 - yo2, 2)),
-                    radius = dis
+                    radius = dis;
 
                 var p = 0.3,
                     tana = (xo1 - xo2) / (yo1 - yo2);
