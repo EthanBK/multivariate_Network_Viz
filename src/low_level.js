@@ -5,7 +5,7 @@ var height = 750,
 var selections = [],
     num_window = 0;
 
-$.get('data/test_data.json', function(data) {
+$.get('data/airports.json', function(data) {
     // var airports = data;
     low_level('#low_level', data)
 });
@@ -155,7 +155,8 @@ function low_level(selector, airports) {
 
     var selection = null,
         color = null,
-        sel_group = null;
+        sel_group = null,
+        color_plan = 1;
 
     var allDots = drawDots();
 
@@ -186,7 +187,7 @@ function low_level(selector, airports) {
 
     function dragCreateSel() {
 
-        getColor();
+        getColor(color_plan);
 
         var subject = d3.select(window),
             parent = this.parentNode,
@@ -255,7 +256,7 @@ function low_level(selector, airports) {
     function rightClickCreateSel(x1, y1, x2, y2) {
 
         var def_width = 100;
-        getColor();
+        getColor(color_plan);
 
         sel_group = svg.append('g')
             .classed('sel_group', true)
@@ -344,7 +345,7 @@ function low_level(selector, airports) {
 
         if (ID === undefined) {
             ID = num_window++;
-            color = getColor(Math.random());
+            color = getColor(color_plan);
         }
         // Only support make selection window to
         // bottom-right corner
@@ -479,7 +480,6 @@ function low_level(selector, airports) {
 
         // build detailed view in agg_svg
         // Build default view (bubble chart + num_total_edge)
-        console.log(document.getElementById('inner_svg'+ID))
         if (document.getElementById('inner_svg'+ID) === null) {
             var ran = Math.round(Math.random());
             aggregationView(ID, 0, ran)
@@ -640,7 +640,7 @@ function low_level(selector, airports) {
                     .attr('stroke', 'url(#gradient_bg'+des_ID+')')
                     //.attr('stroke', d3.rgb(des_color).brighter(2))
                     .classed('bg_in_link'+des_ID, true)
-                    .attr('visibility', 'shown')
+                    .attr('display', 'none')
                     //.attr('stroke-opacity', 0.4);
             }
 
@@ -688,7 +688,7 @@ function low_level(selector, airports) {
                     .attr('stroke', 'url(#gradient_bg'+src_ID+')')
                     // .attr('stroke', d3.rgb(src_color).brighter(2))
                     .classed('bg_out_link'+src_ID, true)
-                    .attr('visibility', 'shown')
+                    .attr('display', 'none')
                     //.attr('stroke-opacity', 0.6);
             }
 
