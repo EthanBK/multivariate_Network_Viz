@@ -49,7 +49,7 @@ function low_level(selector, airports) {
         hideBetweenOutLinks: hideBetweenOutLinks,
         showBetweenOutLinks: showBetweenOutLinks
     });
-
+    
     //var airports = buildData(flight, ap_supplement, all_ap);
 
     var svg = d3.selectAll(selector).append('svg')
