@@ -81,7 +81,7 @@ function FilterComponent(api) {
         $filter.append(ele);
 
         var $toggle = $('#' + config.id);
-        $toggle.bootstrapToggle('on').change(function() {
+        $toggle.bootstrapToggle(config.state || 'on').change(function() {
             if($toggle.prop('checked'))
                 on_callback();
             else
@@ -108,10 +108,12 @@ function FilterComponent(api) {
         }, c_wrap(api.showBetweenOutLinks), c_wrap(api.hideBetweenOutLinks));
         this.addToggle({
             title: 'Background In',
+            state: 'off',
             id: 'attr-background-in',
         }, c_wrap(api.showBackgroundInLinks), c_wrap(api.hideBackgroundInLinks));
         this.addToggle({
             title: 'Background Out',
+            state: 'off',
             id: 'attr-background-out'
         }, c_wrap(api.showBackgroundOutLinks), c_wrap(api.hideBackgroundOutLinks));
     }
