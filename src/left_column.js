@@ -268,19 +268,24 @@ function SelectionComponent(api) {
         api.deleteSelection(id);
         var $selection = $('#' + id_to_selection(id));
         $selection.remove();
-        this.makeActive();
+        this.makeActive(0);
     }
 
     this.makeActive = function(index) {
-        var $selection_wrapper = $('.sc-child');
-        // Should use index, but defaults to first for now
-        if($selection_wrapper.length)
-            $selection_wrapper.first().trigger('click')
+        var $nth_child = $('.sc-child')[index]
+        if($nth_child)
+            $($nth_child).trigger('click');
     }
 
     this.hide = function(id) {
         api.hideSelection(id);
-        this.makeActive()
+
+        if(api.selections.length > 0) {
+            var next_selection = 0;
+            if(id == 0)
+                next_selection = 1;
+            this.makeActive(next_selection)
+        }
     }
 
     this.show = function(id) {
