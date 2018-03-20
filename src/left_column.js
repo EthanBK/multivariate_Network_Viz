@@ -198,11 +198,15 @@ function SelectionComponent(api) {
     this.Filter = FilterComponentObj;
     this.HiddenSelections = {};
 
+    this.getActive = function() {
+        return $('.selection-active').attr('selection');
+    }
+
     this.addSelection = function(id, color) {
         var selection_id = id_to_selection(id);
 
         // Create the element
-        $selection_component.append('<div id="' + selection_id + '"class="container-fluid sc-child bottom-10"></div>');
+        $selection_component.append('<div id="' + selection_id + '"class="container-fluid sc-child bottom-10" selection="' + id + '"></div>');
 
         // Retain a pointer to the element
         var $child = $('#' + selection_id);

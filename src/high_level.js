@@ -55,6 +55,31 @@ function high_level() {
 
     high_level_svg.call(zoom);
 
+
+    // Control chart type
+    $('#high-level-chart-type').children().each(function() {
+        var $this = $(this);
+        $this.on('click', function(event) {
+            event.preventDefault();
+            var active_selection = $('.selection-active').attr('selection');
+            if(!active_selection)
+                return alert('Please make a selection first.');
+            aggregationView(active_selection, 0, parseInt($this.attr('chart-type')))
+        });
+    });
+    
+    // Control chart number
+    $('#high-level-chart-number').children().each(function() {
+        var $this = $(this);
+        $this.on('click', function(event) {
+            event.preventDefault();
+            var active_selection = $('.selection-active').attr('selection');
+            if(!active_selection)
+                return alert('Please make a selection first.');
+            aggregationView(active_selection, parseInt($this.attr('chart-number'), 0))
+        });
+    })
+
     function buildBlock(ID, isNew) {
 
         var selection = selections[ID];
