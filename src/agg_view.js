@@ -37,7 +37,7 @@ function aggregationView(ID, DataType, ChartType) {
             break;
 
         default:
-            bubbleChart(svg_bg, data_to_show, ID);
+            barChart(svg_bg, data_to_show, ID);
     }
 
 }
