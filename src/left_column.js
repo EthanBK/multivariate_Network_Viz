@@ -204,6 +204,10 @@ function SelectionComponent(api) {
         return $('.selection-active').attr('selection');
     }
 
+    this.setActive = function(id) {
+        $('#' + id_to_selection(id)).trigger('click')
+    }
+
     this.addSelection = function(id, color) {
         var selection_id = id_to_selection(id);
 

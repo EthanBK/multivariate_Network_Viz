@@ -833,6 +833,7 @@ function low_level(selector, airports) {
         var group = d3.select(this);
 
         var sel_id = +this.getAttribute('id').substring(9);
+        SelectionComponentObj.setActive(sel_id)
 
         high_level.clicked(document.getElementById('high_level_rect' + sel_id))
 
