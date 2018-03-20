@@ -44,14 +44,17 @@ function buildData(data, keyName, valueName) {
 
     var output = [];
 
+
     if (valueName === 'num_all_airline') {
-        var temp = {
-            id: +ap.id,
-            keyName: ap[keyName],
-            value: ap['num_out_airline'] +
+        data.forEach(function (ap) {
+            var temp = {
+                id: +ap.id,
+                keyName: ap[keyName],
+                value: ap['num_out_airline'] +
                 ap['num_in_airline']
-        };
-        output.push(temp)
+            };
+            output.push(temp)
+        });
     } else {
         data.forEach(function (ap) {
             var temp = {

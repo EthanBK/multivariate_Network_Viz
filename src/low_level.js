@@ -14,6 +14,10 @@ $.get('data/airports.json', function(data) {
     // var airports = data;
     low_level('#low_level', data)
 });
+//
+// d3.json('data/airports.json', function (data) {
+//     low_level('#low_level', data)
+// });
 
 function low_level(selector, airports) {
 
@@ -22,6 +26,8 @@ function low_level(selector, airports) {
     // var zoom = d3.zoom()
     //     .scaleExtent([1, 10])
     //     .on('zoom', zoomed);
+
+    console.log(airports)
 
     var xAxisScale = d3.scaleLinear()
         .domain([-180, 180])
@@ -485,7 +491,6 @@ function low_level(selector, airports) {
 
         // build detailed view in agg_svg
         // Build default view (bar chart + num_total_edge)
-        console.log('id', ID, num_window)
         if (ID >= num_window - 1) {
             aggregationView(ID, 1, undefined)
         } else {
