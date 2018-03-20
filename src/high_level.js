@@ -56,6 +56,7 @@ function high_level() {
     high_level_svg.call(zoom);
 
 
+
     // Control chart type
     $('#high-level-chart-type').children().each(function() {
         var $this = $(this);
@@ -64,7 +65,9 @@ function high_level() {
             var active_selection = $('.selection-active').attr('selection');
             if(!active_selection)
                 return alert('Please make a selection first.');
-            aggregationView(active_selection, 0, parseInt($this.attr('chart-type')))
+            current_data_code = parseInt($this.attr('chart-type'));
+            console.log(current_chart_code, current_data_code)
+            aggregationView(active_selection, current_chart_code, current_data_code)
         });
     });
 
@@ -76,7 +79,9 @@ function high_level() {
             var active_selection = $('.selection-active').attr('selection');
             if(!active_selection)
                 return alert('Please make a selection first.');
-            aggregationView(active_selection, parseInt($this.attr('chart-number'), 0))
+            current_chart_code = parseInt($this.attr('chart-number'));
+            console.log(current_chart_code, current_data_code)
+            aggregationView(active_selection, current_chart_code, current_data_code)
         });
     });
 

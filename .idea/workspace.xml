@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="59fca950-d5f7-42bd-907e-c28fd8acc72d" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
       <change beforePath="$PROJECT_DIR$/src/agg_view.js" afterPath="$PROJECT_DIR$/src/agg_view.js" />
+      <change beforePath="$PROJECT_DIR$/src/high_level.js" afterPath="$PROJECT_DIR$/src/high_level.js" />
+      <change beforePath="$PROJECT_DIR$/src/low_level.js" afterPath="$PROJECT_DIR$/src/low_level.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -24,12 +26,24 @@
       <content type="file-editors">
         <state>
           <leaf>
-            <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+            <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/index.html">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="423">
-                    <caret line="80" column="20" lean-forward="true" selection-start-line="80" selection-start-column="20" selection-end-line="80" selection-end-column="20" />
+                  <state relative-caret-position="718">
+                    <caret line="118" column="31" lean-forward="false" selection-start-line="118" selection-start-column="31" selection-end-line="118" selection-end-column="31" />
                     <folding />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+            <file leaf-file-name="agg_view.js" pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/src/agg_view.js">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="462">
+                    <caret line="22" column="15" lean-forward="true" selection-start-line="22" selection-start-column="15" selection-end-line="22" selection-end-column="15" />
+                    <folding>
+                      <element signature="n#!!block;n#barChart#0" expanded="false" />
+                    </folding>
                   </state>
                 </provider>
               </entry>
@@ -41,29 +55,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="low_level.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/low_level.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="676">
-              <caret line="854" column="26" lean-forward="true" selection-start-line="854" selection-start-column="26" selection-end-line="854" selection-end-column="26" />
-              <folding>
-                <element signature="n#!!block;n#dragged_handle#0;n#!!block;n#clickRect#0;n#!!block;n#low_level#0" expanded="false" />
-                <element signature="n#!!block;n#dragended_handle#0;n#!!block;n#clickRect#0;n#!!block;n#low_level#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="high_level.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="high_level.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/high_level.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3163">
-              <caret line="77" column="63" lean-forward="true" selection-start-line="77" selection-start-column="63" selection-end-line="77" selection-end-column="63" />
+            <state relative-caret-position="-1313">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
-                <element signature="e#4021#6535#0" expanded="false" />
-                <element signature="e#6621#7825#0" expanded="false" />
-                <element signature="e#14468#15170#0" expanded="false" />
-                <element signature="e#15241#16180#0" expanded="false" />
+                <element signature="e#4285#6799#0" expanded="false" />
+                <element signature="e#6885#8089#0" expanded="false" />
+                <element signature="e#14732#15434#0" expanded="false" />
+                <element signature="e#15505#16444#0" expanded="false" />
                 <element signature="n#!!block;n#dragstarted_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
                 <element signature="n#!!block;n#dragged_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
                 <element signature="n#!!block;n#dragended_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
@@ -77,24 +78,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="agg_view.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/agg_view.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="691">
-              <caret line="39" column="47" lean-forward="true" selection-start-line="39" selection-start-column="47" selection-end-line="39" selection-end-column="47" />
-              <folding>
-                <element signature="n#!!block;n#buildData#0" expanded="false" />
-                <element signature="n#!!block;n#barChart#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="left_column.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/left_column.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1777">
-              <caret line="270" column="5" lean-forward="true" selection-start-line="270" selection-start-column="5" selection-end-line="270" selection-end-column="5" />
+            <state relative-caret-position="672">
+              <caret line="32" column="9" lean-forward="true" selection-start-line="32" selection-start-column="9" selection-end-line="32" selection-end-column="9" />
               <folding>
                 <marker date="1521542733398" expanded="true" signature="7396:7407" ph="..." />
               </folding>
@@ -113,8 +101,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>aggr</find>
-      <find>substring</find>
       <find>be_arrow_num</find>
       <find>rege</find>
       <find>selections[i]</find>
@@ -139,10 +125,12 @@
       <find>reg</find>
       <find>on('click</find>
       <find>dragstar</find>
-      <find>aggre</find>
       <find>color</find>
       <find>#high-level-chart-number</find>
       <find>background</find>
+      <find>high-level-chart-type</find>
+      <find>aggr</find>
+      <find>aggre</find>
     </findStrings>
     <replaceStrings>
       <replace>ap</replace>
@@ -173,9 +161,9 @@
         <option value="$PROJECT_DIR$/src/low_level_backup.js" />
         <option value="$PROJECT_DIR$/css/global.css" />
         <option value="$PROJECT_DIR$/src/right_click_menu.js" />
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/src/left_column.js" />
         <option value="$PROJECT_DIR$/src/high_level.js" />
+        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/src/low_level.js" />
         <option value="$PROJECT_DIR$/src/agg_view.js" />
       </list>
@@ -196,7 +184,7 @@
   <component name="NodeModulesDirectoryManager">
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds">
     <option name="x" value="56" />
     <option name="y" value="23" />
     <option name="width" value="932" />
@@ -330,7 +318,7 @@
       <workItem from="1521503579025" duration="5142000" />
       <workItem from="1521519116642" duration="3050000" />
       <workItem from="1521533845170" duration="713000" />
-      <workItem from="1521536549023" duration="3150000" />
+      <workItem from="1521536549023" duration="5232000" />
     </task>
     <task id="LOCAL-00001" summary="Creation outline of the project">
       <created>1519702338392</created>
@@ -518,7 +506,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="296056000" />
+    <option name="totallyTimeSpent" value="298138000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -530,16 +518,17 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="56" y="23" width="1864" height="1057" extended-state="6" />
+    <frame x="56" y="23" width="932" height="1057" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19967444" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.09220637" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26403642" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25493172" sideWeight="0.5067514" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16080937" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290735" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.314164" sideWeight="0.4932486" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1429706" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14270212" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3003195" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4552352" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="1132" y="45" width="788" height="1035" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -549,7 +538,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32800853" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -682,6 +670,8 @@
         <state relative-caret-position="10332">
           <caret line="492" column="28" lean-forward="false" selection-start-line="492" selection-start-column="28" selection-end-line="492" selection-end-column="28" />
           <folding>
+            <element signature="e#3306#3324#0" expanded="false" />
+            <element signature="n#!!block;n#clickRect#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#dragged_handle#0;n#!!block;n#clickRect#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#dragended_handle#0;n#!!block;n#clickRect#0;n#!!block;n#low_level#0" expanded="false" />
           </folding>
@@ -700,6 +690,8 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
+            <element signature="e#3306#3324#0" expanded="false" />
+            <element signature="n#!!block;n#clickRect#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#dragged_handle#0;n#!!block;n#clickRect#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#dragended_handle#0;n#!!block;n#clickRect#0;n#!!block;n#low_level#0" expanded="false" />
           </folding>
@@ -732,6 +724,8 @@
         <state relative-caret-position="1743">
           <caret line="83" column="29" lean-forward="true" selection-start-line="83" selection-start-column="29" selection-end-line="83" selection-end-column="29" />
           <folding>
+            <element signature="e#3306#3324#0" expanded="false" />
+            <element signature="n#!!block;n#clickRect#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#dragged_handle#0;n#!!block;n#clickRect#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#dragended_handle#0;n#!!block;n#clickRect#0;n#!!block;n#low_level#0" expanded="false" />
           </folding>
@@ -945,29 +939,41 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="423">
-          <caret line="80" column="20" lean-forward="true" selection-start-line="80" selection-start-column="20" selection-end-line="80" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/left_column.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1777">
-          <caret line="270" column="5" lean-forward="true" selection-start-line="270" selection-start-column="5" selection-end-line="270" selection-end-column="5" />
+        <state relative-caret-position="672">
+          <caret line="32" column="9" lean-forward="true" selection-start-line="32" selection-start-column="9" selection-end-line="32" selection-end-column="9" />
           <folding>
             <marker date="1521542733398" expanded="true" signature="7396:7407" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="718">
+          <caret line="118" column="31" lean-forward="false" selection-start-line="118" selection-start-column="31" selection-end-line="118" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/agg_view.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="22" column="15" lean-forward="true" selection-start-line="22" selection-start-column="15" selection-end-line="22" selection-end-column="15" />
+          <folding>
+            <element signature="n#!!block;n#barChart#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/low_level.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="676">
-          <caret line="854" column="26" lean-forward="true" selection-start-line="854" selection-start-column="26" selection-end-line="854" selection-end-column="26" />
+        <state relative-caret-position="388">
+          <caret line="490" column="16" lean-forward="true" selection-start-line="490" selection-start-column="16" selection-end-line="490" selection-end-column="16" />
           <folding>
+            <element signature="e#3306#3324#0" expanded="false" />
+            <element signature="n#!!block;n#clickRect#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#dragged_handle#0;n#!!block;n#clickRect#0;n#!!block;n#low_level#0" expanded="false" />
             <element signature="n#!!block;n#dragended_handle#0;n#!!block;n#clickRect#0;n#!!block;n#low_level#0" expanded="false" />
           </folding>
@@ -976,13 +982,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/high_level.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3163">
-          <caret line="77" column="63" lean-forward="true" selection-start-line="77" selection-start-column="63" selection-end-line="77" selection-end-column="63" />
+        <state relative-caret-position="-1313">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#4021#6535#0" expanded="false" />
-            <element signature="e#6621#7825#0" expanded="false" />
-            <element signature="e#14468#15170#0" expanded="false" />
-            <element signature="e#15241#16180#0" expanded="false" />
+            <element signature="e#4285#6799#0" expanded="false" />
+            <element signature="e#6885#8089#0" expanded="false" />
+            <element signature="e#14732#15434#0" expanded="false" />
+            <element signature="e#15505#16444#0" expanded="false" />
             <element signature="n#!!block;n#dragstarted_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
             <element signature="n#!!block;n#dragged_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
             <element signature="n#!!block;n#dragended_hi#0;n#!!block;n#buildBlock#0;n#!!block;n#high_level#0" expanded="false" />
@@ -991,17 +997,6 @@
             <element signature="n#!!block;n#stopped#0;n#!!block;n#high_level#0" expanded="false" />
             <element signature="n#!!block;n#reset#0;n#!!block;n#high_level#0" expanded="false" />
             <element signature="n#!!block;n#clicked#0;n#!!block;n#high_level#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/agg_view.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="691">
-          <caret line="39" column="47" lean-forward="true" selection-start-line="39" selection-start-column="47" selection-end-line="39" selection-end-column="47" />
-          <folding>
-            <element signature="n#!!block;n#buildData#0" expanded="false" />
-            <element signature="n#!!block;n#barChart#0" expanded="false" />
           </folding>
         </state>
       </provider>

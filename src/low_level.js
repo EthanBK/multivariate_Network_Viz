@@ -5,6 +5,11 @@ var height = 750,
 var selections = [],
     num_window = 0;
 
+var current_chart_code = 1,
+    current_data_code = 0;
+
+
+
 $.get('data/airports.json', function(data) {
     // var airports = data;
     low_level('#low_level', data)
@@ -479,16 +484,13 @@ function low_level(selector, airports) {
         high_level.buildBlock(ID, isNew);
 
         // build detailed view in agg_svg
-        // Build default view (bubble chart + num_total_edge)
-        if (document.getElementById('inner_svg'+ID) === null) {
-            var ran = Math.round(Math.random());
-            aggregationView(ID, 0, ran)
+        // Build default view (bar chart + num_total_edge)
+        console.log('id', ID, num_window)
+        if (ID >= num_window - 1) {
+            aggregationView(ID, 1, undefined)
+        } else {
+            aggregationView(ID, current_chart_code, current_data_code)
         }
-        else {
-            aggregationView(ID, 0, undefined)
-        }
-
-
     }
 
     function buildLinks (ID) {

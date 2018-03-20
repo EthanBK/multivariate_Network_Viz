@@ -18,14 +18,12 @@ function aggregationView(ID, DataType, ChartType) {
             data_to_show = buildData(data, 'code', 'num_out_airline');
             break;
         case 2:
-
+            data_to_show = buildData(data, 'code', 'num_all_airline');
             break;
         case 3:
-
             break;
-
         default:
-            data_to_show = buildData(data, 'code', 'num_in_airline');
+            data_to_show = buildData(data, 'code', 'num_all_airline');
     }
 
     switch(ChartType) {
@@ -43,16 +41,27 @@ function aggregationView(ID, DataType, ChartType) {
 }
 
 function buildData(data, keyName, valueName) {
-    // console.log(data)
+
     var output = [];
-    data.forEach(function (ap) {
+
+    if (valueName === 'num_all_airline') {
         var temp = {
             id: +ap.id,
             keyName: ap[keyName],
-            value: ap[valueName]
+            value: ap['num_out_airline'] +
+                ap['num_in_airline']
         };
         output.push(temp)
-    });
+    } else {
+        data.forEach(function (ap) {
+            var temp = {
+                id: +ap.id,
+                keyName: ap[keyName],
+                value: ap[valueName]
+            };
+            output.push(temp)
+        });
+    }
     return output
 }
 
